@@ -1,5 +1,3 @@
-<!--First trigger commit-->
-<!--rebuild trigger-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,13 +54,12 @@
     <div class="select-wrapper">
       <select class="filter-select">
         <option disabled selected>Select City</option>
-        <optgroup diabled selected>
-          Delhi NCR </optgroup>
-          <option>Delhi</option>
-          <option>Gurgaon</option>
-          <option>Noida</option>
-          <option>Faridabad</option>
-          <option>Ghaziabad</option>
+        <optgroup disabled>Delhi NCR</optgroup>
+        <option>Delhi</option>
+        <option>Gurgaon</option>
+        <option>Noida</option>
+        <option>Faridabad</option>
+        <option>Ghaziabad</option>
         <option>Mumbai</option>
         <option>Bangalore</option>
         <option>Chennai</option>
@@ -70,7 +67,6 @@
         <option>Pune</option>
         <option>Hyderabad</option>
         <option>Ahmedabad</option>
-
       </select>
     </div>
   </header>
@@ -79,9 +75,10 @@
   <main>
     <h1 class="section-title">Now Showing</h1>
     <div id="movie-container" class="movie-container">
-      <div class="movie-card" data-name="Deadpool 3  & wolverine">
+
+      <div class="movie-card" data-name="Deadpool 3 & wolverine">
         <img src="images/deadpool.jpg" alt="Deadpool 3 & Wolverine" />
-        <h3>Deadpool and Wolverine</h3>
+        <h3>Deadpool and<br>Wolverine</h3>
         <a href="booking.html"><button>Book Tickets</button></a>
       </div> 
 
@@ -146,13 +143,13 @@
         <a href="booking.html"><button>Book Tickets</button></a>
       </div>
 
-      <div class="movie-card" data-name=" A Minecraft Movie The">
+      <div class="movie-card" data-name="Minecraft The Movie">
         <img src="images/minecraft.jpeg" alt="Minecraft" />
-        <h3>A<br>Minecraft<br>Movie</h3>
+        <h3>Minecraft:<br>The Movie</h3>
         <a href="booking.html"><button>Book Tickets</button></a>
       </div>
 
-      <div class="movie-card" data-name="Final Destination Bloodlines 6">
+      <div class="movie-card" data-name="Final Destination Bloodlines">
         <img src="images/finaldestination.jpeg" alt="Final Destination" />
         <h3>Final Destination:<br>Bloodlines</h3>
         <a href="booking.html"><button>Book Tickets</button></a>
@@ -164,7 +161,7 @@
         <a href="booking.html"><button>Book Tickets</button></a>
       </div>
 
-      <div class="movie-card" data-name="Kalki 2898 AD Prabhas">
+      <div class="movie-card" data-name="Kalki 2898 AD">
         <img src="images/kalki.jpg" alt="Kalki" />
         <h3>Kalki 2898 AD</h3>
         <a href="booking.html"><button>Book Tickets</button></a>
@@ -204,8 +201,7 @@
         <img src="images/flash.webp" alt="The Flash" />
         <h3>The Flash</h3>
         <a href="booking.html"><button>Book Tickets</button></a>
-        </div>
-
+      </div>
 
     </div>
   </main>
@@ -219,10 +215,12 @@
       const input = document.getElementById('search').value.toLowerCase();
       const cards = document.querySelectorAll('.movie-card');
       cards.forEach(card => {
-        const movieName = card.getAttribute('data-name').toLowerCase();
-        card.style.display = movieName.includes(input) ? 'block' : 'flex';
+        const name = card.getAttribute('data-name').toLowerCase();
+        card.style.display = name.includes(input) ? 'flex' : 'none';
       });
     }
   </script>
+
 </body>
 </html>
+<
