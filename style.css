@@ -4,6 +4,11 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 body {
   font-family: Arial, sans-serif;
   background: url("images/bgimg.jpg") no-repeat center center fixed;
@@ -11,7 +16,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Links */
 a {
   text-decoration: none;
   color: #ffffff;
@@ -51,12 +55,13 @@ a {
   border: none;
   background-color: #11ab6a;
   color: white;
-  min-width: 120px;
+  min-width: 100px;
+  flex-shrink: 1;
 }
 
 .select-wrapper {
-  flex-shrink: 0;
-  max-width: 160px;
+  flex-shrink: 1;
+  max-width: 120px;
 }
 
 @media (max-width: 1024px) {
@@ -152,6 +157,9 @@ main {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   text-align: center;
   transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .movie-card:hover {
