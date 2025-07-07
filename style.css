@@ -1,4 +1,4 @@
-<!--Update--?* {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -79,6 +79,7 @@ a {
 /* Sidebar */
 .sidebar-wrapper {
   position: relative;
+  margin-left: 0;
 }
 
 .menu-btn {
@@ -93,13 +94,12 @@ a {
 .sidebar {
   position: absolute;
   top: 100%;
-  left: 0px;
+  left: 0;
   background-color: #222;
   padding: 20px;
   width: 200px;
   opacity: 0;
   visibility: hidden;
-  align-items: left;
   transform: translateY(-10px);
   transition: all 0.3s ease;
   border-radius: 0 0 5px 5px;
@@ -199,11 +199,12 @@ main {
   background-color: #580202;
 }
 
-/* Footer */
+/* Footer - updated to look cleaner and lighter */
 footer {
   text-align: center;
   background: #111;
   color: #fff;
-  padding: 15px;
-  margin-top: 40px;
+  padding: 8px 15px;
+  font-size: 14px;
+  margin-top: 20px;
 }
