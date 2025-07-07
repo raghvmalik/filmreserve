@@ -93,13 +93,13 @@ a {
 .sidebar {
   position: absolute;
   top: 100%;
-  left: 0;
+  left: 0px;
   background-color: #222;
   padding: 20px;
-  width: 150px;
+  width: 200px;
   opacity: 0;
   visibility: hidden;
-  text-align: left;
+  align-items: left;
   transform: translateY(-10px);
   transition: all 0.3s ease;
   border-radius: 0 0 5px 5px;
@@ -204,6 +204,6 @@ footer {
   text-align: center;
   background: #111;
   color: #fff;
-  padding: 10px;
-  margin-top: 25px;
+  padding: 15px;
+  margin-top: 40px;
 }
