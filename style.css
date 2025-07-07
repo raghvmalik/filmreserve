@@ -96,7 +96,7 @@ a {
   left: 0;
   background-color: #222;
   padding: 20px;
-  width: 200px;
+  width: 175px;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
@@ -204,5 +204,5 @@ footer {
   background: #111;
   color: #fff;
   padding: 15px;
-  margin-top: 40px;
+  margin-top: 25px;
 }
