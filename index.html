@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FilmReserve | Book Tickets</title>
+  <title>FilmReserve | Stream Movies</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -15,12 +15,12 @@
       <div class="sidebar">
         <h2>👤 Profile</h2>
         <ul class="sidebar-menu">
-          <li><a href="#">Account</a></li>
-          <li><a href="#">My Bookings</a></li>
-          <li><a href="#">Movie Reviews</a></li>
+          <li><a href="#">My Profile</a></li>
+          <li><a href="#">My Watchlist</a></li>
+          <li><a href="#">Streaming History</a></li>
+          <li><a href="#">Account Settings</a></li>
+          <li><a href="#">Help & Support</a></li>
           <li><a href="#">Logout</a></li>
-          <li><a href="#">Help</a></li>
-          <li><a href="#">Settings</a></li>
         </ul>
       </div>
     </div>
@@ -28,7 +28,7 @@
     <a href="index.html" class="logo">🎬 <b>FilmReserve</b></a>
 
     <div class="search-area">
-      <input type="search" id="search" placeholder="Search movies" oninput="filterMovies()" />
+      <input type="search" id="search" placeholder="Search movies to stream" oninput="filterMovies()" />
     </div>
 
     <select class="filter-select">
@@ -43,188 +43,179 @@
 
     <select class="filter-select">
       <option disabled selected>Format</option>
-      <option>2D</option>
-      <option>3D</option>
-      <option>4DX</option>
-      <option>3D Screen X</option>
-      <option>IMAX 2D</option>
-      <option>IMAX 3D</option>
+      <option>HD</option>
+      <option>Full HD</option>
+      <option>4K UHD</option>
     </select>
 
     <div class="select-wrapper">
       <select class="filter-select">
-        <option disabled selected>Select City</option>
-        <option>Delhi</option>
-        <option>Gurgaon</option>
-        <option>Noida</option>
-        <option>Faridabad</option>
-        <option>Ghaziabad</option>
-        <option>Mumbai</option>
-        <option>Bangalore</option>
-        <option>Chennai</option>
-        <option>Kolkata</option>
-        <option>Pune</option>
-        <option>Hyderabad</option>
-        <option>Ahmedabad</option>
+        <option disabled selected>Select Language</option>
+        <option>English</option>
+        <option>Hindi</option>
+        <option>Tamil</option>
+        <option>Telugu</option>
+        <option>Kannada</option>
+        <option>Malayalam</option>
       </select>
     </div>
   </header>
 
   <!-- Movies Section -->
   <main>
-    <h1 class="section-title">Now Showing</h1>
+    <h1 class="section-title">Now Streaming</h1>
     <div id="movie-container" class="movie-container">
 
       <div class="movie-card" data-name="Deadpool 3 and & wolverine">
         <img src="images/deadpool.jpg" alt="Deadpool 3 and & Wolverine" />
         <h3>Deadpool<br>&<br>Wolverine</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div> 
 
       <div class="movie-card" data-name="Fantastic 4 First Steps Dr Doom">
         <img src="images/fantastic4.jpeg" alt="Fantastic 4" />
         <h3>Fantastic 4:<br>First Steps</h3>
-        <a href="booking.html"><button>Pre-book Tickets</button></a>
+        <a href="#"><button>Stream Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Avengers Doomsday 5 RDJ">
         <img src="images/avengers.jpg" alt="Avengers" />
         <h3>Avengers:<br>Doomsday</h3>
-        <a href="booking.html"><button>Pre-book Tickets</button></a>
+        <a href="#"><button>Stream Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Oppenheimer">
         <img src="images/oppenheimer.jpg" alt="Oppenheimer" />
         <h3>Oppenheimer</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Superman">
         <img src="images/superman.jpeg" alt="Superman" />
         <h3>Superman</h3>
-        <a href="booking.html"><button>Pre-book Tickets</button></a>
+        <a href="#"><button>Stream Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Inception">
         <img src="images/inception.jpg" alt="Inception" />
         <h3>Inception</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Dune">
         <img src="images/dune.jpg" alt="Dune" />
         <h3>Dune</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Interstellar">
         <img src="images/interstellar.jpg" alt="Interstellar" />
         <h3>Interstellar</h3>
-        <h5>Now in IMAX</h5>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <h5>Now in 4K</h5>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Avatar The Way of Water">
         <img src="images/avatar.jpg" alt="Avatar" />
         <h3>Avatar:<br>The Way of Water</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Batman">
         <img src="images/batman.jpg" alt="Batman" />
         <h3>Batman</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Joker Folie A Deux">
         <img src="images/joker2.jpg" alt="Joker" />
         <h3>Joker:<br>Folie À Deux</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Minecraft The Movie">
         <img src="images/minecraft.jpeg" alt="Minecraft" />
         <h3>Minecraft:<br>The Movie</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Final Destination Bloodlines 6">
         <img src="images/finaldestination.jpeg" alt="Final Destination" />
         <h3>Final Destination:<br>Bloodlines</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="New Avengers Thunderbolts Sentry">
         <img src="images/thunderbolts.jpg" alt="Thunderbolts" />
         <h3>New Avengers:<br>Thunderbolts</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Kalki 2898 AD Prabhas">
         <img src="images/kalki.jpg" alt="Kalki" />
         <h3>Kalki 2898 AD</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Ballerina John Wick Baba Yaga">
         <img src="images/ballerina.jpg" alt="Ballerina" />
         <h3>Ballerina:<br>From John Wick</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Emergency Kangana Ranaut">
         <img src="images/emergency.jpeg" alt="Emergency" />
         <h3>Emergency</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Spiderman No Way Home NWH">
         <img src="images/spiderman.jpg" alt="Spiderman" />
         <h3>Spiderman:<br>No Way Home</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Jurassic World Rebirth Scarlett Johansson">
         <img src="images/jurassicworld.jpg" alt="Jurassic World" />
         <h3>Jurassic World:<br>Rebirth</h3>
-        <a href="booking.html"><button>Pre-book Tickets</button></a>
+        <a href="#"><button>Stream Now</button></a>
       </div>
 
       <div class="movie-card" data-name="The Matrix Resurrections 4">
         <img src="images/matrix.jpg" alt="The Matrix" />
-        <h3>The Matrix:<br>Ressurections</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <h3>The Matrix:<br>Resurrections</h3>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="The Flash Batman Supergirl">
         <img src="images/flash.webp" alt="The Flash" />
         <h3>The Flash</h3>
-        <a href="booking.html"><button>Book Tickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="Wicked Ariana Grande">
         <img src="images/wicked.avif" alt="Wicked" />
         <h3>Wicked</h3>
-        <a href=""><button>BookTickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="F1:The Movie Brad Pitt">
         <img src="images/F1.jpg" alt="F1:The Movie" />
-        <h3>F1:The Movie</h3>
-        <a href=""><button>BookTickets</button></a>
+        <h3>F1:<br>The Movie</h3>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
       <div class="movie-card" data-name="28 Years Later Ryan Gosling">
         <img src="images/28yearslater.jpeg" alt="28 Years Later" />
         <h3>28<br>Years<br>Later</h3>
-        <a href=""><button>BookTickets</button></a>
+        <a href="#"><button>Watch Now</button></a>
       </div>
 
     </div>
   </main>
 
   <footer>
-    <p>Thank you for choosing FilmReserve!</p>
+    <p>© 2025 FilmReserve | Streaming entertainment anytime, anywhere.</p>
   </footer>
 
   <script>
