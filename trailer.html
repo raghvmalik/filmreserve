@@ -86,40 +86,29 @@
       cursor: pointer;
     }
 
-    .volume-wrapper {
+    .volume-control {
       position: relative;
       display: flex;
+      flex-direction: column;
       align-items: center;
     }
 
     #volumeSlider {
       position: absolute;
       bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      height: 70px;
-      width: 4px;
-      appearance: none;
-      background: #444;
-      border-radius: 3px;
-      display: none;
+      transform: rotate(-90deg);
+      width: 80px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
       z-index: 1000;
+      pointer-events: auto;
     }
 
-    #volumeSlider::-webkit-slider-thumb {
-      appearance: none;
-      width: 12px;
-      height: 12px;
-      background: #00baff;
-      border-radius: 50%;
-      cursor: pointer;
+    .volume-control:hover #volumeSlider {
+      opacity: 1;
     }
 
-    .volume-wrapper:hover #volumeSlider {
-      display: block;
-    }
-
-    .dots-menu {
+    .controls .dots-menu {
       display: none;
       position: absolute;
       right: 50px;
@@ -131,7 +120,7 @@
       z-index: 1000;
     }
 
-    .dots-menu button {
+    .controls .dots-menu button {
       display: block;
       width: 100%;
       text-align: left;
@@ -142,7 +131,7 @@
       cursor: pointer;
     }
 
-    .dots-menu button:hover {
+    .controls .dots-menu button:hover {
       background-color: #444;
     }
 
@@ -189,14 +178,8 @@
       height: 14px;
       width: 14px;
       background: #00baff;
-      border: 2px solid white;
       border-radius: 50%;
-      cursor: pointer;
       margin-top: -4px;
-    }
-
-    input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
     }
 
     .time {
@@ -229,7 +212,8 @@
       transform: translate(-50%, -50%);
       font-size: 32px;
       color: #ccc;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
       border-radius: 50%;
       padding: 12px 18px;
       display: none;
@@ -266,26 +250,30 @@
   </style>
 </head>
 <body>
+
   <div class="navbar">
     <a href="index.html">🎬 FilmReserve</a>
   </div>
 
   <div class="trailer-container">
     <div class="video-wrapper">
-      <video id="video" poster="images/f4poster.avif" controlsList="nodownload">
+      <video id="video" poster="images/f4poster.avif">
         <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4" type="video/mp4">
-        <track kind="subtitles" src="captions.vtt" srclang="en" label="English" default>
+        <track label="English" kind="subtitles" srclang="en" src="captions.vtt" default>
       </video>
+
       <button id="replayBtn" class="replay-button" onclick="replayVideo()">⭯</button>
 
       <div class="controls">
-        <div class="volume-wrapper">
-          <button id="mute" title="Mute (M)">🔊</button>
+        <div class="volume-control">
+          <button id="mute" title="Mute (M)">🔇</button>
           <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
         </div>
+
         <div class="time" id="time">0:00 / 0:00</div>
         <input class="seekbar" type="range" id="seek" value="0" min="0" step="0.1">
-        <button class="dots" onclick="toggleMenu()" title="More">⋮</button>
+
+        <button class="dots" onclick="toggleMenu()">⋮</button>
         <div class="dots-menu" id="dotsMenu">
           <div class="speed-menu">
             <button onclick="toggleSpeedOptions()">Playback Speed</button>
@@ -296,8 +284,8 @@
               <button onclick="setSpeed(2)">2x</button>
             </div>
           </div>
-          <button onclick="togglePip()">Picture in Picture</button>
         </div>
+
         <button class="zoom" onclick="toggleFull()" title="Fullscreen (F)">⛶</button>
       </div>
     </div>
@@ -307,8 +295,8 @@
       <button id="descToggle" class="desc-btn">▼</button>
     </h1>
     <div class="trailer-details" id="descBox" style="display: none;">
-      Few astronauts go to space and return as Superheroes. What challenges will they face next?<br>
-      Watch Fantastic Four: First Steps on 25 July to find out.<br>
+      Few Astronauts go to space and return as Superheroes. What challenges will they face next? <br>
+      Watch Fantastic Four: First Steps on 25 July to find out <br>
       🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 25 July 2025
     </div>
   </div>
@@ -322,36 +310,50 @@
     const seek = document.getElementById('seek');
     const time = document.getElementById('time');
     const mute = document.getElementById('mute');
+    const volumeSlider = document.getElementById('volumeSlider');
     const dotsMenu = document.getElementById('dotsMenu');
     const speedOptions = document.getElementById('speedOptions');
     const descToggle = document.getElementById('descToggle');
     const descBox = document.getElementById('descBox');
     const replayBtn = document.getElementById('replayBtn');
-    const volumeSlider = document.getElementById('volumeSlider');
+
+    video.volume = 1;
+    mute.textContent = video.muted || video.volume === 0 ? '🔇' : '🔊';
 
     mute.onclick = () => {
       video.muted = !video.muted;
-      mute.textContent = video.muted ? '🔇' : '🔊';
     };
 
     volumeSlider.addEventListener('input', () => {
-      video.volume = volumeSlider.value;
-      video.muted = video.volume == 0;
-      mute.textContent = video.muted ? '🔇' : '🔊';
+      video.volume = parseFloat(volumeSlider.value);
+      video.muted = video.volume === 0;
     });
 
     video.addEventListener('volumechange', () => {
-      mute.textContent = video.muted ? '🔇' : '🔊';
+      mute.textContent = video.muted || video.volume === 0 ? '🔇' : '🔊';
+    });
+
+    let isSeeking = false;
+
+    seek.addEventListener('input', () => {
+      isSeeking = true;
+      const value = parseFloat(seek.value);
+      const percent = (value / video.duration) * 100;
+      seek.style.background = `linear-gradient(to right, #00baff ${percent}%, #444 ${percent}%)`;
+    });
+
+    seek.addEventListener('change', () => {
+      video.currentTime = parseFloat(seek.value);
+      isSeeking = false;
     });
 
     video.addEventListener('timeupdate', () => {
-      seek.value = video.currentTime;
-      time.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
-      seek.style.background = `linear-gradient(to right, #00baff ${(video.currentTime / video.duration) * 100}%, #444 ${(video.currentTime / video.duration) * 100}%)`;
-    });
-
-    seek.addEventListener('input', () => {
-      video.currentTime = seek.value;
+      if (!isSeeking) {
+        seek.value = video.currentTime;
+        const percent = (video.currentTime / video.duration) * 100;
+        seek.style.background = `linear-gradient(to right, #00baff ${percent}%, #444 ${percent}%)`;
+        time.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+      }
     });
 
     video.addEventListener('loadedmetadata', () => {
@@ -374,6 +376,15 @@
       if (!isControl) togglePlay();
     });
 
+    function togglePlay() {
+      if (video.paused) {
+        video.play();
+        replayBtn.style.display = 'none';
+      } else {
+        video.pause();
+      }
+    }
+
     document.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT') return;
       if (e.code === 'Space') {
@@ -389,21 +400,6 @@
         toggleFull();
       }
     });
-
-    function togglePlay() {
-      if (video.paused) {
-        video.play();
-        replayBtn.style.display = 'none';
-      } else {
-        video.pause();
-      }
-    }
-
-    function formatTime(sec) {
-      const min = Math.floor(sec / 60);
-      const secStr = Math.floor(sec % 60).toString().padStart(2, '0');
-      return `${min}:${secStr}`;
-    }
 
     function toggleFull() {
       if (!document.fullscreenElement) {
@@ -424,15 +420,6 @@
     function setSpeed(rate) {
       video.playbackRate = rate;
       toggleSpeedOptions();
-      dotsMenu.style.display = 'none';
-    }
-
-    function togglePip() {
-      if (document.pictureInPictureElement) {
-        document.exitPictureInPicture();
-      } else {
-        video.requestPictureInPicture();
-      }
       dotsMenu.style.display = 'none';
     }
 
