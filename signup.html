@@ -3,76 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Signup | FilmReserve</title>
+  <title>Sign Up | FilmReserve</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
+      margin: 0;
+      padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f1f3f5;
+      background-color: #121212;
+      color: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
 
-    .signup-container {
-      background: white;
+    .container {
+      background-color: #1e1e1e;
       padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 20px rgba(0, 191, 255, 0.2);
       width: 100%;
       max-width: 400px;
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 24px;
-      color: #333;
+      color: #00bfff;
+      margin-bottom: 30px;
     }
 
     label {
-      font-weight: 500;
       display: block;
       margin-bottom: 6px;
+      font-weight: 500;
     }
 
     input {
       width: 100%;
-      padding: 10px 12px;
+      padding: 12px;
       margin-bottom: 20px;
-      border: 1px solid #ccc;
+      border: none;
       border-radius: 8px;
+      background-color: #2a2a2a;
+      color: #ffffff;
       font-size: 16px;
+    }
+
+    input::placeholder {
+      color: #bbbbbb;
     }
 
     button {
       width: 100%;
       padding: 12px;
-      background-color: #2e86de;
-      color: white;
+      background-color: #00bfff;
       border: none;
       border-radius: 8px;
       font-size: 16px;
+      font-weight: bold;
+      color: #000000;
       cursor: pointer;
       transition: background 0.3s ease;
     }
 
     button:hover {
-      background-color: #1b4f72;
+      background-color: #009acd;
     }
 
     p {
       text-align: center;
       margin-top: 20px;
-      font-size: 14px;
     }
 
     a {
-      color: #2e86de;
+      color: #00bfff;
       text-decoration: none;
     }
 
@@ -82,12 +86,12 @@
   </style>
 </head>
 <body>
-  <div class="signup-container">
-    <h2>Create Your Account</h2>
+  <div class="container">
+    <h2>Create Account</h2>
 
     <form>
-      <label for="name">Name</label>
-      <input type="text" id="name" placeholder="Your full name" required />
+      <label for="name">Full Name</label>
+      <input type="text" id="name" placeholder="John Doe" required />
 
       <label for="email">Email</label>
       <input type="email" id="email" placeholder="you@example.com" required />
@@ -98,8 +102,7 @@
       <button type="submit">Sign Up</button>
     </form>
 
-    <p>Already have an account? <a href="login.html">Login here</a></p>
+    <p>Already registered? <a href="login.html">Login</a></p>
   </div>
 </body>
 </html>
-<!--user signup-->
