@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Profile | FilmReserve</title>
-
   <style>
     body {
       margin: 0;
@@ -18,39 +17,38 @@
       height: 100vh;
     }
 
-    .profile-container {
-      background: rgba(0, 0, 0, 0.85);
+    .profile-box {
+      background: rgba(0, 0, 0, 0.8);
       padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.7);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-      color: #fff;
-    }
-
-    .profile-container h1 {
-      color: #5bb0ff;
-      margin-bottom: 20px;
-    }
-
-    .profile-container p {
-      font-size: 18px;
-      margin: 15px 0;
-    }
-
-    .profile-container button {
-      background-color: #5bb0ff;
       color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 20px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
 
-    .profile-container button:hover {
+    .profile-box h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .profile-box p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .profile-box button {
+      background-color: #5bb0ff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .profile-box button:hover {
       background-color: #3f9de1;
     }
   </style>
@@ -72,31 +70,24 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    const userEmailEl = document.getElementById("user-email");
-
     onAuthStateChanged(auth, user => {
       if (user) {
         document.getElementById("user-email").innerText = user.email;
       } else {
-        // Not logged in, redirect to login
         window.location.href = "login.html";
       }
     });
 
     window.logout = function () {
       signOut(auth).then(() => {
-        localStorage.removeItem("loggedIn");
         window.location.href = "login.html";
-      }).catch((error) => {
-        alert("Error logging out: " + error.message);
       });
     };
   </script>
 </head>
 <body>
-  <div class="profile-container">
-    <h1>Welcome to FilmReserve 🎬</h1>
-    <p>You are logged in as:</p>
+  <div class="profile-box">
+    <h1>Welcome,</h1>
     <p id="user-email">Loading...</p>
     <button onclick="logout()">Logout</button>
   </div>
