@@ -34,6 +34,11 @@
       z-index: 999;
     }
 
+    .navbar a {
+      text-decoration: none;
+      color: inherit;
+    }
+
     .trailer-container {
       flex: 1;
       margin-top: 80px;
@@ -47,110 +52,86 @@
       position: relative;
       width: 90%;
       max-width: 960px;
+      border-radius: 12px;
+      border: 2px solid rgba(0, 174, 255, 0.3);
+      box-shadow: 0 0 12px rgba(0, 174, 255, 0.5);
+      overflow: hidden;
     }
 
     video {
       width: 100%;
-      border-radius: 12px;
-      border: 2px solid rgba(0, 174, 255, 0.3);
-      box-shadow: 0 0 12px rgba(0, 174, 255, 0.5);
-      background: black;
-    }
-
-    video::-webkit-media-controls {
-      display: none !important;
     }
 
     .controls {
-      position: absolute;
-      bottom: 15px;
-      left: 0;
-      right: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 20px;
-      background-color: rgba(0, 0, 0, 0.5);
-      border-radius: 0 0 12px 12px;
+      background: #111;
+      padding: 5px 10px;
     }
 
-    .timer, .mute-btn {
+    .timer, .mute-btn, .dots-btn, .zoom-btn {
+      font-size: 13px;
       color: #ccc;
-      font-size: 14px;
-    }
-
-    .seek-bar {
-      flex-grow: 1;
-      margin: 0 10px;
-      height: 4px;
-      background: #444;
-      border-radius: 3px;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .seek-bar-fill {
-      height: 100%;
-      background: #00baff;
-      width: 0%;
-      border-radius: 3px;
-    }
-
-    .right-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      position: relative;
-    }
-
-    .menu-btn {
-      background: transparent;
-      color: #ccc;
-      font-size: 16px;
+      background: none;
       border: none;
       cursor: pointer;
-      position: relative;
+      margin: 0 5px;
     }
 
-    .menu-options {
+    .dots-btn, .zoom-btn, .mute-btn {
+      color: #999;
+      font-size: 14px;
+      padding: 4px 6px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .menu {
       display: none;
       position: absolute;
-      bottom: 30px;
-      right: 0;
+      bottom: 40px;
+      right: 10px;
       background-color: #222;
-      border-radius: 6px;
-      padding: 6px 10px;
-      font-size: 14px;
-      color: #ccc;
-      z-index: 99;
-      min-width: 130px;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      z-index: 100;
     }
 
-    .menu-btn.active .menu-options {
-      display: block;
-    }
-
-    .menu-options div {
-      margin: 6px 0;
+    .menu button {
+      background: none;
+      border: none;
+      color: #eee;
+      padding: 8px 12px;
+      text-align: left;
+      width: 100%;
       cursor: pointer;
+    }
+
+    .menu button:hover {
+      background-color: #333;
+    }
+
+    .progress-bar {
+      height: 5px;
+      background: #00baff;
+      width: 0%;
     }
 
     h1 {
       font-size: 22px;
       text-align: center;
       margin: 10px 20px 5px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
     }
 
     .toggle-btn {
       background-color: transparent;
       border: none;
       font-size: 16px;
-      color: #666;
+      color: #888;
       cursor: pointer;
+      margin-left: 10px;
     }
 
     .description-box {
@@ -183,10 +164,6 @@
     }
 
     @media (max-width: 600px) {
-      video {
-        width: 100%;
-      }
-
       h1 {
         font-size: 18px;
       }
@@ -199,37 +176,39 @@
 </head>
 <body>
 
-  <div class="navbar">🎬 FilmReserve</div>
+  <div class="navbar">
+    <a href="index.html">📽️ FilmReserve</a>
+  </div>
 
   <div class="trailer-container">
     <div class="video-wrapper">
       <video id="trailer-video" poster="images/f4poster.avif">
         <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4" type="video/mp4">
-        <track src="captions.vtt" kind="captions" srclang="en" label="English" default>
+        Your browser does not support the video tag.
       </video>
 
+      <div class="progress-bar" id="progressBar"></div>
+
       <div class="controls">
-        <button class="mute-btn" onclick="toggleMute()">🔇</button>
-        <div class="timer" id="timer">0:00 / 0:00</div>
-        <div class="seek-bar" onclick="seek(event)">
-          <div class="seek-bar-fill" id="seek-fill"></div>
+        <span class="timer" id="timer">0:00 / 0:00</span>
+        <button class="mute-btn" id="muteBtn">🔇</button>
+        <div style="margin-left: auto;">
+          <button class="dots-btn" onclick="toggleMenu()">⋮</button>
+          <button class="zoom-btn" onclick="zoomVideo()">🔍 Zoom</button>
         </div>
-        <div class="right-controls">
-          <button onclick="toggleZoom()">🔍 Zoom</button>
-          <div class="menu-btn" onclick="toggleMenu(this)">⋮
-            <div class="menu-options">
-              <div onclick="setPlayback(0.5)">⏪ 0.5x</div>
-              <div onclick="setPlayback(1)">▶️ 1x</div>
-              <div onclick="setPlayback(2)">⏩ 2x</div>
-              <div onclick="video.requestPictureInPicture()">🖼️ PiP</div>
-              <div onclick="downloadVideo()">⬇️ Download</div>
-            </div>
-          </div>
-        </div>
+      </div>
+
+      <div class="menu" id="optionsMenu">
+        <button onclick="changeSpeed()">Change Speed</button>
+        <button onclick="togglePiP()">Picture-in-Picture</button>
+        <button onclick="downloadVideo()">Download</button>
       </div>
     </div>
 
-    <h1>Fantastic 4: First Steps <button class="toggle-btn" onclick="toggleDescription()" title="Toggle Description">▼</button></h1>
+    <div style="display: flex; align-items: center; justify-content: center; margin-top: 10px;">
+      <h1>Fantastic 4: First Steps</h1>
+      <button class="toggle-btn" onclick="toggleDescription()">▼</button>
+    </div>
 
     <div class="description-box" id="descBox">
       After a cosmic accident transforms four astronauts into superheroes, they must learn to control their powers and face a rising threat. Experience the rebirth of the iconic team in stunning visuals and explosive action.
@@ -247,84 +226,82 @@
   <script>
     const video = document.getElementById('trailer-video');
     const timer = document.getElementById('timer');
-    const seekFill = document.getElementById('seek-fill');
+    const progressBar = document.getElementById('progressBar');
+    const muteBtn = document.getElementById('muteBtn');
+    const menu = document.getElementById('optionsMenu');
     const descBox = document.getElementById('descBox');
+    let menuVisible = false;
 
     video.addEventListener('loadedmetadata', () => {
-      updateTimer();
+      timer.textContent = `0:00 / ${formatTime(video.duration)}`;
     });
 
     video.addEventListener('timeupdate', () => {
-      updateTimer();
-      seekFill.style.width = (video.currentTime / video.duration * 100) + "%";
-    });
-
-    function updateTimer() {
       const current = formatTime(video.currentTime);
       const total = formatTime(video.duration);
       timer.textContent = `${current} / ${total}`;
-    }
-
-    function formatTime(t) {
-      const m = Math.floor(t / 60);
-      const s = Math.floor(t % 60).toString().padStart(2, '0');
-      return `${m}:${s}`;
-    }
-
-    function seek(e) {
-      const bar = e.currentTarget;
-      const percent = e.offsetX / bar.offsetWidth;
-      video.currentTime = percent * video.duration;
-    }
-
-    function setPlayback(rate) {
-      video.playbackRate = rate;
-    }
-
-    function toggleMenu(btn) {
-      document.querySelectorAll('.menu-btn').forEach(b => {
-        if (b !== btn) b.classList.remove('active');
-      });
-      btn.classList.toggle('active');
-    }
-
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.menu-btn')) {
-        document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
-      }
+      const progress = (video.currentTime / video.duration) * 100;
+      progressBar.style.width = `${progress}%`;
     });
 
-    function toggleDescription() {
-      descBox.style.display = descBox.style.display === 'block' ? 'none' : 'block';
+    muteBtn.addEventListener('click', () => {
+      video.muted = !video.muted;
+      muteBtn.textContent = video.muted ? '🔇' : '🔊';
+    });
+
+    function toggleMenu() {
+      menuVisible = !menuVisible;
+      menu.style.display = menuVisible ? 'block' : 'none';
     }
 
-    function toggleZoom() {
-      video.style.transform = video.style.transform === 'scale(1.1)' ? 'scale(1)' : 'scale(1.1)';
+    function changeSpeed() {
+      video.playbackRate = video.playbackRate === 1 ? 1.5 : 1;
+      toggleMenu();
+    }
+
+    function togglePiP() {
+      if (document.pictureInPictureElement) {
+        document.exitPictureInPicture();
+      } else {
+        video.requestPictureInPicture();
+      }
+      toggleMenu();
     }
 
     function downloadVideo() {
-      const a = document.createElement('a');
-      a.href = video.currentSrc;
-      a.download = 'trailer.mp4';
-      a.click();
+      const link = document.createElement('a');
+      link.href = video.currentSrc;
+      link.download = 'trailer.mp4';
+      link.click();
+      toggleMenu();
     }
 
-    // Play/Pause on click
-    video.addEventListener('click', () => {
-      video.paused ? video.play() : video.pause();
-    });
+    function zoomVideo() {
+      video.requestFullscreen();
+    }
 
-    // Fullscreen on 'F'
-    document.addEventListener('keydown', (e) => {
+    function toggleDescription() {
+      const visible = descBox.style.display === 'block';
+      descBox.style.display = visible ? 'none' : 'block';
+      document.querySelector('.toggle-btn').textContent = visible ? '▼' : '▲';
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    // Allow fullscreen on 'F' key
+    document.addEventListener('keydown', function(e) {
       if (e.key.toLowerCase() === 'f') {
-        if (document.fullscreenElement) {
-          document.exitFullscreen();
+        if (!document.fullscreenElement) {
+          video.requestFullscreen();
         } else {
-          video.requestFullscreen().catch(err => console.log("Fullscreen failed", err));
+          document.exitFullscreen();
         }
       }
     });
   </script>
-
 </body>
 </html>
