@@ -86,7 +86,40 @@
       cursor: pointer;
     }
 
-    .controls .dots-menu {
+    .volume-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    #volumeSlider {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 70px;
+      width: 4px;
+      appearance: none;
+      background: #444;
+      border-radius: 3px;
+      display: none;
+      z-index: 1000;
+    }
+
+    #volumeSlider::-webkit-slider-thumb {
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      background: #00baff;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .volume-wrapper:hover #volumeSlider {
+      display: block;
+    }
+
+    .dots-menu {
       display: none;
       position: absolute;
       right: 50px;
@@ -98,7 +131,7 @@
       z-index: 1000;
     }
 
-    .controls .dots-menu button {
+    .dots-menu button {
       display: block;
       width: 100%;
       text-align: left;
@@ -109,7 +142,7 @@
       cursor: pointer;
     }
 
-    .controls .dots-menu button:hover {
+    .dots-menu button:hover {
       background-color: #444;
     }
 
@@ -148,7 +181,6 @@
       background: linear-gradient(to right, #00baff 0%, #444 0%);
       border-radius: 3px;
       outline: none;
-      transition: background 0.3s ease;
       cursor: pointer;
     }
 
@@ -160,33 +192,11 @@
       border: 2px solid white;
       border-radius: 50%;
       cursor: pointer;
-      transition: transform 0.2s ease;
       margin-top: -4px;
     }
 
     input[type="range"]::-webkit-slider-thumb:hover {
       transform: scale(1.2);
-    }
-
-    input[type="range"]::-moz-range-thumb {
-      height: 14px;
-      width: 14px;
-      background: #00baff;
-      border: 2px solid white;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    input[type="range"]::-moz-range-track {
-      height: 6px;
-      background: #444;
-      border-radius: 3px;
-    }
-
-    input[type="range"]::-moz-range-progress {
-      background-color: #00baff;
-      height: 6px;
-      border-radius: 3px;
     }
 
     .time {
@@ -210,12 +220,6 @@
       padding: 2px 6px;
       border-radius: 4px;
       cursor: pointer;
-      transition: background 0.2s ease, color 0.2s ease;
-    }
-
-    .desc-btn:hover {
-      background-color: #222;
-      color: #fff;
     }
 
     .replay-button {
@@ -224,9 +228,8 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 32px;
-      color: #bbb;
-      background: rgba(0, 0, 0, 0.4);
-      border: none;
+      color: #ccc;
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 50%;
       padding: 12px 18px;
       display: none;
@@ -263,22 +266,26 @@
   </style>
 </head>
 <body>
-
   <div class="navbar">
     <a href="index.html">🎬 FilmReserve</a>
   </div>
 
   <div class="trailer-container">
     <div class="video-wrapper">
-      <video id="video" poster="images/f4poster.avif">
+      <video id="video" poster="images/f4poster.avif" controlsList="nodownload">
         <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4" type="video/mp4">
+        <track kind="subtitles" src="captions.vtt" srclang="en" label="English" default>
       </video>
       <button id="replayBtn" class="replay-button" onclick="replayVideo()">⭯</button>
+
       <div class="controls">
-        <button id="mute" title="Mute (M)">🔇</button>
+        <div class="volume-wrapper">
+          <button id="mute" title="Mute (M)">🔊</button>
+          <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+        </div>
         <div class="time" id="time">0:00 / 0:00</div>
         <input class="seekbar" type="range" id="seek" value="0" min="0" step="0.1">
-        <button class="dots" onclick="toggleMenu()" title="Options">⋮</button>
+        <button class="dots" onclick="toggleMenu()" title="More">⋮</button>
         <div class="dots-menu" id="dotsMenu">
           <div class="speed-menu">
             <button onclick="toggleSpeedOptions()">Playback Speed</button>
@@ -290,20 +297,19 @@
             </div>
           </div>
           <button onclick="togglePip()">Picture in Picture</button>
-          <button onclick="downloadVideo()">Download</button>
         </div>
         <button class="zoom" onclick="toggleFull()" title="Fullscreen (F)">⛶</button>
       </div>
     </div>
 
     <h1>
-      The Fantastic Four: First Steps 
+      Fantastic 4: First Steps 
       <button id="descToggle" class="desc-btn">▼</button>
     </h1>
     <div class="trailer-details" id="descBox" style="display: none;">
-      <h2> Few Astronauts go to space and return as Superheroes. What challenges will they face next? <br>
-      Watch Fantastic Four: First Steps on 25 July to find out <br>
-      🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 25 July 2025</h2>
+      Few astronauts go to space and return as Superheroes. What challenges will they face next?<br>
+      Watch Fantastic Four: First Steps on 25 July to find out.<br>
+      🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 25 July 2025
     </div>
   </div>
 
@@ -321,13 +327,18 @@
     const descToggle = document.getElementById('descToggle');
     const descBox = document.getElementById('descBox');
     const replayBtn = document.getElementById('replayBtn');
-
-    mute.textContent = video.muted ? '🔇' : '🔊';
+    const volumeSlider = document.getElementById('volumeSlider');
 
     mute.onclick = () => {
       video.muted = !video.muted;
       mute.textContent = video.muted ? '🔇' : '🔊';
     };
+
+    volumeSlider.addEventListener('input', () => {
+      video.volume = volumeSlider.value;
+      video.muted = video.volume == 0;
+      mute.textContent = video.muted ? '🔇' : '🔊';
+    });
 
     video.addEventListener('volumechange', () => {
       mute.textContent = video.muted ? '🔇' : '🔊';
@@ -341,7 +352,6 @@
 
     seek.addEventListener('input', () => {
       video.currentTime = seek.value;
-      seek.style.background = `linear-gradient(to right, #00baff ${(seek.value / video.duration) * 100}%, #444 ${(seek.value / video.duration) * 100}%)`;
     });
 
     video.addEventListener('loadedmetadata', () => {
@@ -423,14 +433,6 @@
       } else {
         video.requestPictureInPicture();
       }
-      dotsMenu.style.display = 'none';
-    }
-
-    function downloadVideo() {
-      const link = document.createElement('a');
-      link.href = video.querySelector('source').src;
-      link.download = 'Fantastic4_Trailer.mp4';
-      link.click();
       dotsMenu.style.display = 'none';
     }
 
