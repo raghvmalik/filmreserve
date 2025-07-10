@@ -7,51 +7,58 @@
 
   <style>
     body {
-      background-color: #111;
-      color: #f5f5f5;
-      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
 
     .auth-container {
-      max-width: 400px;
-      margin: 100px auto;
-      padding: 30px;
-      background-color: #1c1c1c;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.7);
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+      width: 100%;
+      max-width: 400px;
       text-align: center;
+      color: #f0f0f0;
     }
 
     .auth-container h1 {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       color: #5bb0ff;
     }
 
     .auth-container input {
       width: 100%;
       padding: 12px;
-      margin: 10px 0;
-      background: #222;
-      border: 1px solid #444;
+      margin: 12px 0;
       border-radius: 8px;
-      color: white;
+      border: none;
+      background: #222;
+      color: #fff;
+      font-size: 15px;
     }
 
     .auth-container button {
+      width: 100%;
+      padding: 12px;
+      border: none;
       background-color: #5bb0ff;
       color: white;
-      padding: 12px;
-      width: 100%;
-      border: none;
-      border-radius: 8px;
       font-size: 16px;
+      border-radius: 8px;
       cursor: pointer;
+      margin-top: 10px;
     }
 
     .auth-container button:hover {
-      background-color: #409de6;
+      background-color: #3f9de1;
     }
 
     .auth-container a {
@@ -95,7 +102,7 @@
 </head>
 <body>
   <div class="auth-container">
-    <h1>Create Account</h1>
+    <h1>Create an Account</h1>
     <form onsubmit="signup(event)">
       <input type="email" id="email" placeholder="Email" required />
       <input type="password" id="password" placeholder="Password" required />
