@@ -4,99 +4,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login | FilmReserve</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #121212;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      background-color: #1e1e1e;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(23, 64, 102, 0.3);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    h2 {
-      text-align: center;
-      color: #174066;
-      margin-bottom: 30px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 20px;
-      border: none;
-      border-radius: 8px;
-      background-color: #2a2a2a;
-      color: #ffffff;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #174066;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #ffffff;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #0f2b44;
-    }
-
-    p {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    a {
-      color: #174066;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="container">
+<body class="auth-page">
+  <div class="auth-container">
     <h2>Login</h2>
-
     <form>
-      <label for="email">Email</label>
-      <input type="email" id="email" required />
-
-      <label for="password">Password</label>
-      <input type="password" id="password" required />
-
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
       <button type="submit">Login</button>
+      <p>Don't have an account? <a href="signup.html">Sign up</a></p>
     </form>
-
-    <p>Don't have an account? <a href="signup.html">Sign up</a></p>
   </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    document.querySelector("form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          localStorage.setItem("loggedIn", "true");
+          window.location.href = "profile.html";
+        })
+        .catch(error => alert("Login failed: " + error.message));
+    });
+  </script>
 </body>
 </html>
-
