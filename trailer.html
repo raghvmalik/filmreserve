@@ -7,15 +7,15 @@
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     html, body {
-      margin: 0;
-      padding: 0;
+      height: 100%;
       font-family: Arial, sans-serif;
       background-color: #000;
       color: white;
-      height: 100%;
       display: flex;
       flex-direction: column;
     }
@@ -30,48 +30,46 @@
       top: 0;
       left: 0;
       width: 100%;
-      z-index: 1000;
+      z-index: 999;
     }
 
     .trailer-container {
       flex: 1;
+      margin-top: 80px; /* height of navbar */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding-top: 80px;
-      padding-bottom: 40px;
+      padding: 20px;
     }
 
     video {
       width: 90%;
       max-width: 960px;
-      height: auto;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
       margin-bottom: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
 
     h1 {
       font-size: 22px;
       text-align: center;
       margin: 0 20px 10px;
-      color: #fff;
     }
 
     .description {
       max-width: 900px;
       padding: 0 20px;
       text-align: center;
-      color: #ccc;
       font-size: 16px;
       line-height: 1.6;
+      color: #ccc;
     }
 
     .trailer-details {
       margin-top: 20px;
       text-align: center;
-      font-size: 15px;
+      font-size: 14px;
       color: #aaa;
     }
 
@@ -81,7 +79,6 @@
       padding: 10px;
       text-align: center;
       font-size: 14px;
-      margin-top: auto;
     }
 
     @media (max-width: 600px) {
@@ -106,17 +103,16 @@
   <div class="trailer-container">
     <video id="trailer-video" controls poster="images/f4poster.avif">
       <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4" type="video/mp4">
-      Your browser does not support the video tag.
     </video>
 
     <h1>Fantastic 4: First Steps – Official Trailer</h1>
 
     <div class="description">
-      After a cosmic accident transforms four astronauts into superheroes, they must learn to control their new powers and face an emerging threat that could change humanity forever. Dive into the origin of the Fantastic Four like never before.
+      After a cosmic accident transforms four astronauts into superheroes, they must learn to control their powers and face a rising threat. Experience the rebirth of the iconic team.
     </div>
 
     <div class="trailer-details">
-      🔥 Genre: Sci-Fi, Action | ⭐ IMDb: 8.4/10 | ⏱ Duration: 2 min 33 sec | 📅 Released: July 2025
+      ⭐ IMDb: 8.4/10 | 🎥 Duration: 2min 33sec | 🎬 Genre: Action, Sci-Fi | 📅 July 2025
     </div>
   </div>
 
@@ -125,17 +121,22 @@
   </footer>
 
   <script>
+    const video = document.getElementById('trailer-video');
+
     document.addEventListener('keydown', function(e) {
-      const video = document.getElementById('trailer-video');
       if (e.key.toLowerCase() === 'f') {
-        if (video.requestFullscreen) {
-          video.requestFullscreen();
-        } else if (video.webkitRequestFullscreen) {
-          video.webkitRequestFullscreen();
-        } else if (video.msRequestFullscreen) {
-          video.msRequestFullscreen();
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          video.requestFullscreen().catch(err => {
+            console.log("Fullscreen failed:", err);
+          });
         }
       }
+    });
+    
+    video.addEventListener('click', () => {
+      video.focus();
     });
   </script>
 
