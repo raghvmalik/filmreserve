@@ -2,45 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FilmReserve - Trailer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trailer - FilmReserve</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      height: 100%;
-      font-family: Arial, sans-serif;
+    body {
+      margin: 0;
       background-color: #000;
-      color: white;
+      color: #fff;
+      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
+      height: 100vh;
     }
+
     .navbar {
-      background-color: #111;
+      background: #111;
       opacity: 0.5;
       padding: 15px;
-      text-align: center;
       font-size: 24px;
       font-weight: bold;
       position: fixed;
       top: 0;
-      left: 0;
       width: 100%;
       z-index: 999;
+      text-align: center;
     }
-    .navbar a { color: inherit; text-decoration: none; }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+    }
+
     .trailer-container {
-      flex: 1;
       margin-top: 80px;
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 20px;
     }
+
     .video-wrapper {
       position: relative;
       width: 90%;
       max-width: 960px;
     }
+
     video {
       width: 100%;
       border-radius: 12px;
@@ -48,6 +56,7 @@
       box-shadow: 0 0 12px rgba(0, 174, 255, 0.5);
       cursor: pointer;
     }
+
     .controls {
       display: flex;
       align-items: center;
@@ -60,8 +69,8 @@
       width: 100%;
       z-index: 5;
     }
+
     .controls button,
-    .controls .dots,
     .controls .zoom {
       background: transparent;
       border: none;
@@ -70,59 +79,46 @@
       margin: 0 6px;
       cursor: pointer;
     }
-    .controls .dots-menu {
-      display: none;
-      position: absolute;
-      right: 50px;
-      bottom: 45px;
-      background: #222;
-      border: 1px solid #555;
-      border-radius: 6px;
-      padding: 6px;
-      z-index: 1000;
-    }
-    .controls .dots-menu button {
-      display: block;
-      width: 100%;
-      text-align: left;
-      color: #ccc;
-      padding: 6px;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-    }
-    .controls .dots-menu button:hover { background-color: #444; }
+
     .seekbar {
       flex: 1;
       margin: 0 10px;
     }
+
     input[type="range"] {
-      -webkit-appearance: none;
       width: 100%;
-      height: 6px;
-      background: linear-gradient(to right, #00baff 0%, #444 0%);
-      border-radius: 3px;
-      outline: none;
-      transition: background 0.3s ease;
-      cursor: pointer;
+      accent-color: #00baff;
     }
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      height: 14px;
-      width: 14px;
-      background: #00baff;
-      border: 2px solid white;
-      border-radius: 50%;
-      cursor: pointer;
-      margin-top: -4px;
+
+    .time {
+      font-size: 12px;
+      color: #aaa;
+      margin: 0 6px;
     }
-    .time { font-size: 12px; color: #aaa; margin: 0 6px; }
+
     .zoom {
       font-size: 16px;
       border: 1px solid #666;
       padding: 4px 6px;
       border-radius: 4px;
     }
+
+    .replay-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 32px;
+      color: #ccc;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 50%;
+      padding: 12px 18px;
+      display: none;
+      cursor: pointer;
+      z-index: 10;
+    }
+
     .desc-btn {
       background-color: transparent;
       border: 1px solid #555;
@@ -132,39 +128,13 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    .replay-button {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 32px;
-      color: #888;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 50%;
-      padding: 12px 18px;
-      display: none;
-      cursor: pointer;
-      z-index: 10;
-    }
-    footer {
-      background-color: #111;
-      color: #ccc;
-      padding: 10px;
-      text-align: center;
-      font-size: 14px;
-    }
-    h1 {
-      font-size: 22px;
-      margin-top: 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+
     .trailer-details {
       text-align: center;
       font-size: 13px;
       margin-top: 8px;
       color: #aaa;
+      display: none;
     }
   </style>
 </head>
@@ -172,118 +142,153 @@
   <div class="navbar">
     <a href="index.html">🎬 FilmReserve</a>
   </div>
+
   <div class="trailer-container">
     <div class="video-wrapper">
-      <video id="video" poster="images/f4poster.avif">
-        <source id="videoSource" src="" type="video/mp4">
+      <video id="video" controls poster="images/defaultposter.jpg">
+        <source id="videoSource" src="" type="video/mp4" />
       </video>
       <button id="replayBtn" class="replay-button" onclick="replayVideo()">⭯</button>
       <div class="controls">
-        <button id="mute" title="Mute (M)">🔇</button>
+        <button id="mute" title="Press M to mute">🔇</button>
         <div class="time" id="time">0:00 / 0:00</div>
-        <input class="seekbar" type="range" id="seek" value="0" min="0" step="0.1">
-        <button class="dots" onclick="toggleMenu()">⋮</button>
-        <div class="dots-menu" id="dotsMenu">
-          <button onclick="togglePip()">Picture in Picture</button>
-        </div>
-        <button class="zoom" onclick="toggleFull()" title="Fullscreen (F)">⛶</button>
+        <input class="seekbar" type="range" id="seek" value="0" min="0" step="0.1" />
+        <button class="zoom" onclick="toggleFull()" title="Press F for fullscreen">⛶</button>
       </div>
     </div>
-    <h1>
-      Fantastic 4: First Steps 
-      <button id="descToggle" class="desc-btn">▼</button>
-    </h1>
-    <div class="trailer-details" id="descBox" style="display: none;">
-      Few Astronauts go to space and return as Superheroes. What challenges will they face next?<br>
-      Watch Fantastic Four: First Steps on 25 July to find out<br>
-      🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 25 July 2025
-    </div>
+
+    <h1 id="movieTitle">Loading...</h1>
+    <button id="descToggle" class="desc-btn">▼</button>
+    <div class="trailer-details" id="descBox"></div>
   </div>
+
   <footer>
     FilmReserve | Your Ultimate Streaming Destination
   </footer>
-  <script>
-    const video = document.getElementById('video');
-    const videoSource = document.getElementById('videoSource');
-    const seek = document.getElementById('seek');
-    const time = document.getElementById('time');
-    const mute = document.getElementById('mute');
-    const replayBtn = document.getElementById('replayBtn');
-    const descToggle = document.getElementById('descToggle');
-    const descBox = document.getElementById('descBox');
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const movie = urlParams.get('movie');
+  <script>
+    const video = document.getElementById("video");
+    const seek = document.getElementById("seek");
+    const time = document.getElementById("time");
+    const mute = document.getElementById("mute");
+    const replayBtn = document.getElementById("replayBtn");
+    const descToggle = document.getElementById("descToggle");
+    const descBox = document.getElementById("descBox");
+    const title = document.getElementById("movieTitle");
+
     const trailers = {
-      'fantastic4': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4',
-      'superman': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122503/videoplayback_1_wooh5o.mp4',
-      'jurassicworld': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/y2mate.gg_-_Jurassic_World_Rebirth_Official_Trailer_360_bjil0w.mp4',
-      '28yearslater': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/videoplayback_3_d2szfo.mp4',
-      'f1movie': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136569/videoplayback_4_sp9lr3.mp4'
+      fantastic4: {
+        src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4",
+        title: "Fantastic 4: First Steps",
+        desc: `Few Astronauts go to space and return as Superheroes. What challenges will they face next?<br>🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 25 July 2025`
+      },
+      superman: {
+        src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122503/videoplayback_1_wooh5o.mp4",
+        title: "Superman",
+        desc: `Superman rises again to protect Earth.<br>🎥 Directed by: James Gunn | 🎬 Genre: Action | 📅 Coming Soon`
+      },
+      jurassicworld: {
+        src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/y2mate.gg_-_Jurassic_World_Rebirth_Official_Trailer_360_bjil0w.mp4",
+        title: "Jurassic World: Rebirth",
+        desc: `Dinosaurs return in a new age.<br>🎥 Directed by: Colin Trevorrow | 🎬 Genre: Sci-Fi, Adventure | 📅 2025`
+      },
+      f1movie: {
+        src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136569/videoplayback_4_sp9lr3.mp4",
+        title: "F1: The Movie",
+        desc: `Fast cars. Big drama. Brad Pitt hits the tracks.<br>🎥 Directed by: Joseph Kosinski | 🎬 Genre: Sports Drama | 📅 2025`
+      },
+      avengers5: {
+        src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4",
+        title: "Avengers: Doomsday",
+        desc: `Earth’s mightiest heroes reunite.<br>🎥 Directed by: Russo Brothers | 🎬 Genre: Action, Superhero | 📅 2025`
+      },
+      "28yearslater": {
+        src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/videoplayback_3_d2szfo.mp4",
+        title: "28 Years Later",
+        desc: `The infection resurfaces after decades.<br>🎥 Directed by: Danny Boyle | 🎬 Genre: Horror | 📅 2025`
+      }
     };
 
-    videoSource.src = trailers[movie] || trailers['fantastic4'];
-    video.load();
+    const query = new URLSearchParams(window.location.search);
+    const movie = query.get("movie");
+    if (trailers[movie]) {
+      const trailer = trailers[movie];
+      document.getElementById("videoSource").src = trailer.src;
+      video.load();
+      title.innerHTML = trailer.title;
+      descBox.innerHTML = trailer.desc;
+    } else {
+      title.textContent = "Trailer not found";
+    }
 
+    mute.textContent = video.muted ? "🔇" : "🔊";
     mute.onclick = () => {
       video.muted = !video.muted;
-      mute.textContent = video.muted ? '🔇' : '🔊';
     };
-    video.addEventListener('volumechange', () => {
-      mute.textContent = video.muted ? '🔇' : '🔊';
+
+    video.addEventListener("volumechange", () => {
+      mute.textContent = video.muted ? "🔇" : "🔊";
     });
-    video.addEventListener('timeupdate', () => {
+
+    video.addEventListener("loadedmetadata", () => {
+      seek.max = video.duration;
+    });
+
+    video.addEventListener("timeupdate", () => {
       seek.value = video.currentTime;
       time.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
-      seek.style.background = `linear-gradient(to right, #00baff ${(video.currentTime / video.duration) * 100}%, #444 ${(video.currentTime / video.duration) * 100}%)`;
     });
-    seek.addEventListener('input', () => {
+
+    seek.addEventListener("input", () => {
       video.currentTime = seek.value;
     });
-    video.addEventListener('loadedmetadata', () => {
-      seek.max = video.duration;
-      time.textContent = `0:00 / ${formatTime(video.duration)}`;
+
+    descToggle.onclick = () => {
+      const shown = descBox.style.display === "block";
+      descBox.style.display = shown ? "none" : "block";
+      descToggle.textContent = shown ? "▼" : "▲";
+    };
+
+    video.addEventListener("ended", () => {
+      replayBtn.style.display = "block";
     });
-    video.addEventListener('ended', () => {
-      replayBtn.style.display = 'block';
-    });
+
     function replayVideo() {
       video.currentTime = 0;
       video.play();
-      replayBtn.style.display = 'none';
+      replayBtn.style.display = "none";
     }
-    document.querySelector('.video-wrapper').addEventListener('click', (e) => {
-      const isControl = e.target.closest('.controls') || e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT';
+
+    document.querySelector(".video-wrapper").addEventListener("click", (e) => {
+      const isControl = e.target.closest(".controls") || e.target.tagName === "BUTTON" || e.target.tagName === "INPUT";
       if (!isControl) togglePlay();
     });
-    document.addEventListener('keydown', (e) => {
-      if (e.target.tagName === 'INPUT') return;
-      if (e.code === 'Space') {
-        e.preventDefault();
-        togglePlay();
-      } else if (e.code === 'ArrowRight') {
-        video.currentTime = Math.min(video.currentTime + 5, video.duration);
-      } else if (e.code === 'ArrowLeft') {
-        video.currentTime = Math.max(video.currentTime - 5, 0);
-      } else if (e.key.toLowerCase() === 'm') {
-        video.muted = !video.muted;
-      } else if (e.key.toLowerCase() === 'f') {
-        toggleFull();
-      }
-    });
+
     function togglePlay() {
       if (video.paused) {
         video.play();
-        replayBtn.style.display = 'none';
+        replayBtn.style.display = "none";
       } else {
         video.pause();
       }
     }
-    function formatTime(sec) {
-      const min = Math.floor(sec / 60);
-      const secStr = Math.floor(sec % 60).toString().padStart(2, '0');
-      return `${min}:${secStr}`;
-    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.target.tagName === "INPUT") return;
+      if (e.code === "Space") {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.code === "ArrowRight") {
+        video.currentTime = Math.min(video.currentTime + 5, video.duration);
+      } else if (e.code === "ArrowLeft") {
+        video.currentTime = Math.max(video.currentTime - 5, 0);
+      } else if (e.key.toLowerCase() === "m") {
+        video.muted = !video.muted;
+      } else if (e.key.toLowerCase() === "f") {
+        toggleFull();
+      }
+    });
+
     function toggleFull() {
       if (!document.fullscreenElement) {
         video.parentElement.requestFullscreen();
@@ -291,28 +296,12 @@
         document.exitFullscreen();
       }
     }
-    function toggleMenu() {
-      const dotsMenu = document.getElementById('dotsMenu');
-      dotsMenu.style.display = dotsMenu.style.display === 'block' ? 'none' : 'block';
+
+    function formatTime(sec) {
+      const min = Math.floor(sec / 60);
+      const secStr = Math.floor(sec % 60).toString().padStart(2, "0");
+      return `${min}:${secStr}`;
     }
-    function togglePip() {
-      if (document.pictureInPictureElement) {
-        document.exitPictureInPicture();
-      } else {
-        video.requestPictureInPicture();
-      }
-      document.getElementById('dotsMenu').style.display = 'none';
-    }
-    descToggle.onclick = () => {
-      const isHidden = descBox.style.display === 'none';
-      descBox.style.display = isHidden ? 'block' : 'none';
-      descToggle.textContent = isHidden ? '▲' : '▼';
-    };
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.dots') && !e.target.closest('#dotsMenu')) {
-        document.getElementById('dotsMenu').style.display = 'none';
-      }
-    });
   </script>
 </body>
 </html>
