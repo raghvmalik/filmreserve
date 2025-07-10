@@ -6,10 +6,23 @@
   <title>Fantastic 4 - Trailer</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      background: #000;
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
       margin: 0;
+      padding: 0;
+      background: #000;
       font-family: Arial, sans-serif;
+      height: 100%;
+      color: white;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .navbar {
@@ -22,29 +35,43 @@
     }
 
     .trailer-page {
+      flex: 1;
       padding: 40px 20px;
       text-align: center;
-      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .trailer-page h1 {
       margin-bottom: 20px;
+      font-size: 28px;
     }
 
     video {
-      width: 85%;
-      max-width: 900px;
+      width: 90%;
+      max-width: 960px;
+      height: auto;
       border-radius: 10px;
-      box-shadow: 0 0 15px black;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
 
     footer {
       text-align: center;
       background: #111;
       color: #fff;
-      padding: 10px;
+      padding: 12px;
       font-size: 14px;
-      margin-top: 40px;
+    }
+
+    @media (max-width: 600px) {
+      .trailer-page h1 {
+        font-size: 20px;
+      }
+
+      video {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -53,9 +80,9 @@
   <div class="navbar">🎬 FilmReserve</div>
 
   <div class="trailer-page">
-    <h1>Fantastic 4: First Steps - Official Trailer</h1>
+    <h1>Fantastic 4: First Steps – Official Trailer</h1>
     <video controls poster="images/fantastic4.jpeg">
-      <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4">
+      <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
   </div>
