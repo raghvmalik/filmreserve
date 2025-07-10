@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Fantastic 4 - Trailer</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     html, body {
       height: 100%;
       font-family: Arial, sans-serif;
@@ -38,92 +43,72 @@
       padding: 20px;
     }
 
-    .player-wrapper {
+    .video-wrapper {
+      position: relative;
       width: 90%;
       max-width: 960px;
-      position: relative;
-      border-radius: 12px;
-      border: 2px solid rgba(0, 174, 255, 0.3);
-      box-shadow: 0 0 12px rgba(0, 174, 255, 0.5);
-      overflow: hidden;
-    }
-
-    .video-click-layer {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      cursor: pointer;
     }
 
     video {
       width: 100%;
-      border-radius: 0;
-      display: block;
-      z-index: 1;
+      border-radius: 12px;
+      border: 2px solid rgba(0, 174, 255, 0.3);
+      box-shadow: 0 0 12px rgba(0, 174, 255, 0.5);
+      background: black;
+    }
+
+    video::-webkit-media-controls {
+      display: none !important;
     }
 
     .controls {
+      position: absolute;
+      bottom: 15px;
+      left: 0;
+      right: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #111;
-      padding: 10px;
-      z-index: 3;
-      position: relative;
+      padding: 0 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 0 0 12px 12px;
     }
 
-    .left-controls, .right-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .timer, .mute-btn {
+      color: #ccc;
+      font-size: 14px;
     }
 
     .seek-bar {
-      flex: 1;
+      flex-grow: 1;
       margin: 0 10px;
-      appearance: none;
-      height: 6px;
-      background: #333;
+      height: 4px;
+      background: #444;
       border-radius: 3px;
       cursor: pointer;
-      overflow: hidden;
+      position: relative;
     }
 
-    .seek-bar::-webkit-slider-thumb {
-      appearance: none;
-      height: 12px;
-      width: 12px;
-      border-radius: 50%;
-      background: #00aaff;
-      border: none;
+    .seek-bar-fill {
+      height: 100%;
+      background: #00baff;
+      width: 0%;
+      border-radius: 3px;
     }
 
-    .seek-bar::-moz-range-thumb {
-      background: #00aaff;
-      border: none;
-      border-radius: 50%;
-    }
-
-    .time-display {
-      font-size: 14px;
-      color: grey;
-    }
-
-    button {
-      background: none;
-      border: none;
-      color: #ccc;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    button:hover {
-      color: white;
+    .right-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
     }
 
     .menu-btn {
+      background: transparent;
+      color: #ccc;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
       position: relative;
     }
 
@@ -138,20 +123,34 @@
       font-size: 14px;
       color: #ccc;
       z-index: 99;
+      min-width: 130px;
     }
 
-    .menu-btn:hover .menu-options {
+    .menu-btn.active .menu-options {
       display: block;
+    }
+
+    .menu-options div {
+      margin: 6px 0;
+      cursor: pointer;
+    }
+
+    h1 {
+      font-size: 22px;
+      text-align: center;
+      margin: 10px 20px 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
     }
 
     .toggle-btn {
       background-color: transparent;
       border: none;
       font-size: 16px;
-      color: #444;
+      color: #666;
       cursor: pointer;
-      margin-left: 8px;
-      vertical-align: middle;
     }
 
     .description-box {
@@ -165,7 +164,7 @@
       line-height: 1.6;
       color: #ccc;
       text-align: center;
-      margin: 15px 0;
+      margin-bottom: 20px;
       transition: all 0.3s ease;
     }
 
@@ -181,12 +180,20 @@
       padding: 10px;
       text-align: center;
       font-size: 14px;
-      margin-top: 20px;
     }
 
     @media (max-width: 600px) {
-      .time-display { font-size: 12px; }
-      .seek-bar { margin: 0 5px; }
+      video {
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 18px;
+      }
+
+      .description-box {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -195,25 +202,25 @@
   <div class="navbar">🎬 FilmReserve</div>
 
   <div class="trailer-container">
-    <div class="player-wrapper">
-      <video id="trailer" poster="images/f4poster.avif">
+    <div class="video-wrapper">
+      <video id="trailer-video" poster="images/f4poster.avif">
         <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4" type="video/mp4">
         <track src="captions.vtt" kind="captions" srclang="en" label="English" default>
       </video>
-      <div class="video-click-layer" onclick="togglePlay()"></div>
 
       <div class="controls">
-        <div class="left-controls">
-          <button id="mute-btn">🔇</button>
-          <div class="time-display" id="time">0:00 / 0:00</div>
+        <button class="mute-btn" onclick="toggleMute()">🔇</button>
+        <div class="timer" id="timer">0:00 / 0:00</div>
+        <div class="seek-bar" onclick="seek(event)">
+          <div class="seek-bar-fill" id="seek-fill"></div>
         </div>
-        <input type="range" class="seek-bar" id="seekBar" value="0" />
         <div class="right-controls">
-          <div class="menu-btn">⋮
+          <button onclick="toggleZoom()">🔍 Zoom</button>
+          <div class="menu-btn" onclick="toggleMenu(this)">⋮
             <div class="menu-options">
-              <div onclick="video.playbackRate = 0.5">⏪ 0.5x</div>
-              <div onclick="video.playbackRate = 1">⏯️ 1x</div>
-              <div onclick="video.playbackRate = 2">⏩ 2x</div>
+              <div onclick="setPlayback(0.5)">⏪ 0.5x</div>
+              <div onclick="setPlayback(1)">▶️ 1x</div>
+              <div onclick="setPlayback(2)">⏩ 2x</div>
               <div onclick="video.requestPictureInPicture()">🖼️ PiP</div>
               <div onclick="downloadVideo()">⬇️ Download</div>
             </div>
@@ -222,17 +229,14 @@
       </div>
     </div>
 
-    <h1 style="margin-top: 10px;">
-      Fantastic 4: First Steps
-      <button class="toggle-btn" onclick="toggleDescription()">▼</button>
-    </h1>
+    <h1>Fantastic 4: First Steps <button class="toggle-btn" onclick="toggleDescription()" title="Toggle Description">▼</button></h1>
 
     <div class="description-box" id="descBox">
       After a cosmic accident transforms four astronauts into superheroes, they must learn to control their powers and face a rising threat. Experience the rebirth of the iconic team in stunning visuals and explosive action.
     </div>
 
     <div class="trailer-details">
-      🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres July 24, 2025
+      🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 24 July 2025
     </div>
   </div>
 
@@ -241,56 +245,89 @@
   </footer>
 
   <script>
-    const video = document.getElementById("trailer");
-    const muteBtn = document.getElementById("mute-btn");
-    const timeDisplay = document.getElementById("time");
-    const seekBar = document.getElementById("seekBar");
+    const video = document.getElementById('trailer-video');
+    const timer = document.getElementById('timer');
+    const seekFill = document.getElementById('seek-fill');
+    const descBox = document.getElementById('descBox');
 
-    muteBtn.onclick = () => {
-      video.muted = !video.muted;
-      muteBtn.textContent = video.muted ? "🔇" : "🔊";
-    };
+    video.addEventListener('loadedmetadata', () => {
+      updateTimer();
+    });
+
+    video.addEventListener('timeupdate', () => {
+      updateTimer();
+      seekFill.style.width = (video.currentTime / video.duration * 100) + "%";
+    });
+
+    function updateTimer() {
+      const current = formatTime(video.currentTime);
+      const total = formatTime(video.duration);
+      timer.textContent = `${current} / ${total}`;
+    }
 
     function formatTime(t) {
       const m = Math.floor(t / 60);
-      const s = Math.floor(t % 60);
-      return `${m}:${s.toString().padStart(2, "0")}`;
+      const s = Math.floor(t % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
     }
 
-    video.ontimeupdate = () => {
-      timeDisplay.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
-      seekBar.value = (video.currentTime / video.duration) * 100 || 0;
-    };
-
-    seekBar.oninput = () => {
-      video.currentTime = (seekBar.value / 100) * video.duration;
-    };
-
-    function togglePlay() {
-      if (video.paused) video.play();
-      else video.pause();
+    function seek(e) {
+      const bar = e.currentTarget;
+      const percent = e.offsetX / bar.offsetWidth;
+      video.currentTime = percent * video.duration;
     }
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key.toLowerCase() === "f") {
-        if (document.fullscreenElement) document.exitFullscreen();
-        else video.requestFullscreen();
+    function toggleMute() {
+      video.muted = !video.muted;
+    }
+
+    function setPlayback(rate) {
+      video.playbackRate = rate;
+    }
+
+    function toggleMenu(btn) {
+      document.querySelectorAll('.menu-btn').forEach(b => {
+        if (b !== btn) b.classList.remove('active');
+      });
+      btn.classList.toggle('active');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.menu-btn')) {
+        document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
       }
     });
 
+    function toggleDescription() {
+      descBox.style.display = descBox.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function toggleZoom() {
+      video.style.transform = video.style.transform === 'scale(1.1)' ? 'scale(1)' : 'scale(1.1)';
+    }
+
     function downloadVideo() {
-      const a = document.createElement("a");
-      a.href = video.querySelector("source").src;
-      a.download = "fantastic4-trailer.mp4";
+      const a = document.createElement('a');
+      a.href = video.currentSrc;
+      a.download = 'trailer.mp4';
       a.click();
     }
 
-    function toggleDescription() {
-      const desc = document.getElementById("descBox");
-      desc.style.display = desc.style.display === "block" ? "none" : "block";
-      const btn = document.querySelector(".toggle-btn");
-      btn.textContent = desc.style.display === "block" ? "▲" : "▼";
-    }
+    // Play/Pause on click
+    video.addEventListener('click', () => {
+      video.paused ? video.play() : video.pause();
+    });
+
+    // Fullscreen on 'F'
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 'f') {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          video.requestFullscreen().catch(err => console.log("Fullscreen failed", err));
+        }
+      }
+    });
   </script>
 
 </body>
