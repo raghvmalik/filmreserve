@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FilmReserve Trailer</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
     * {
       box-sizing: border-box;
@@ -11,148 +12,184 @@
       padding: 0;
     }
 
-    body {
+    html, body {
+      height: 100%;
       font-family: Arial, sans-serif;
-      background: #000;
+      background-color: #000;
       color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100vh;
+      overflow-x: hidden;
     }
 
     .navbar {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 15px;
-      width: 100%;
-      text-align: center;
+      background-color: #111;
+      padding: 12px;
       font-size: 24px;
+      font-weight: bold;
       position: fixed;
+      width: 100%;
       top: 0;
       z-index: 10;
+      text-align: center;
     }
 
     .navbar a {
-      color: #fff;
+      color: white;
       text-decoration: none;
     }
 
     .trailer-container {
       margin-top: 80px;
-      width: 90%;
-      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
     }
 
     .video-wrapper {
       position: relative;
+      width: 90%;
+      max-width: 960px;
     }
 
     video {
       width: 100%;
-      border-radius: 10px;
-      outline: none;
-    }
-
-    video::-internal-media-controls-overlay-cast-button,
-    video::-webkit-media-controls {
-      display: none !important;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 174, 255, 0.5);
+      cursor: pointer;
     }
 
     .controls {
       position: absolute;
       bottom: 0;
       width: 100%;
+      background: rgba(0,0,0,0.6);
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      background: rgba(0, 0, 0, 0.7);
       padding: 8px;
-      border-radius: 0 0 10px 10px;
+      gap: 10px;
+      border-radius: 0 0 12px 12px;
+      z-index: 5;
     }
 
-    .controls button, .controls .zoom {
-      background: transparent;
-      color: #ccc;
+    .controls button, .controls input[type="range"], .controls .dots {
+      background: none;
       border: none;
-      font-size: 16px;
+      color: white;
       cursor: pointer;
-      position: relative;
     }
 
-    .controls button:hover::after,
-    .controls .zoom:hover::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      top: -25px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #444;
-      padding: 4px 8px;
-      border-radius: 4px;
+    .time {
       font-size: 12px;
+      color: #ccc;
     }
 
     .seekbar {
       flex: 1;
-      margin: 0 10px;
     }
 
     input[type="range"] {
       width: 100%;
-      height: 6px;
+      height: 5px;
       background: linear-gradient(to right, #00baff 0%, #444 0%);
-      border-radius: 3px;
+      border-radius: 4px;
+      outline: none;
+      appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      background: #00baff;
+      border-radius: 50%;
       cursor: pointer;
+      margin-top: -4px;
     }
 
     .volume-slider {
+      width: 4px;
+      height: 70px;
+      background: #444;
       position: absolute;
-      bottom: 40px;
-      left: 0;
+      left: 30px;
+      bottom: 50px;
       display: none;
-      flex-direction: column;
-      background: #222;
-      padding: 4px;
-      border-radius: 6px;
+      transform: rotate(-90deg);
     }
 
-    .volume-slider input[type="range"] {
-      transform: rotate(-90deg);
-      width: 70px;
+    .volume-container:hover .volume-slider {
+      display: block;
+    }
+
+    .dots-menu {
+      position: absolute;
+      right: 40px;
+      bottom: 50px;
+      background: #222;
+      border: 1px solid #555;
+      border-radius: 6px;
+      display: none;
+      flex-direction: column;
+      z-index: 20;
+    }
+
+    .dots-menu button {
+      padding: 8px;
+      font-size: 14px;
+      color: #ccc;
+      background: none;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .dots-menu button:hover {
+      background: #333;
     }
 
     .replay-button {
+      display: none;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 30px;
+      font-size: 28px;
       color: #ccc;
-      background: rgba(50, 50, 50, 0.6);
-      border: none;
+      background: rgba(0,0,0,0.5);
       border-radius: 50%;
-      padding: 10px 15px;
-      display: none;
+      padding: 12px 18px;
       cursor: pointer;
+    }
+
+    .desc-box {
+      color: #aaa;
+      font-size: 14px;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
     }
 
     .desc-toggle {
-      margin-top: 10px;
-      background: transparent;
-      border: 1px solid #666;
+      background: none;
       color: #ccc;
-      padding: 4px 10px;
-      border-radius: 5px;
+      border: none;
+      margin-left: 6px;
+      font-size: 18px;
       cursor: pointer;
-      font-size: 14px;
     }
 
-    .description {
-      font-size: 14px;
-      color: #ccc;
-      margin-top: 10px;
-      display: none;
+    .title-desc {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    footer {
       text-align: center;
+      padding: 16px;
+      background: #111;
+      color: #999;
     }
   </style>
 </head>
@@ -164,182 +201,191 @@
 
 <div class="trailer-container">
   <div class="video-wrapper">
-    <video id="video" preload="metadata">
-      <track id="captionTrack" label="English" kind="subtitles" srclang="en" default>
+    <video id="video" poster="images/f4poster.avif">
+      <source id="videoSource" src="" type="video/mp4" />
+      <track label="English" kind="subtitles" srclang="en" src="captions/fantastic4.vtt" default>
     </video>
-    <button class="replay-button" id="replayBtn">⭯</button>
+    <button class="replay-button" id="replayBtn" onclick="replayVideo()">⭯</button>
 
     <div class="controls">
-      <div style="position: relative;">
-        <button id="muteBtn" data-tooltip="Mute (M)">🔊</button>
-        <div class="volume-slider" id="volumeSlider">
-          <input type="range" id="volumeRange" min="0" max="1" step="0.05" value="1">
-        </div>
+      <div class="time" id="time">0:00 / 0:00</div>
+      <div class="volume-container">
+        <button id="mute" title="Mute (M)">🔇</button>
+        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.05">
       </div>
-
-      <input class="seekbar" type="range" id="seekBar" value="0" min="0" step="0.1">
-      <span style="font-size: 12px;" id="time">0:00 / 0:00</span>
-      <button class="zoom" onclick="toggleFull()" data-tooltip="Fullscreen (F)">⛶</button>
+      <input type="range" id="seek" class="seekbar" value="0" min="0" step="0.1">
+      <button class="dots" onclick="toggleMenu()">⋮</button>
+      <div class="dots-menu" id="dotsMenu">
+        <button onclick="setSpeed(0.5)">Speed 0.5x</button>
+        <button onclick="setSpeed(1)">Speed 1x</button>
+        <button onclick="setSpeed(1.5)">Speed 1.5x</button>
+        <button onclick="setSpeed(2)">Speed 2x</button>
+        <button onclick="toggleCaptions()">Toggle Captions</button>
+        <button onclick="togglePip()">Picture in Picture</button>
+      </div>
+      <button onclick="toggleFull()" title="Fullscreen (F)">⛶</button>
     </div>
   </div>
 
-  <button class="desc-toggle" id="descToggle">▼ Show Description</button>
-  <div class="description" id="descBox"></div>
+  <div class="title-desc">
+    <h2 id="movieTitle">Fantastic 4: First Steps</h2>
+    <button class="desc-toggle" onclick="toggleDesc()" id="descToggle">▼</button>
+  </div>
+
+  <div class="desc-box" id="descBox">
+    Few Astronauts go to space and return as Superheroes. What challenges will they face next?<br>
+    🎥 Director: Matt Shackman | 📅 Release: July 25, 2025 | 🧬 Genre: Action, Sci-Fi
+  </div>
 </div>
 
-<script>
-  const video = document.getElementById('video');
-  const seekBar = document.getElementById('seekBar');
-  const timeLabel = document.getElementById('time');
-  const muteBtn = document.getElementById('muteBtn');
-  const volumeSlider = document.getElementById('volumeSlider');
-  const volumeRange = document.getElementById('volumeRange');
-  const replayBtn = document.getElementById('replayBtn');
-  const descToggle = document.getElementById('descToggle');
-  const descBox = document.getElementById('descBox');
-  const captionTrack = document.getElementById('captionTrack');
+<footer>
+  FilmReserve | Your Ultimate Streaming Destination
+</footer>
 
-  const trailers = {
-    fantastic4: {
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const movie = params.get("movie");
+  const video = document.getElementById("video");
+  const videoSource = document.getElementById("videoSource");
+  const title = document.getElementById("movieTitle");
+  const seek = document.getElementById("seek");
+  const time = document.getElementById("time");
+  const mute = document.getElementById("mute");
+  const replayBtn = document.getElementById("replayBtn");
+  const volumeSlider = document.getElementById("volumeSlider");
+
+  const videos = {
+    "fantastic4": {
       src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4",
-      desc: `Few astronauts go to space and return as Superheroes. What challenges will they face next?<br>
-            Watch Fantastic Four: First Steps on 25 July to find out.<br>
-            🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 25 July 2025`,
-      captions: "" // could be added as .vtt src
+      title: "Fantastic 4: First Steps"
     },
-    superman: {
+    "avengers5": {
+      src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4",
+      title: "Avengers: Doomsday"
+    },
+    "superman": {
       src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122503/videoplayback_1_wooh5o.mp4",
-      desc: "Superman returns with a new mission to restore peace across galaxies.",
-      captions: ""
+      title: "Superman"
     },
-    jurassicworld: {
+    "jurassicworld": {
       src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/y2mate.gg_-_Jurassic_World_Rebirth_Official_Trailer_360_bjil0w.mp4",
-      desc: "Dinosaurs are back with chaos — witness Jurassic World: Rebirth.",
-      captions: ""
+      title: "Jurassic World: Rebirth"
     },
     "28yearslater": {
       src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/videoplayback_3_d2szfo.mp4",
-      desc: "Decades later, horror rises again in 28 Years Later.",
-      captions: ""
+      title: "28 Years Later"
     },
-    f1movie: {
+    "f1movie": {
       src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136569/videoplayback_4_sp9lr3.mp4",
-      desc: "Brad Pitt leads the F1: The Movie — racing to the edge of adrenaline.",
-      captions: ""
-    },
-    avengers5: {
-      src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4",
-      desc: "Avengers face their deadliest threat yet — Doomsday approaches.",
-      captions: ""
+      title: "F1: The Movie"
     }
   };
 
-  const params = new URLSearchParams(window.location.search);
-  const movieKey = params.get('movie');
-  const trailer = trailers[movieKey];
-
-  if (trailer) {
-    video.src = trailer.src;
-    descBox.innerHTML = trailer.desc;
-    if (trailer.captions) {
-      captionTrack.src = trailer.captions;
-    }
-  } else {
-    descBox.innerHTML = "Trailer not available.";
+  if (videos[movie]) {
+    videoSource.src = videos[movie].src;
+    title.textContent = videos[movie].title;
+    video.load();
   }
 
-  video.addEventListener('loadedmetadata', () => {
-    seekBar.max = video.duration;
-    timeLabel.textContent = `0:00 / ${formatTime(video.duration)}`;
+  video.addEventListener("timeupdate", () => {
+    seek.value = video.currentTime;
+    time.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+    seek.style.background = `linear-gradient(to right, #00baff ${(video.currentTime / video.duration) * 100}%, #444 0%)`;
   });
 
-  video.addEventListener('timeupdate', () => {
-    seekBar.value = video.currentTime;
-    timeLabel.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
-    seekBar.style.background = `linear-gradient(to right, #00baff ${(video.currentTime / video.duration) * 100}%, #444 ${(video.currentTime / video.duration) * 100}%)`;
+  video.addEventListener("loadedmetadata", () => {
+    seek.max = video.duration;
   });
 
-  seekBar.addEventListener('input', () => {
-    video.currentTime = seekBar.value;
+  video.addEventListener("ended", () => {
+    replayBtn.style.display = "block";
   });
 
-  muteBtn.onclick = () => {
-    video.muted = !video.muted;
-    muteBtn.textContent = video.muted ? "🔇" : "🔊";
+  seek.oninput = () => {
+    video.currentTime = seek.value;
   };
 
-  muteBtn.onmouseenter = () => volumeSlider.style.display = 'flex';
-  muteBtn.onmouseleave = () => setTimeout(() => volumeSlider.style.display = 'none', 1000);
-  volumeSlider.onmouseenter = () => volumeSlider.style.display = 'flex';
-  volumeSlider.onmouseleave = () => volumeSlider.style.display = 'none';
-
-  volumeRange.oninput = () => {
-    video.volume = volumeRange.value;
-    video.muted = false;
-    muteBtn.textContent = "🔊";
-  };
-
-  descToggle.onclick = () => {
-    const isShown = descBox.style.display === 'block';
-    descBox.style.display = isShown ? 'none' : 'block';
-    descToggle.textContent = isShown ? '▼ Show Description' : '▲ Hide Description';
-  };
-
-  replayBtn.onclick = () => {
+  function replayVideo() {
     video.currentTime = 0;
     video.play();
-    replayBtn.style.display = 'none';
-  };
-
-  video.addEventListener('ended', () => {
-    replayBtn.style.display = 'block';
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.target.tagName === 'INPUT') return;
-    if (e.code === 'Space') {
-      e.preventDefault();
-      togglePlay();
-    } else if (e.code === 'ArrowRight') {
-      video.currentTime = Math.min(video.currentTime + 5, video.duration);
-    } else if (e.code === 'ArrowLeft') {
-      video.currentTime = Math.max(video.currentTime - 5, 0);
-    } else if (e.key.toLowerCase() === 'm') {
-      muteBtn.click();
-    } else if (e.key.toLowerCase() === 'f') {
-      toggleFull();
-    }
-  });
-
-  document.querySelector('.video-wrapper').addEventListener('click', (e) => {
-    if (!e.target.closest('.controls')) togglePlay();
-  });
-
-  function togglePlay() {
-    if (video.paused) {
-      video.play();
-      replayBtn.style.display = 'none';
-    } else {
-      video.pause();
-    }
+    replayBtn.style.display = "none";
   }
 
   function toggleFull() {
-    const wrapper = document.querySelector('.video-wrapper');
     if (!document.fullscreenElement) {
-      wrapper.requestFullscreen();
+      video.parentElement.requestFullscreen();
     } else {
       document.exitFullscreen();
     }
   }
 
-  function formatTime(sec) {
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60).toString().padStart(2, '0');
+  function toggleMenu() {
+    document.getElementById("dotsMenu").style.display =
+      document.getElementById("dotsMenu").style.display === "flex" ? "none" : "flex";
+  }
+
+  function setSpeed(speed) {
+    video.playbackRate = speed;
+    toggleMenu();
+  }
+
+  function toggleCaptions() {
+    const tracks = video.textTracks[0];
+    tracks.mode = tracks.mode === "showing" ? "disabled" : "showing";
+  }
+
+  function togglePip() {
+    if (document.pictureInPictureElement) {
+      document.exitPictureInPicture();
+    } else {
+      video.requestPictureInPicture();
+    }
+  }
+
+  function formatTime(t) {
+    const m = Math.floor(t / 60);
+    const s = Math.floor(t % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   }
-</script>
 
+  mute.onclick = () => {
+    video.muted = !video.muted;
+    mute.textContent = video.muted ? "🔇" : "🔊";
+  };
+
+  volumeSlider.oninput = () => {
+    video.volume = volumeSlider.value;
+    video.muted = volumeSlider.value == 0;
+    mute.textContent = video.muted ? "🔇" : "🔊";
+  };
+
+  document.addEventListener("keydown", e => {
+    if (e.code === "Space") {
+      e.preventDefault();
+      if (video.paused) video.play();
+      else video.pause();
+    } else if (e.key === "m") {
+      mute.click();
+    } else if (e.key === "f") {
+      toggleFull();
+    } else if (e.key === "ArrowRight") {
+      video.currentTime = Math.min(video.currentTime + 5, video.duration);
+    } else if (e.key === "ArrowLeft") {
+      video.currentTime = Math.max(video.currentTime - 5, 0);
+    }
+  });
+
+  function toggleDesc() {
+    const box = document.getElementById("descBox");
+    const arrow = document.getElementById("descToggle");
+    if (box.style.display === "none") {
+      box.style.display = "block";
+      arrow.textContent = "▲";
+    } else {
+      box.style.display = "none";
+      arrow.textContent = "▼";
+    }
+  }
+</script>
 </body>
 </html>
-<!--Please work-->
