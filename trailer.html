@@ -52,27 +52,27 @@
       box-shadow: 0 0 12px rgba(0, 174, 255, 0.5);
     }
 
-    .trailer-header {
+    .title-row {
       display: flex;
-      justify-content: center;
       align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 5px;
+      justify-content: center;
+      margin-bottom: 10px;
     }
 
-    .trailer-header h1 {
+    h1 {
       font-size: 22px;
       text-align: center;
+      margin: 0;
     }
 
     .toggle-btn {
       background-color: transparent;
       border: none;
-      font-size: 22px;
-      color: #00baff;
+      font-size: 16px;
+      color: #aaa;
       cursor: pointer;
-      transform: translateY(2px);
+      margin-top: 2px;
     }
 
     .description-box {
@@ -124,7 +124,7 @@
         width: 100%;
       }
 
-      .trailer-header h1 {
+      h1 {
         font-size: 18px;
       }
 
@@ -143,9 +143,9 @@
       <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4" type="video/mp4">
     </video>
 
-    <div class="trailer-header">
+    <div class="title-row">
       <h1>Fantastic 4: First Steps – Official Trailer</h1>
-      <button class="toggle-btn" onclick="toggleDescription()">▼</button>
+      <button class="toggle-btn" onclick="toggleDescription()" id="arrowBtn">▼</button>
     </div>
 
     <div class="description-box" id="descBox">
@@ -164,7 +164,7 @@
   <script>
     const video = document.getElementById('trailer-video');
     const descBox = document.getElementById('descBox');
-    const toggleBtn = document.querySelector('.toggle-btn');
+    const arrowBtn = document.getElementById('arrowBtn');
 
     // Fullscreen on 'F' key
     document.addEventListener('keydown', function(e) {
@@ -183,7 +183,7 @@
     function toggleDescription() {
       const isVisible = descBox.style.display === 'block';
       descBox.style.display = isVisible ? 'none' : 'block';
-      toggleBtn.textContent = isVisible ? '▼' : '▲';
+      arrowBtn.textContent = isVisible ? '▼' : '▲';
     }
   </script>
 
