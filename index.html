@@ -63,25 +63,23 @@
   <main>
     <h1 class="section-title">Streaming Now</h1>
     <div id="movie-container" class="movie-container">
-      
+
       <div class="movie-card" data-name="Deadpool 3 and & wolverine">
         <img src="images/deadpool.jpg" alt="Deadpool 3 and & Wolverine" />
         <h3>Deadpool<br>&<br>Wolverine</h3>
         <a href="watch.html"><button>Watch Now</button></a>
-      </div> 
+      </div>
 
       <div class="movie-card" data-name="Fantastic 4 First Steps Dr Doom">
         <img src="images/fantastic4.jpeg" alt="Fantastic 4" />
         <h3>Fantastic 4:<br>First Steps</h3>
         <a href="trailer.html?movie=fantastic4"><button>Watch Trailer</button></a>
-
       </div>
 
       <div class="movie-card" data-name="Avengers Doomsday 5 RDJ">
         <img src="images/avengers.jpg" alt="Avengers" />
         <h3>Avengers:<br>Doomsday</h3>
         <a href="trailer.html?movie=avengers5"><button>Watch Teaser</button></a>
-
       </div>
 
       <div class="movie-card" data-name="Oppenheimer">
@@ -228,7 +226,6 @@
       });
     }
 
-    // Check login and update sidebar
     const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
     const sidebarMenu = document.getElementById('sidebar-menu');
     sidebarMenu.innerHTML = isLoggedIn
@@ -241,7 +238,6 @@
       : `<li><a href="login.html">Login</a></li>
          <li><a href="signup.html">Signup</a></li>`;
 
-    // Protect watch.html
     if (window.location.pathname.includes('watch.html') && !isLoggedIn) {
       window.location.href = 'login.html';
     }
