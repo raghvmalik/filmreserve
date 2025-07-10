@@ -39,8 +39,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding-top: 80px; /* Push content below navbar */
-      padding-bottom: 20px;
+      padding-top: 80px;
+      padding-bottom: 40px;
     }
 
     video {
@@ -55,8 +55,24 @@
     h1 {
       font-size: 22px;
       text-align: center;
-      margin: 0 20px;
+      margin: 0 20px 10px;
       color: #fff;
+    }
+
+    .description {
+      max-width: 900px;
+      padding: 0 20px;
+      text-align: center;
+      color: #ccc;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .trailer-details {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 15px;
+      color: #aaa;
     }
 
     footer {
@@ -76,6 +92,10 @@
       h1 {
         font-size: 18px;
       }
+
+      .description {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -84,19 +104,40 @@
   <div class="navbar">🎬 FilmReserve</div>
 
   <div class="trailer-container">
-    <!-- 👇 Trailer video with poster -->
-    <video controls poster="images/f4poster.avif">
+    <video id="trailer-video" controls poster="images/f4poster.avif">
       <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
 
-    <!-- 👇 Trailer Title -->
     <h1>Fantastic 4: First Steps – Official Trailer</h1>
+
+    <div class="description">
+      After a cosmic accident transforms four astronauts into superheroes, they must learn to control their new powers and face an emerging threat that could change humanity forever. Dive into the origin of the Fantastic Four like never before.
+    </div>
+
+    <div class="trailer-details">
+      🔥 Genre: Sci-Fi, Action | ⭐ IMDb: 8.4/10 | ⏱ Duration: 2 min 33 sec | 📅 Released: July 2025
+    </div>
   </div>
 
   <footer>
     FilmReserve | Your Ultimate Streaming Destination
   </footer>
+
+  <script>
+    document.addEventListener('keydown', function(e) {
+      const video = document.getElementById('trailer-video');
+      if (e.key.toLowerCase() === 'f') {
+        if (video.requestFullscreen) {
+          video.requestFullscreen();
+        } else if (video.webkitRequestFullscreen) {
+          video.webkitRequestFullscreen();
+        } else if (video.msRequestFullscreen) {
+          video.msRequestFullscreen();
+        }
+      }
+    });
+  </script>
 
 </body>
 </html>
