@@ -224,9 +224,9 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 32px;
-      color: #00baff;
-      background: rgba(0, 0, 0, 0.6);
-      border: 2px solid #00baff;
+      color: #bbb;
+      background: rgba(0, 0, 0, 0.4);
+      border: none;
       border-radius: 50%;
       padding: 12px 18px;
       display: none;
@@ -275,10 +275,10 @@
       </video>
       <button id="replayBtn" class="replay-button" onclick="replayVideo()">⭯</button>
       <div class="controls">
-        <button id="mute">🔇</button>
+        <button id="mute" title="Mute (M)">🔇</button>
         <div class="time" id="time">0:00 / 0:00</div>
         <input class="seekbar" type="range" id="seek" value="0" min="0" step="0.1">
-        <button class="dots" onclick="toggleMenu()">⋮</button>
+        <button class="dots" onclick="toggleMenu()" title="Options">⋮</button>
         <div class="dots-menu" id="dotsMenu">
           <div class="speed-menu">
             <button onclick="toggleSpeedOptions()">Playback Speed</button>
@@ -292,18 +292,18 @@
           <button onclick="togglePip()">Picture in Picture</button>
           <button onclick="downloadVideo()">Download</button>
         </div>
-        <button class="zoom" onclick="toggleFull()">⛶</button>
+        <button class="zoom" onclick="toggleFull()" title="Fullscreen (F)">⛶</button>
       </div>
     </div>
 
     <h1>
-      Fantastic 4: First Steps 
+      The Fantastic Four: First Steps 
       <button id="descToggle" class="desc-btn">▼</button>
     </h1>
     <div class="trailer-details" id="descBox" style="display: none;">
-      Few Astronauts go to space andd return as Superheroes. What challenges will they face next? <br>
+      <h2> Few Astronauts go to space and return as Superheroes. What challenges will they face next? <br>
       Watch Fantastic Four: First Steps on 25 July to find out <br>
-      🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 25 July 2025
+      🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 25 July 2025</h2>
     </div>
   </div>
 
