@@ -2,330 +2,285 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FilmReserve | Trailer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * {
-      margin: 0; padding: 0;
-      box-sizing: border-box;
-    }
     body {
-      background: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      overflow-x: hidden;
+      margin: 0;
+      background: black;
+      color: white;
+      font-family: sans-serif;
+      overflow: hidden;
     }
-    .navbar {
-      background-color: #111;
-      padding: 15px;
-      font-size: 20px;
-      font-weight: bold;
-      text-align: center;
-    }
-    .navbar a {
-      color: #fff;
-      text-decoration: none;
-    }
-    .container {
-      max-width: 960px;
-      margin: 20px auto;
-      padding: 0 20px;
-    }
-    .video-wrapper {
+    .player-container {
       position: relative;
       width: 100%;
+      height: 100vh;
     }
     video {
       width: 100%;
-      border-radius: 10px;
-      border: 2px solid #00baff55;
-      cursor: pointer;
+      height: 100%;
+      object-fit: cover;
     }
     .controls {
       position: absolute;
-      bottom: 0;
-      width: 100%;
-      background: rgba(0,0,0,0.6);
-      padding: 8px;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 10px;
+      border-radius: 8px;
     }
-    .controls button, .zoom, .dots {
-      background: transparent;
+    #replayBtn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+      background: #888;
       border: none;
-      color: #ccc;
+      padding: 10px 20px;
+      border-radius: 50px;
       cursor: pointer;
-      font-size: 18px;
+      display: none;
     }
-    .time {
-      font-size: 12px;
-      color: #aaa;
-    }
-    .seekbar {
+    #seek {
       flex: 1;
+      margin: 0 10px;
     }
-    input[type="range"] {
-      width: 100%;
-      height: 5px;
-      background: #444;
-      border-radius: 3px;
-      appearance: none;
+    #dotsMenu {
+      position: absolute;
+      right: 20px;
+      bottom: 60px;
+      background: #111;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+      z-index: 2;
+    }
+    #dotsMenu button {
+      display: block;
+      background: #222;
+      color: white;
+      border: none;
+      margin: 5px 0;
+      padding: 5px 10px;
       cursor: pointer;
     }
-    input[type="range"]::-webkit-slider-thumb {
-      width: 14px;
-      height: 14px;
-      background: #00baff;
-      border: 2px solid white;
-      border-radius: 50%;
-      appearance: none;
-    }
-
     .volume-wrapper {
       position: relative;
+      display: flex;
+      align-items: center;
     }
     .volume-slider {
       display: none;
       position: absolute;
-      left: 0;
-      bottom: 30px;
-      width: 5px;
-      height: 60px;
-      background: #444;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .volume-slider input {
-      transform: rotate(-90deg);
-      transform-origin: left bottom;
-      width: 60px;
-      height: 5px;
-    }
-
-    .dots-menu {
-      display: none;
-      position: absolute;
-      right: 40px;
+      left: -60px;
       bottom: 40px;
-      background: #222;
-      padding: 6px;
-      border: 1px solid #555;
-      border-radius: 5px;
-      z-index: 10;
+      width: 100px;
+      transform: rotate(-90deg);
     }
-    .dots-menu button {
-      display: block;
-      background: none;
-      color: #ccc;
-      padding: 6px;
-      width: 120px;
-      text-align: left;
-      border: none;
-      cursor: pointer;
-    }
-    .dots-menu button:hover {
-      background-color: #333;
-    }
-
-    .replay-button {
-      display: none;
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 32px;
-      color: #ccc;
-      background: rgba(0,0,0,0.6);
-      border-radius: 50%;
-      padding: 12px;
-      cursor: pointer;
-      z-index: 9;
-    }
-
-    .title-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
     .desc-toggle {
-      background: none;
-      border: none;
-      font-size: 18px;
+      position: absolute;
+      bottom: 80px;
+      left: 20px;
+      font-size: 16px;
       cursor: pointer;
-      color: #00baff;
     }
-
     .desc {
-      font-size: 14px;
-      margin: 8px 0;
+      position: absolute;
+      bottom: 50px;
+      left: 20px;
+      background: rgba(0,0,0,0.7);
+      padding: 10px;
+      border-radius: 6px;
       display: none;
-      color: #ccc;
+    }
+    .title {
+      position: absolute;
+      bottom: 120px;
+      left: 20px;
+      font-size: 22px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-  <div class="navbar">
-    <a href="index.html">🎬 FilmReserve</a>
-  </div>
+<div class="player-container">
+  <video id="video" controlslist="nodownload">
+    <source id="source" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 
-  <div class="container">
-    <div class="video-wrapper">
-      <video id="video" poster="images/f4poster.avif">
-        <source id="source" src="" type="video/mp4">
-        <track kind="subtitles" src="captions.vtt" srclang="en" label="English">
-      </video>
+  <div class="title" id="movieTitle">Loading...</div>
+  <div class="desc-toggle" onclick="toggleDesc()" id="descToggle">▼</div>
+  <div class="desc" id="desc">This is the movie description.</div>
 
-      <button id="replayBtn" class="replay-button" onclick="replayVideo()">⭯</button>
+  <button id="replayBtn" onclick="replayVideo()">Replay</button>
 
-      <div class="controls">
-        <div class="volume-wrapper" title="M to mute">
-          <button id="mute">🔊</button>
-          <div class="volume-slider"><input id="volumeControl" type="range" min="0" max="1" step="0.05"></div>
-        </div>
-        <div class="time" id="time">0:00 / 0:00</div>
-        <input class="seekbar" id="seek" type="range" min="0" value="0" step="0.1">
-        <button class="dots" onclick="toggleMenu()">⋮</button>
-        <div class="dots-menu" id="dotsMenu">
-          <button onclick="setSpeed(1)">Speed: 1x</button>
-          <button onclick="setSpeed(1.5)">Speed: 1.5x</button>
-          <button onclick="setSpeed(2)">Speed: 2x</button>
-          <button onclick="togglePip()">Picture-in-Picture</button>
-        </div>
-        <button class="zoom" onclick="toggleFull()" title="F for fullscreen">⛶</button>
+  <div id="dotsMenu"></div>
+
+  <div class="controls">
+    <span id="time">0:00 / 0:00</span>
+
+    <input type="range" id="seek" value="0" min="0" step="0.01">
+
+    <div class="volume-wrapper">
+      <button id="mute" title="M to mute">🔊</button>
+      <div class="volume-slider">
+        <input id="volumeControl" type="range" min="0" max="2" step="0.05">
       </div>
     </div>
 
-    <div class="title-row">
-      <h2 id="title">Fantastic 4: First Steps</h2>
-      <button class="desc-toggle" onclick="toggleDesc()" id="descToggle">▼</button>
-    </div>
-
-    <div class="desc" id="desc">
-      Few Astronauts go to space and return as Superheroes. What challenges will they face next?<br>
-      🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 25 July 2025
-    </div>
+    <button onclick="toggleMenu()" title="⋮ Menu">⋮</button>
+    <button onclick="toggleFull()" title="F for fullscreen">🔳</button>
   </div>
+</div>
 
-  <script>
-    const video = document.getElementById('video');
-    const seek = document.getElementById('seek');
-    const time = document.getElementById('time');
-    const mute = document.getElementById('mute');
-    const replayBtn = document.getElementById('replayBtn');
-    const volumeSlider = document.querySelector('.volume-slider');
-    const volumeControl = document.getElementById('volumeControl');
-    const dotsMenu = document.getElementById('dotsMenu');
+<script>
+  const video = document.getElementById('video');
+  const seek = document.getElementById('seek');
+  const time = document.getElementById('time');
+  const mute = document.getElementById('mute');
+  const replayBtn = document.getElementById('replayBtn');
+  const volumeSlider = document.querySelector('.volume-slider');
+  const volumeControl = document.getElementById('volumeControl');
+  const dotsMenu = document.getElementById('dotsMenu');
 
-    // Video source setup
-    const urlParams = new URLSearchParams(window.location.search);
-    const movie = urlParams.get('movie');
-    const videoMap = {
-      'fantastic4': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4',
-      'superman': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122503/videoplayback_1_wooh5o.mp4',
-      'jurassicworld': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/y2mate.gg_-_Jurassic_World_Rebirth_Official_Trailer_360_bjil0w.mp4',
-      '28yearslater': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/videoplayback_3_d2szfo.mp4',
-      'f1movie': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136569/videoplayback_4_sp9lr3.mp4',
-      'avengers5': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4'
-    };
-    if (videoMap[movie]) {
-      document.getElementById('source').src = videoMap[movie];
-      video.load();
+  const movie = new URLSearchParams(location.search).get('movie');
+  const movieData = {
+    'fantastic4': {
+      title: 'Fantastic 4: First Steps',
+      desc: 'The Fantastic Four reunite to face Dr. Doom in their most epic battle yet.',
+      src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4'
+    },
+    'superman': {
+      title: 'Superman: Legacy',
+      desc: 'Superman rises again to protect Earth from a powerful new enemy.',
+      src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122503/videoplayback_1_wooh5o.mp4'
+    },
+    'jurassicworld': {
+      title: 'Jurassic World: Rebirth',
+      desc: 'The dinosaurs are back. Humanity must survive.',
+      src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/y2mate.gg_-_Jurassic_World_Rebirth_Official_Trailer_360_bjil0w.mp4'
+    },
+    '28yearslater': {
+      title: '28 Years Later',
+      desc: 'The virus has evolved. So has the fear.',
+      src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/videoplayback_3_d2szfo.mp4'
+    },
+    'f1movie': {
+      title: 'F1: The Movie',
+      desc: 'Brad Pitt takes on the racetrack in a high-octane racing drama.',
+      src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136569/videoplayback_4_sp9lr3.mp4'
+    },
+    'avengers5': {
+      title: 'Avengers: Doomsday',
+      desc: 'Earth’s mightiest heroes face their deadliest challenge yet.',
+      src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4'
     }
+  };
 
-    // Play/Pause toggle
-    video.addEventListener("click", () => {
+  if (movieData[movie]) {
+    document.getElementById('source').src = movieData[movie].src;
+    document.getElementById('movieTitle').textContent = movieData[movie].title;
+    document.getElementById('desc').textContent = movieData[movie].desc;
+    video.load();
+  }
+
+  video.addEventListener("click", () => video.paused ? video.play() : video.pause());
+  video.addEventListener("timeupdate", () => {
+    seek.value = video.currentTime;
+    time.textContent = `${format(video.currentTime)} / ${format(video.duration)}`;
+  });
+  seek.addEventListener("input", () => video.currentTime = seek.value);
+  video.addEventListener("loadedmetadata", () => seek.max = video.duration);
+  video.addEventListener("ended", () => replayBtn.style.display = "block");
+
+  function replayVideo() {
+    video.currentTime = 0;
+    video.play();
+    replayBtn.style.display = "none";
+  }
+
+  mute.onclick = () => {
+    video.muted = !video.muted;
+    mute.textContent = video.muted ? '🔇' : '🔊';
+    volumeSlider.style.display = volumeSlider.style.display === 'block' ? 'none' : 'block';
+  };
+
+  volumeControl.addEventListener("input", () => {
+    let val = parseFloat(volumeControl.value);
+    video.volume = Math.min(1, val);
+    video.muted = val === 0;
+    mute.textContent = video.muted ? '🔇' : '🔊';
+  });
+
+  function toggleFull() {
+    if (!document.fullscreenElement) {
+      video.parentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  function toggleMenu() {
+    dotsMenu.style.display = dotsMenu.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function toggleDesc() {
+    const desc = document.getElementById('desc');
+    const toggle = document.getElementById('descToggle');
+    const isShown = desc.style.display === 'block';
+    desc.style.display = isShown ? 'none' : 'block';
+    toggle.textContent = isShown ? '▼' : '▲';
+  }
+
+  function setSpeed(rate) {
+    video.playbackRate = rate;
+    toggleMenu();
+  }
+
+  function togglePip() {
+    if (document.pictureInPictureElement) {
+      document.exitPictureInPicture();
+    } else {
+      video.requestPictureInPicture();
+    }
+    toggleMenu();
+  }
+
+  dotsMenu.innerHTML = `
+    <button onclick="setSpeed(0.25)">Speed: 0.25x</button>
+    <button onclick="setSpeed(0.5)">Speed: 0.5x</button>
+    <button onclick="setSpeed(0.75)">Speed: 0.75x</button>
+    <button onclick="setSpeed(1)">Speed: 1x</button>
+    <button onclick="setSpeed(1.5)">Speed: 1.5x</button>
+    <button onclick="setSpeed(2)">Speed: 2x</button>
+    <button onclick="togglePip()">Picture-in-Picture</button>
+  `;
+
+  document.addEventListener("keydown", e => {
+    if (e.code === "Space") {
+      e.preventDefault();
       video.paused ? video.play() : video.pause();
-    });
-
-    // Seek
-    video.addEventListener("timeupdate", () => {
-      seek.value = video.currentTime;
-      time.textContent = `${format(video.currentTime)} / ${format(video.duration)}`;
-    });
-    seek.addEventListener("input", () => video.currentTime = seek.value);
-    video.addEventListener("loadedmetadata", () => seek.max = video.duration);
-
-    // Replay
-    video.addEventListener("ended", () => replayBtn.style.display = "block");
-    function replayVideo() {
-      video.currentTime = 0;
-      video.play();
-      replayBtn.style.display = "none";
     }
+    if (e.key.toLowerCase() === "m") mute.click();
+    if (e.key.toLowerCase() === "f") toggleFull();
+    if (e.key === "ArrowRight") video.currentTime += 5;
+    if (e.key === "ArrowLeft") video.currentTime -= 5;
+  });
 
-    // Mute
-    mute.onclick = () => {
-      video.muted = !video.muted;
-      mute.textContent = video.muted ? '🔇' : '🔊';
-    };
-    volumeControl.addEventListener("input", () => {
-      video.volume = volumeControl.value;
-      video.muted = false;
-      mute.textContent = '🔊';
-    });
+  function format(sec) {
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  }
+</script>
 
-    // Show volume slider on hover
-    const volumeWrapper = document.querySelector('.volume-wrapper');
-    volumeWrapper.addEventListener('mouseenter', () => volumeSlider.style.display = 'block');
-    volumeWrapper.addEventListener('mouseleave', () => volumeSlider.style.display = 'none');
-
-    // Fullscreen
-    function toggleFull() {
-      if (!document.fullscreenElement) {
-        video.parentElement.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    }
-
-    // Keyboard controls
-    document.addEventListener("keydown", e => {
-      if (e.code === "Space") {
-        e.preventDefault();
-        video.paused ? video.play() : video.pause();
-      }
-      if (e.key.toLowerCase() === "m") mute.click();
-      if (e.key.toLowerCase() === "f") toggleFull();
-      if (e.key === "ArrowRight") video.currentTime += 5;
-      if (e.key === "ArrowLeft") video.currentTime -= 5;
-    });
-
-    function format(sec) {
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60).toString().padStart(2, "0");
-      return `${m}:${s}`;
-    }
-
-    // 3-dot menu
-    function toggleMenu() {
-      dotsMenu.style.display = dotsMenu.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function setSpeed(rate) {
-      video.playbackRate = rate;
-      toggleMenu();
-    }
-
-    function togglePip() {
-      if (document.pictureInPictureElement) {
-        document.exitPictureInPicture();
-      } else {
-        video.requestPictureInPicture();
-      }
-      toggleMenu();
-    }
-
-    // Description toggle
-    function toggleDesc() {
-      const desc = document.getElementById('desc');
-      const toggle = document.getElementById('descToggle');
-      const isShown = desc.style.display === 'block';
-      desc.style.display = isShown ? 'none' : 'block';
-      toggle.textContent = isShown ? '▼' : '▲';
-    }
-  </script>
 </body>
 </html>
