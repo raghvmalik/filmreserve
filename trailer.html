@@ -22,6 +22,7 @@
 
     .navbar {
       background-color: #111;
+      opacity: 0.5;
       padding: 15px;
       text-align: center;
       font-size: 24px;
@@ -83,7 +84,7 @@
 
     .trailer-details {
       text-align: center;
-      font-size: 14px;
+      font-size: 12px;
       color: #aaa;
     }
 
@@ -95,7 +96,6 @@
       font-size: 14px;
     }
 
-    /* Blue video seek bar styling (works on WebKit browsers like Chrome) */
     video::-webkit-media-controls-timeline {
       background-color: #000;
     }
@@ -107,7 +107,7 @@
 
     video::-webkit-media-controls-play-button,
     video::-webkit-media-controls-volume-slider {
-      filter: hue-rotate(180deg); /* slight customization */
+      filter: hue-rotate(180deg);
     }
 
     @media (max-width: 600px) {
@@ -132,7 +132,6 @@
   <div class="trailer-container">
     <video id="trailer-video" controls poster="images/f4poster.avif">
       <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4" type="video/mp4">
-      Your browser does not support the video tag.
     </video>
 
     <h1>Fantastic 4: First Steps – Official Trailer</h1>
@@ -144,7 +143,7 @@
     </div>
 
     <div class="trailer-details">
-      ⭐ IMDb: 8.4/10 | 🎥 Duration: 2min 33sec | 🎬 Genre: Action, Sci-Fi | 📅 July 2025
+      🎥 Directed by: Matt Shackman| 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 24July 2025
     </div>
   </div>
 
