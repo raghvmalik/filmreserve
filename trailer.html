@@ -218,6 +218,22 @@
       color: #fff;
     }
 
+    .replay-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 32px;
+      color: #00baff;
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid #00baff;
+      border-radius: 50%;
+      padding: 12px 18px;
+      display: none;
+      cursor: pointer;
+      z-index: 10;
+    }
+
     footer {
       background-color: #111;
       color: #ccc;
@@ -257,6 +273,7 @@
       <video id="video" poster="images/f4poster.avif">
         <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4" type="video/mp4">
       </video>
+      <button id="replayBtn" class="replay-button" onclick="replayVideo()">⟳</button>
       <div class="controls">
         <button id="mute">🔇</button>
         <div class="time" id="time">0:00 / 0:00</div>
@@ -281,9 +298,9 @@
 
     <h1>
       Fantastic 4: First Steps 
-      <button id="descToggle" class="desc-btn">▲</button>
+      <button id="descToggle" class="desc-btn">▼</button>
     </h1>
-    <div class="trailer-details" id="descBox">
+    <div class="trailer-details" id="descBox" style="display: none;">
       🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 24 July 2025
     </div>
   </div>
@@ -301,16 +318,18 @@
     const speedOptions = document.getElementById('speedOptions');
     const descToggle = document.getElementById('descToggle');
     const descBox = document.getElementById('descBox');
+    const replayBtn = document.getElementById('replayBtn');
 
-    // Ensure first click plays
-    document.body.addEventListener('click', () => {
-      video.play().catch(() => {});
-    }, { once: true });
+    mute.textContent = video.muted ? '🔇' : '🔊';
 
     mute.onclick = () => {
       video.muted = !video.muted;
       mute.textContent = video.muted ? '🔇' : '🔊';
     };
+
+    video.addEventListener('volumechange', () => {
+      mute.textContent = video.muted ? '🔇' : '🔊';
+    });
 
     video.addEventListener('timeupdate', () => {
       seek.value = video.currentTime;
@@ -328,16 +347,45 @@
       time.textContent = `0:00 / ${formatTime(video.duration)}`;
     });
 
+    video.addEventListener('ended', () => {
+      replayBtn.style.display = 'block';
+    });
+
+    function replayVideo() {
+      video.currentTime = 0;
+      video.play();
+      replayBtn.style.display = 'none';
+    }
+
     document.querySelector('.video-wrapper').addEventListener('click', (e) => {
       const isControl = e.target.closest('.controls') || e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT';
-      if (!isControl) {
-        if (video.paused) {
-          video.play();
-        } else {
-          video.pause();
-        }
+      if (!isControl) togglePlay();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.code === 'ArrowRight') {
+        video.currentTime = Math.min(video.currentTime + 5, video.duration);
+      } else if (e.code === 'ArrowLeft') {
+        video.currentTime = Math.max(video.currentTime - 5, 0);
+      } else if (e.key.toLowerCase() === 'm') {
+        video.muted = !video.muted;
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFull();
       }
     });
+
+    function togglePlay() {
+      if (video.paused) {
+        video.play();
+        replayBtn.style.display = 'none';
+      } else {
+        video.pause();
+      }
+    }
 
     function formatTime(sec) {
       const min = Math.floor(sec / 60);
