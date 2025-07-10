@@ -52,19 +52,27 @@
       box-shadow: 0 0 12px rgba(0, 174, 255, 0.5);
     }
 
-    h1 {
+    .trailer-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 5px;
+    }
+
+    .trailer-header h1 {
       font-size: 22px;
       text-align: center;
-      margin: 10px 20px 5px;
     }
 
     .toggle-btn {
       background-color: transparent;
       border: none;
-      font-size: 18px;
+      font-size: 22px;
       color: #00baff;
       cursor: pointer;
-      margin-bottom: 5px;
+      transform: translateY(2px);
     }
 
     .description-box {
@@ -94,6 +102,7 @@
       padding: 10px;
       text-align: center;
       font-size: 14px;
+      margin-top: auto;
     }
 
     video::-webkit-media-controls-timeline {
@@ -115,7 +124,7 @@
         width: 100%;
       }
 
-      h1 {
+      .trailer-header h1 {
         font-size: 18px;
       }
 
@@ -134,16 +143,17 @@
       <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4" type="video/mp4">
     </video>
 
-    <h1>Fantastic 4: First Steps – Official Trailer</h1>
-
-    <button class="toggle-btn" onclick="toggleDescription()">▼ Show Description</button>
+    <div class="trailer-header">
+      <h1>Fantastic 4: First Steps – Official Trailer</h1>
+      <button class="toggle-btn" onclick="toggleDescription()">▼</button>
+    </div>
 
     <div class="description-box" id="descBox">
       After a cosmic accident transforms four astronauts into superheroes, they must learn to control their powers and face a rising threat. Experience the rebirth of the iconic team in stunning visuals and explosive action.
     </div>
 
     <div class="trailer-details">
-      🎥 Directed by: Matt Shackman| 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 24July 2025
+      🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 24 July 2025
     </div>
   </div>
 
@@ -173,7 +183,7 @@
     function toggleDescription() {
       const isVisible = descBox.style.display === 'block';
       descBox.style.display = isVisible ? 'none' : 'block';
-      toggleBtn.textContent = isVisible ? '▼ Show Description' : '▲ Hide Description';
+      toggleBtn.textContent = isVisible ? '▼' : '▲';
     }
   </script>
 
