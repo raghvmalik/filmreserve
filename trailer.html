@@ -2,330 +2,259 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FilmReserve | Trailer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
   <style>
-    * { box-sizing: border-box; }
     body {
       margin: 0;
-      background: black;
+      background-color: black;
+      font-family: Arial, sans-serif;
       color: white;
-      font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
     }
-
-    .player-container {
-      position: relative;
-      width: 100%;
-      height: 100vh;
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
     }
-
+    .video-wrapper {
+      position: relative;
+      width: 80%;
+      max-width: 900px;
+      box-shadow: 0 0 20px cyan;
+      background: black;
+    }
     video {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      display: block;
     }
-
     .controls {
       position: absolute;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 10px 14px;
-      border-radius: 10px;
+      padding: 5px 10px;
+      background: rgba(0,0,0,0.6);
     }
-
-    .controls button {
-      background: none;
+    .left-controls,
+    .right-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    button, select, input[type="range"] {
+      background: transparent;
       border: none;
-      font-size: 20px;
       color: white;
       cursor: pointer;
-      margin: 0 6px;
     }
-
-    .controls button:hover {
-      color: #00bfff;
+    input[type="range"] {
+      accent-color: #0af;
     }
-
-    #seek {
-      flex-grow: 1;
-      margin: 0 12px;
-    }
-
-    #replayBtn {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 18px;
-      background: #666;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 30px;
-      cursor: pointer;
-      display: none;
-    }
-
-    .volume-wrapper {
+    .title-bar {
+      margin-top: 10px;
+      text-align: left;
+      width: 80%;
+      max-width: 900px;
       position: relative;
     }
-
-    .volume-slider {
-      display: none;
-      position: absolute;
-      bottom: 50px;
-      left: -40px;
-      transform: rotate(-90deg);
-      background: #111;
-      padding: 5px;
-      border-radius: 8px;
+    .title-bar h2 {
+      margin: 0;
+      display: inline;
     }
-
-    .volume-slider input {
-      width: 100px;
-    }
-
-    #dotsMenu {
-      position: absolute;
-      right: 20px;
-      bottom: 80px;
-      background: #222;
-      padding: 8px;
-      border-radius: 8px;
-      display: none;
-    }
-
-    #dotsMenu button {
-      display: block;
-      background: #111;
-      color: white;
-      border: none;
-      margin: 4px 0;
-      padding: 6px 12px;
-      font-size: 14px;
-      cursor: pointer;
-      border-radius: 6px;
-    }
-
-    #dotsMenu button:hover {
-      background: #333;
-    }
-
-    .title {
-      position: absolute;
-      bottom: 130px;
-      left: 20px;
-      font-size: 22px;
-      font-weight: bold;
-    }
-
-    .desc-toggle {
-      position: absolute;
-      bottom: 160px;
-      left: 20px;
-      font-size: 18px;
-      cursor: pointer;
-    }
-
     .desc {
-      position: absolute;
-      bottom: 100px;
-      left: 20px;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 10px;
-      border-radius: 8px;
-      max-width: 500px;
       display: none;
+      margin-top: 5px;
+    }
+    .toggle-desc {
+      margin-right: 10px;
+      cursor: pointer;
+      transform: rotate(0deg);
+      transition: transform 0.3s;
+    }
+    .show .desc {
+      display: block;
+    }
+    .show .toggle-desc {
+      transform: rotate(90deg);
     }
   </style>
 </head>
 <body>
-
-<div class="player-container">
-  <video id="video" controlslist="nodownload">
-    <source id="source" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-
-  <div class="title" id="movieTitle">Loading...</div>
-  <div class="desc-toggle" onclick="toggleDesc()" id="descToggle">▼</div>
-  <div class="desc" id="desc">This is the movie description.</div>
-
-  <button id="replayBtn" onclick="replayVideo()">Replay</button>
-
-  <div id="dotsMenu"></div>
-
-  <div class="controls">
-    <span id="time">0:00 / 0:00</span>
-
-    <input type="range" id="seek" value="0" min="0" step="0.01">
-
-    <div class="volume-wrapper">
-      <button id="mute" title="M to mute">🔊</button>
-      <div class="volume-slider">
-        <input id="volumeControl" type="range" min="0" max="2" step="0.05">
+  <div class="container">
+    <div class="video-wrapper">
+      <video id="trailer" preload="metadata"></video>
+      <div class="controls">
+        <div class="left-controls">
+          <button id="mute" title="M to mute/unmute">🔊</button>
+          <span id="time">0:00 / 0:00</span>
+        </div>
+        <input id="seek" type="range" min="0" max="100" value="0"/>
+        <div class="right-controls">
+          <button id="volume-btn" title="Volume">🔈</button>
+          <input id="volume" type="range" min="0" max="2" step="0.01" value="1" style="width: 60px; display: none;" />
+          <select id="speed" title="Playback speed">
+            <option value="0.25">0.25x</option>
+            <option value="0.5">0.5x</option>
+            <option value="0.75">0.75x</option>
+            <option value="1" selected>1x</option>
+            <option value="1.25">1.25x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2">2x</option>
+          </select>
+          <button id="pip" title="Picture-in-Picture">📺</button>
+          <button id="fullscreen" title="F to fullscreen">⛶</button>
+          <button id="zoom" title="Zoom">🗖</button>
+        </div>
       </div>
     </div>
-
-    <button onclick="toggleMenu()" title="⋮ Menu">⋮</button>
-    <button onclick="toggleFull()" title="F for fullscreen">🔳</button>
+    <div class="title-bar">
+      <span class="toggle-desc">▾</span>
+      <h2 id="movie-title"></h2>
+      <div class="desc" id="movie-desc"></div>
+    </div>
   </div>
-</div>
 
-<script>
-  const video = document.getElementById('video');
-  const source = document.getElementById('source');
-  const time = document.getElementById('time');
-  const seek = document.getElementById('seek');
-  const mute = document.getElementById('mute');
-  const replayBtn = document.getElementById('replayBtn');
-  const volumeSlider = document.querySelector('.volume-slider');
-  const volumeControl = document.getElementById('volumeControl');
-  const dotsMenu = document.getElementById('dotsMenu');
+  <script>
+    const movieData = {
+      "fantastic4": {
+        "title": "Fantastic 4: First Steps",
+        "desc": "The Fantastic Four reunite to face Dr. Doom in their most epic battle yet.",
+        "src": "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4"
+      },
+      "avengers5": {
+        "title": "Avengers: Doomsday",
+        "desc": "Earth’s mightiest heroes face their deadliest challenge yet.",
+        "src": "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4"
+      },
+      "jurassic": {
+        "title": "Jurassic World: Rebirth",
+        "desc": "Dinosaurs once again roam the Earth in a new world ruled by nature.",
+        "src": "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/y2mate.gg_-_Jurassic_World_Rebirth_Official_Trailer_360_bjil0w.mp4"
+      },
+      "f1movie": {
+        "title": "F1: The Movie",
+        "desc": "Get behind the wheel with the greatest drivers in Formula 1 history.",
+        "src": "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136569/videoplayback_4_sp9lr3.mp4"
+      },
+      "28yearslater": {
+        "title": "28 Years Later",
+        "desc": "The rage virus has evolved... and it’s not done yet.",
+        "src": "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/videoplayback_3_d2szfo.mp4"
+      },
+      "superman": {
+        "title": "Superman",
+        "desc": "The Man of Steel returns to protect a world in chaos.",
+        "src": "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122503/videoplayback_1_wooh5o.mp4"
+      }
+    };
 
-  const movie = new URLSearchParams(location.search).get('movie');
-  const movieData = {
-    'fantastic4': {
-      title: 'Fantastic 4: First Steps',
-      desc: 'The Fantastic Four reunite to face Dr. Doom in their most epic battle yet.',
-      src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4'
-    },
-    'superman': {
-      title: 'Superman: Legacy',
-      desc: 'Superman rises again to protect Earth from a powerful new enemy.',
-      src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122503/videoplayback_1_wooh5o.mp4'
-    },
-    'jurassicworld': {
-      title: 'Jurassic World: Rebirth',
-      desc: 'The dinosaurs are back. Humanity must survive.',
-      src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/y2mate.gg_-_Jurassic_World_Rebirth_Official_Trailer_360_bjil0w.mp4'
-    },
-    '28yearslater': {
-      title: '28 Years Later',
-      desc: 'The virus has evolved. So has the fear.',
-      src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/videoplayback_3_d2szfo.mp4'
-    },
-    'f1movie': {
-      title: 'F1: The Movie',
-      desc: 'Brad Pitt takes on the racetrack in a high-octane racing drama.',
-      src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136569/videoplayback_4_sp9lr3.mp4'
-    },
-    'avengers5': {
-      title: 'Avengers: Doomsday',
-      desc: 'Earth’s mightiest heroes face their deadliest challenge yet.',
-      src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4'
-    }
-  };
+    const urlParams = new URLSearchParams(window.location.search);
+    const movie = urlParams.get("movie");
 
-  if (movieData[movie]) {
-    source.src = movieData[movie].src;
-    document.getElementById('movieTitle').textContent = movieData[movie].title;
-    document.getElementById('desc').textContent = movieData[movie].desc;
-    video.load();
-  }
+    const video = document.getElementById("trailer");
+    const timeDisplay = document.getElementById("time");
+    const seek = document.getElementById("seek");
+    const mute = document.getElementById("mute");
+    const volumeBtn = document.getElementById("volume-btn");
+    const volume = document.getElementById("volume");
+    const speed = document.getElementById("speed");
+    const pip = document.getElementById("pip");
+    const fullscreen = document.getElementById("fullscreen");
+    const zoom = document.getElementById("zoom");
+    const title = document.getElementById("movie-title");
+    const desc = document.getElementById("movie-desc");
+    const toggle = document.querySelector(".toggle-desc");
+    const titleBar = document.querySelector(".title-bar");
 
-  video.addEventListener("timeupdate", () => {
-    seek.value = video.currentTime;
-    time.textContent = `${format(video.currentTime)} / ${format(video.duration)}`;
-  });
-
-  video.addEventListener("loadedmetadata", () => {
-    seek.max = video.duration;
-  });
-
-  seek.addEventListener("input", () => {
-    video.currentTime = seek.value;
-  });
-
-  video.addEventListener("ended", () => {
-    replayBtn.style.display = "block";
-  });
-
-  function replayVideo() {
-    video.currentTime = 0;
-    video.play();
-    replayBtn.style.display = "none";
-  }
-
-  mute.onclick = () => {
-    video.muted = !video.muted;
-    mute.textContent = video.muted ? '🔇' : '🔊';
-    volumeSlider.style.display = volumeSlider.style.display === 'block' ? 'none' : 'block';
-  };
-
-  volumeControl.addEventListener("input", () => {
-    const vol = parseFloat(volumeControl.value);
-    video.volume = Math.min(vol, 1);
-    video.muted = vol === 0;
-  });
-
-  function toggleFull() {
-    if (!document.fullscreenElement) {
-      video.parentElement.requestFullscreen();
+    if (movieData[movie]) {
+      video.src = movieData[movie].src;
+      title.textContent = movieData[movie].title;
+      desc.textContent = movieData[movie].desc;
     } else {
-      document.exitFullscreen();
+      title.textContent = "Movie Not Found";
+      desc.textContent = "";
     }
-  }
 
-  function toggleMenu() {
-    dotsMenu.style.display = dotsMenu.style.display === 'block' ? 'none' : 'block';
-  }
+    video.controls = false;
 
-  function toggleDesc() {
-    const desc = document.getElementById('desc');
-    const toggle = document.getElementById('descToggle');
-    const shown = desc.style.display === 'block';
-    desc.style.display = shown ? 'none' : 'block';
-    toggle.textContent = shown ? '▼' : '▲';
-  }
-
-  function setSpeed(rate) {
-    video.playbackRate = rate;
-    toggleMenu();
-  }
-
-  function togglePip() {
-    if (document.pictureInPictureElement) {
-      document.exitPictureInPicture();
-    } else {
-      video.requestPictureInPicture();
+    function formatTime(t) {
+      const m = Math.floor(t / 60);
+      const s = Math.floor(t % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
     }
-    toggleMenu();
-  }
 
-  dotsMenu.innerHTML = `
-    <button onclick="setSpeed(0.25)">Speed: 0.25x</button>
-    <button onclick="setSpeed(0.5)">Speed: 0.5x</button>
-    <button onclick="setSpeed(0.75)">Speed: 0.75x</button>
-    <button onclick="setSpeed(1)">Speed: 1x</button>
-    <button onclick="setSpeed(1.5)">Speed: 1.5x</button>
-    <button onclick="setSpeed(2)">Speed: 2x</button>
-    <button onclick="togglePip()">Picture-in-Picture</button>
-  `;
+    video.addEventListener("loadedmetadata", () => {
+      seek.max = video.duration;
+      timeDisplay.textContent = `0:00 / ${formatTime(video.duration)}`;
+    });
 
-  document.addEventListener("keydown", (e) => {
-    if (e.code === "Space") {
-      e.preventDefault();
+    video.addEventListener("timeupdate", () => {
+      seek.value = video.currentTime;
+      timeDisplay.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+    });
+
+    seek.addEventListener("input", () => {
+      video.currentTime = seek.value;
+    });
+
+    mute.onclick = () => {
+      video.muted = !video.muted;
+      mute.textContent = video.muted ? "🔇" : "🔊";
+    };
+
+    volumeBtn.onclick = () => {
+      volume.style.display = volume.style.display === "none" ? "inline-block" : "none";
+    };
+
+    volume.oninput = () => {
+      video.volume = Math.min(volume.value, 2);
+    };
+
+    speed.onchange = () => {
+      video.playbackRate = parseFloat(speed.value);
+    };
+
+    pip.onclick = () => {
+      if (document.pictureInPictureEnabled && !video.disablePictureInPicture) {
+        video.requestPictureInPicture();
+      }
+    };
+
+    fullscreen.onclick = () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        video.requestFullscreen();
+      }
+    };
+
+    zoom.onclick = () => {
+      video.classList.toggle("zoomed");
+    };
+
+    toggle.onclick = () => {
+      titleBar.classList.toggle("show");
+    };
+
+    video.addEventListener("click", () => {
       video.paused ? video.play() : video.pause();
-    }
-    if (e.key.toLowerCase() === "m") mute.click();
-    if (e.key.toLowerCase() === "f") toggleFull();
-    if (e.key === "ArrowRight") video.currentTime += 5;
-    if (e.key === "ArrowLeft") video.currentTime -= 5;
-  });
+    });
 
-  function format(sec) {
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60).toString().padStart(2, "0");
-    return `${m}:${s}`;
-  }
-</script>
-
+    window.addEventListener("keydown", (e) => {
+      if (e.key === " ") {
+        e.preventDefault();
+        video.paused ? video.play() : video.pause();
+      }
+      if (e.key.toLowerCase() === "m") mute.click();
+      if (e.key.toLowerCase() === "f") fullscreen.click();
+    });
+  </script>
 </body>
 </html>
