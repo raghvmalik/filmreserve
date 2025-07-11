@@ -1,257 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Trailer | FilmReserve</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FilmReserve | Trailer</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
+      background: linear-gradient(to bottom, #0d0d0d, #1a1a1a);
+      color: white;
+      overflow-x: hidden;
     }
-    header {
+
+    .navbar {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      background: #000;
-      padding: 10px 20px;
+      padding: 12px;
+      background-color: #111;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-bottom: 2px solid #000;
     }
-    .logo {
-      font-size: 22px;
-      color: #fff;
+
+    .navbar a {
+      color: white;
       text-decoration: none;
     }
-    .video-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    .player-container {
+      max-width: 960px;
+      margin: 60px auto 20px;
       padding: 20px;
-      flex-direction: column;
+      background-color: #111;
+      border-radius: 12px;
+      box-shadow: 0 0 25px #00f0ff70;
+      position: relative;
     }
+
     video {
-      width: 90%;
-      max-width: 900px;
-      background: #000;
+      width: 100%;
+      border-radius: 8px;
+      outline: none;
+      background: black;
     }
+
     .controls {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      width: 90%;
-      max-width: 900px;
+      gap: 10px;
       margin-top: 10px;
-    }
-    .btn {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-      margin-right: 10px;
-    }
-    .btn:hover {
-      opacity: 0.8;
-    }
-    .volume-slider {
-      position: absolute;
-      height: 80px;
-      width: 6px;
-      background: #555;
-      right: 50px;
-      bottom: 100px;
-      display: none;
-    }
-    .volume-slider input {
-      transform: rotate(-90deg);
       position: relative;
-      left: -36px;
-      top: 35px;
     }
-    .speed-menu {
-      position: absolute;
-      bottom: 100px;
-      right: 20px;
-      background: #222;
-      border: 1px solid #555;
-      padding: 5px;
-      display: none;
+
+    .progress {
+      flex: 1;
+      appearance: none;
+      height: 6px;
+      background: #444;
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
     }
-    .speed-menu button {
-      display: block;
-      width: 100%;
+
+    .progress::-webkit-slider-thumb {
+      appearance: none;
+      height: 14px;
+      width: 14px;
+      background: #00f0ff;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .icon-btn {
       background: none;
       border: none;
-      color: #fff;
-      padding: 5px 10px;
+      color: white;
+      font-size: 1.1rem;
       cursor: pointer;
-      text-align: left;
+      position: relative;
     }
-    .speed-menu button:hover {
+
+    .volume-slider {
+      display: none;
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      height: 60px;
+      writing-mode: bt-lr;
+      transform: rotate(-90deg);
+    }
+
+    .icon-btn:hover .volume-slider {
+      display: block;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      bottom: 40px;
+      right: 0;
+      background-color: #222;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px #000;
+    }
+
+    .dropdown-menu button {
+      display: block;
+      background: none;
+      border: none;
+      color: white;
+      text-align: left;
+      padding: 4px 10px;
+      cursor: pointer;
+    }
+
+    .dropdown-menu button:hover {
       background: #333;
     }
-    .title-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 20px;
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
     }
-    .title-bar h2 {
-      margin: 0;
-      font-size: 24px;
+
+    .video-info {
+      text-align: center;
+      margin: 20px 0;
     }
-    .desc-toggle {
-      margin-left: 15px;
-      cursor: pointer;
-      background: #444;
+
+    .video-info h2 {
+      margin: 5px 0;
+    }
+
+    .buttons {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .buttons button {
+      margin: 0 10px;
+      padding: 6px 12px;
+      font-size: 1rem;
+      background: #333;
       border: none;
-      padding: 5px 10px;
-      color: #fff;
-      font-size: 14px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
     }
-    .description {
-      text-align: center;
-      margin-top: 10px;
-      display: none;
+
+    .buttons button:hover {
+      background: #555;
     }
+
     footer {
-      margin-top: 30px;
       text-align: center;
+      padding: 10px;
+      font-size: 0.9rem;
       color: #999;
-      font-size: 14px;
+      background-color: #0d0d0d;
+      border-top: 1px solid #222;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <a href="index.html" class="logo">🎬 <b>FilmReserve</b></a>
+  <header class="navbar">
+    <a href="index.html">🎬 FilmReserve</a>
   </header>
 
-  <div class="video-wrapper">
-    <video id="trailerVideo" controlslist="nodownload"></video>
+  <div class="player-container">
+    <video id="trailer" controls disablepictureinpicture></video>
 
     <div class="controls">
-      <button id="playPause" class="btn" title="Space to Play/Pause">⏯️</button>
-      <button id="muteBtn" class="btn" title="M to Mute">🔊</button>
-      <button id="fullscreenBtn" class="btn" title="F to Fullscreen">🔲</button>
-      <button id="zoomBtn" class="btn" title="Zoom">🔍</button>
-      <button id="volumeBtn" class="btn" title="Volume Control">🔈</button>
-      <div class="volume-slider" id="volumeSlider">
-        <input type="range" min="0" max="2" step="0.01" value="1">
+      <button id="muteBtn" class="icon-btn">🔊</button>
+      <span id="time">0:00 / 0:00</span>
+      <input type="range" id="seek" class="progress" value="0" />
+
+      <div class="icon-btn">
+        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.1" value="1" />
       </div>
-      <button id="dotsBtn" class="btn">⋮</button>
-      <div class="speed-menu" id="speedMenu">
-        <button data-speed="0.25">Playback Speed: 0.25x</button>
-        <button data-speed="0.5">Playback Speed: 0.5x</button>
-        <button data-speed="0.75">Playback Speed: 0.75x</button>
-        <button data-speed="1">Normal (1x)</button>
-        <button data-speed="1.25">1.25x</button>
-        <button data-speed="1.5">1.5x</button>
-        <button data-speed="1.75">1.75x</button>
-        <button data-speed="2">2x</button>
-        <button id="pipBtn">📺 Picture-in-Picture</button>
+
+      <button id="pipBtn" class="icon-btn">📺</button>
+      <button id="fsBtn" class="icon-btn">⛶</button>
+
+      <div class="dropdown">
+        <button class="icon-btn">⋮</button>
+        <div class="dropdown-menu" id="menu">
+          <strong>Playback Speed</strong>
+          <button data-speed="0.5">0.5x</button>
+          <button data-speed="1">1x</button>
+          <button data-speed="1.25">1.25x</button>
+          <button data-speed="1.5">1.5x</button>
+          <button data-speed="1.75">1.75x</button>
+          <button data-speed="2">2x</button>
+        </div>
       </div>
     </div>
-
-    <div class="title-bar">
-      <h2 id="videoTitle">Loading...</h2>
-      <button class="desc-toggle" onclick="toggleDescription()">➤ Description</button>
-    </div>
-
-    <div class="description" id="descriptionText"></div>
   </div>
 
-  <footer>FilmReserve | Streaming entertainment anytime, anywhere.</footer>
+  <div class="video-info">
+    <div class="buttons">
+      <button onclick="history.back()">⬅ Back</button>
+      <button onclick="alert('Description coming soon!')">▶ Description</button>
+    </div>
+    <h2 id="movieTitle">Movie Title</h2>
+  </div>
+
+  <footer>
+    FilmReserve | Streaming entertainment anytime, anywhere.
+  </footer>
 
   <script>
-    const video = document.getElementById('trailerVideo');
-    const params = new URLSearchParams(window.location.search);
-    const movieKey = params.get('movie');
+    const video = document.getElementById('trailer');
+    const seek = document.getElementById('seek');
+    const muteBtn = document.getElementById('muteBtn');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const timeDisplay = document.getElementById('time');
+    const pipBtn = document.getElementById('pipBtn');
+    const fsBtn = document.getElementById('fsBtn');
 
-    const trailerMap = {
-      'fantastic4': { src: 'trailers/fantastic4.mp4', title: 'Fantastic 4: First Steps', desc: 'The origin story of Marvel\'s first family facing off against Dr. Doom.' },
-      'avengers5': { src: 'trailers/avengers5.mp4', title: 'Avengers: Doomsday', desc: 'The Avengers reunite for a final stand against Doomsday across the multiverse.' },
-      'superman': { src: 'trailers/superman.mp4', title: 'Superman', desc: 'A reimagining of the Man of Steel as he battles new threats.' },
-      'jurassicworld': { src: 'trailers/jurassicworld.mp4', title: 'Jurassic World: Rebirth', desc: 'Dinosaurs return in a new era where humans try to coexist.' },
-      'f1movie': { src: 'trailers/F1.mp4', title: 'F1: The Movie', desc: 'Brad Pitt stars in a high-octane F1 racing thriller.' },
-      '28yearslater': { src: 'trailers/28yearslater.mp4', title: '28 Years Later', desc: 'The virus returns after decades of peace.' }
+    const params = new URLSearchParams(window.location.search);
+    const movie = params.get('movie');
+
+    const movieMap = {
+      'fantastic4': { title: 'Fantastic 4: First Steps', file: 'trailers/fantastic4.mp4' },
+      'avengers5': { title: 'Avengers: Doomsday', file: 'trailers/avengers5.mp4' },
+      'superman': { title: 'Superman', file: 'trailers/superman.mp4' },
+      'f1movie': { title: 'F1: The Movie', file: 'trailers/F1.mp4' },
+      '28yearslater': { title: '28 Years Later', file: 'trailers/28yearslater.mp4' },
+      'jurassicworld': { title: 'Jurassic World: Rebirth', file: 'trailers/jurassicworld.mp4' }
     };
 
-    if (trailerMap[movieKey]) {
-      const trailer = trailerMap[movieKey];
-      video.src = trailer.src;
-      document.getElementById('videoTitle').textContent = trailer.title;
-      document.getElementById('descriptionText').textContent = trailer.desc;
-    } else {
-      video.src = '';
-      document.getElementById('videoTitle').textContent = 'Trailer Not Found';
+    if (movieMap[movie]) {
+      video.src = movieMap[movie].file;
+      document.getElementById('movieTitle').textContent = movieMap[movie].title;
     }
 
-    // Controls
-    document.getElementById('playPause').onclick = () => video.paused ? video.play() : video.pause();
-    document.getElementById('muteBtn').onclick = () => {
+    video.addEventListener('loadedmetadata', () => {
+      seek.max = video.duration;
+    });
+
+    video.addEventListener('timeupdate', () => {
+      seek.value = video.currentTime;
+      const format = t => {
+        const m = Math.floor(t / 60);
+        const s = Math.floor(t % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+      };
+      timeDisplay.textContent = `${format(video.currentTime)} / ${format(video.duration)}`;
+    });
+
+    seek.addEventListener('input', () => {
+      video.currentTime = seek.value;
+    });
+
+    muteBtn.addEventListener('click', () => {
       video.muted = !video.muted;
-      document.getElementById('muteBtn').textContent = video.muted ? '🔇' : '🔊';
-    };
-    document.getElementById('fullscreenBtn').onclick = () => {
-      video.requestFullscreen ? video.requestFullscreen() : video.webkitRequestFullscreen();
-    };
-    document.getElementById('zoomBtn').onclick = () => video.requestFullscreen();
-    document.getElementById('volumeBtn').onclick = () => {
-      const slider = document.getElementById('volumeSlider');
-      slider.style.display = slider.style.display === 'block' ? 'none' : 'block';
-    };
-    document.getElementById('volumeSlider').querySelector('input').oninput = (e) => {
-      video.volume = Math.min(e.target.value, 2);
-    };
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('#volumeBtn') && !e.target.closest('#volumeSlider')) {
-        document.getElementById('volumeSlider').style.display = 'none';
-      }
-      if (!e.target.closest('#dotsBtn') && !e.target.closest('#speedMenu')) {
-        document.getElementById('speedMenu').style.display = 'none';
+      muteBtn.textContent = video.muted ? '🔇' : '🔊';
+    });
+
+    volumeSlider.addEventListener('input', () => {
+      video.volume = volumeSlider.value;
+      video.muted = video.volume === 0;
+      muteBtn.textContent = video.muted ? '🔇' : '🔊';
+    });
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.dropdown')) {
+        document.querySelector('.dropdown-menu').style.display = 'none';
       }
     });
 
-    document.getElementById('dotsBtn').onclick = () => {
-      const menu = document.getElementById('speedMenu');
+    document.querySelector('.dropdown > button').addEventListener('click', e => {
+      const menu = document.getElementById('menu');
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    };
-    document.querySelectorAll('.speed-menu button[data-speed]').forEach(btn => {
-      btn.onclick = () => {
-        video.playbackRate = parseFloat(btn.dataset.speed);
-        document.getElementById('speedMenu').style.display = 'none';
-      };
     });
-    document.getElementById('pipBtn').onclick = async () => {
-      if (document.pictureInPictureElement) {
-        await document.exitPictureInPicture();
-      } else {
+
+    document.querySelectorAll('.dropdown-menu button[data-speed]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        video.playbackRate = parseFloat(btn.dataset.speed);
+        document.getElementById('menu').style.display = 'none';
+      });
+    });
+
+    pipBtn.addEventListener('click', async () => {
+      if (document.pictureInPictureEnabled && !video.disablePictureInPicture) {
         await video.requestPictureInPicture();
       }
-    };
+    });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.code === 'Space') {
-        e.preventDefault();
-        video.paused ? video.play() : video.pause();
-      }
-      if (e.key === 'f') {
-        video.requestFullscreen();
-      }
-      if (e.key === 'm') {
-        video.muted = !video.muted;
-        document.getElementById('muteBtn').textContent = video.muted ? '🔇' : '🔊';
+    fsBtn.addEventListener('click', () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        video.parentElement.requestFullscreen();
       }
     });
 
-    function toggleDescription() {
-      const desc = document.getElementById('descriptionText');
-      desc.style.display = desc.style.display === 'block' ? 'none' : 'block';
-    }
+    document.addEventListener('keydown', e => {
+      if (e.key === ' ') {
+        e.preventDefault();
+        video.paused ? video.play() : video.pause();
+      } else if (e.key === 'm' || e.key === 'M') {
+        video.muted = !video.muted;
+        muteBtn.textContent = video.muted ? '🔇' : '🔊';
+      } else if (e.key === 'f' || e.key === 'F') {
+        fsBtn.click();
+      }
+    });
   </script>
-
 </body>
 </html>
