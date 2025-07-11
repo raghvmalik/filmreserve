@@ -4,285 +4,331 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FilmReserve | Trailer</title>
-  <link rel="stylesheet" href="style.css"/>
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: sans-serif;
-      background: url('images/bg.jpg') no-repeat center center fixed;
-      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #000000, #1a1a1a);
       color: white;
     }
-    header {
-      text-align: center;
-      padding: 10px;
+    .navbar {
       background: #111;
-      font-size: 24px;
+      color: white;
+      text-align: center;
+      padding: 14px 0;
+      font-size: 22px;
+      font-weight: bold;
     }
-    .video-box {
-      margin: 40px auto 10px;
-      width: 80%;
-      max-width: 900px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px cyan;
-      overflow: hidden;
-      background: black;
+    .navbar img {
+      height: 24px;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    .player-container {
+      max-width: 800px;
+      margin: 40px auto 20px;
+      padding: 16px;
+      background: #000;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00baff;
     }
     video {
       width: 100%;
+      border-radius: 8px;
       display: block;
-      background: black;
     }
     .controls {
       display: flex;
       align-items: center;
-      padding: 6px 10px;
-      background: rgba(0, 0, 0, 0.7);
-      gap: 10px;
-      position: relative;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding-top: 8px;
     }
-    .mute-container {
-      position: relative;
-    }
-    .mute-btn {
-      color: white;
-      cursor: pointer;
-    }
-    .volume-slider {
-      position: absolute;
-      bottom: 28px;
-      left: 2px;
-      transform: rotate(-90deg);
-      width: 70px;
-      display: none;
-      appearance: none;
-      height: 4px;
-      background: gray;
-    }
-    .volume-slider::-webkit-slider-thumb {
-      appearance: none;
-      width: 10px;
-      height: 10px;
-      background: cyan;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-    .mute-container.active .volume-slider {
-      display: block;
-    }
-    .time, .fullscreen-btn, .zoom-btn, .options {
-      color: white;
-      cursor: pointer;
-    }
-    .progress {
-      flex-grow: 1;
-    }
-    .desc-toggle {
-      margin-top: 10px;
-      text-align: left;
-      width: 80%;
-      max-width: 900px;
-      margin-inline: auto;
-      font-size: 18px;
-      cursor: pointer;
+    .left-controls, .right-controls {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
+    }
+    .time {
+      color: white;
+      font-size: 14px;
+    }
+    .seekbar {
+      flex-grow: 1;
+      margin: 8px 0;
+    }
+    .seekbar input[type=range] {
+      width: 100%;
+      cursor: pointer;
+      accent-color: #00baff;
+    }
+    .volume-button {
+      position: relative;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: white;
+    }
+    .volume-slider {
+      display: none;
+      position: absolute;
+      left: 10px;
+      bottom: 35px;
+      width: 30px;
+      height: 100px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 4px;
+    }
+    .volume-slider input {
+      writing-mode: bt-lr;
+      transform: rotate(270deg);
+      width: 100px;
+      height: 4px;
+    }
+    .volume-button:focus-within .volume-slider {
+      display: block;
+    }
+    .three-dot-menu {
+      position: relative;
+    }
+    .three-dot-menu button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .three-dot-options {
+      display: none;
+      position: absolute;
+      bottom: 30px;
+      right: 0;
+      background: #222;
+      padding: 6px 12px;
+      border-radius: 6px;
+      z-index: 2;
+    }
+    .three-dot-options select {
+      background: #333;
+      color: white;
+      border: none;
+      margin-bottom: 6px;
+      width: 100%;
+    }
+    .three-dot-options button {
+      background: #444;
+      color: white;
+      border: none;
+      width: 100%;
+      margin-top: 4px;
+    }
+    .three-dot-menu.active .three-dot-options {
+      display: block;
+    }
+    .zoom-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .title-container {
+      text-align: left;
+      padding: 0 8px;
+      margin: 10px auto;
+      max-width: 800px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .desc-toggle {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      margin-right: 8px;
     }
     .description {
       display: none;
-      margin: 5px auto;
-      width: 80%;
-      max-width: 900px;
-      font-size: 16px;
+      font-size: 14px;
+      margin-top: 4px;
       color: #ccc;
-    }
-    .options-menu {
-      position: absolute;
-      background: #222;
-      padding: 8px;
-      border-radius: 6px;
-      display: none;
-      flex-direction: column;
-      bottom: 35px;
-      right: 40px;
-      z-index: 9;
-    }
-    .options-menu button {
-      background: none;
-      color: white;
-      border: none;
-      text-align: left;
-      padding: 4px 8px;
-      cursor: pointer;
-    }
-    .options-menu button:hover {
-      background: #333;
-    }
-    .options {
-      position: relative;
     }
   </style>
 </head>
 <body>
-  <header>🎬 FilmReserve</header>
+  <div class="navbar">
+    <img src="https://img.icons8.com/ios-filled/50/film-reel.png" width="24" /> FilmReserve
+  </div>
 
-  <div class="video-box">
-    <video id="video" poster="images/poster.jpg">
-      <track label="English" kind="subtitles" srclang="en" src="captions.vtt" default />
+  <div class="player-container">
+    <video id="video" poster="" crossorigin="anonymous">
+      <source id="videoSource" src="" type="video/mp4" />
+      Your browser does not support the video tag.
     </video>
+
     <div class="controls">
-      <div class="mute-container" id="muteContainer">
-        <span class="mute-btn" id="muteBtn">🔊</span>
-        <input type="range" id="volume" class="volume-slider" min="0" max="2" step="0.01" value="1" />
-      </div>
-      <span class="time" id="time">0:00 / 0:00</span>
-      <input type="range" id="progress" class="progress" value="0" />
-      <div class="options">
-        <span class="three-dots" id="threeDots">⋮</span>
-        <div class="options-menu" id="optionsMenu">
-          <button onclick="setSpeed(0.25)">0.25x</button>
-          <button onclick="setSpeed(0.5)">0.5x</button>
-          <button onclick="setSpeed(0.75)">0.75x</button>
-          <button onclick="setSpeed(1)">1x</button>
-          <button onclick="setSpeed(1.5)">1.5x</button>
-          <button onclick="setSpeed(2)">2x</button>
-          <button onclick="toggleCaptions()">Captions</button>
-          <button onclick="togglePiP()">Picture in Picture</button>
+      <div class="left-controls">
+        <button id="playPauseBtn">▶️</button>
+        <div class="time" id="timer">0:00 / 0:00</div>
+        <div class="volume-button">
+          🔊
+          <div class="volume-slider">
+            <input id="volumeSlider" type="range" min="0" max="2" step="0.1" value="1"/>
+          </div>
         </div>
       </div>
-      <span class="zoom-btn" onclick="toggleZoom()">🔳</span>
-      <span class="fullscreen-btn" onclick="toggleFull()">⛶</span>
+
+      <div class="seekbar">
+        <input id="seekbar" type="range" min="0" value="0" />
+      </div>
+
+      <div class="right-controls">
+        <div class="three-dot-menu" id="menu">
+          <button id="menuBtn">⋮</button>
+          <div class="three-dot-options">
+            <select id="speedSelect">
+              <option value="0.25">0.25x</option>
+              <option value="0.5">0.5x</option>
+              <option value="0.75">0.75x</option>
+              <option value="1" selected>1x</option>
+              <option value="1.25">1.25x</option>
+              <option value="1.5">1.5x</option>
+              <option value="1.75">1.75x</option>
+              <option value="2">2x</option>
+            </select>
+            <button id="captionBtn">Captions</button>
+            <button id="pipBtn">PiP</button>
+          </div>
+        </div>
+        <button class="zoom-button" id="zoomBtn">🔳</button>
+      </div>
     </div>
   </div>
 
-  <div class="desc-toggle" onclick="toggleDesc()">
-    <span id="arrow">▼</span>
-    <b id="title">Movie Title</b>
-  </div>
-  <div class="description" id="desc">
-    Watch the official trailer of this blockbuster. Featuring your favorite heroes and epic scenes.
+  <div class="title-container">
+    <button class="desc-toggle" id="descToggle">▾</button>
+    <span id="movieTitle"></span>
+    <div class="description" id="movieDesc"></div>
   </div>
 
   <script>
-    const video = document.getElementById('video');
-    const progress = document.getElementById('progress');
-    const time = document.getElementById('time');
-    const volume = document.getElementById('volume');
-    const muteBtn = document.getElementById('muteBtn');
-    const muteContainer = document.getElementById('muteContainer');
-    const optionsMenu = document.getElementById('optionsMenu');
-    const threeDots = document.getElementById('threeDots');
-
-    const params = new URLSearchParams(location.search);
-    const movie = params.get('movie');
-    const sources = {
-      'fantastic4': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4',
-      'avengers5': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4',
-      'f1movie': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752123184/f1trailer_filmreserve.mp4',
-      '28yearslater': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752123220/28yltrailer_filmreserve.mp4',
-      'jurassicworld': 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752123273/jwtrailer_filmreserve.mp4'
+    const movieData = {
+      'fantastic4': {
+        title: 'Fantastic 4: First Steps',
+        desc: 'A reboot of Marvel’s first family as they face cosmic threats.',
+        src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4'
+      },
+      'avengers': {
+        title: 'Avengers: Doomsday',
+        desc: 'The Avengers return for a final face-off against galactic danger.',
+        src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4'
+      },
+      'jurassic': {
+        title: 'Jurassic World: Extinction',
+        desc: 'Dinosaurs run wild once again as survival is tested.',
+        src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122902/videoplayback_4_b6sgrl.mp4'
+      }
     };
 
-    const titles = {
-      'fantastic4': 'Fantastic 4: First Steps',
-      'avengers5': 'Avengers: Doomsday',
-      'f1movie': 'F1: The Movie',
-      '28yearslater': '28 Years Later',
-      'jurassicworld': 'Jurassic World: Rebirth'
-    };
+    const video = document.getElementById("video");
+    const source = document.getElementById("videoSource");
+    const urlParams = new URLSearchParams(window.location.search);
+    const movie = urlParams.get("movie");
 
-    if (movie && sources[movie]) {
-      video.src = sources[movie];
-      document.getElementById('title').innerText = titles[movie];
+    if (movieData[movie]) {
+      source.src = movieData[movie].src;
+      document.getElementById("movieTitle").textContent = movieData[movie].title;
+      document.getElementById("movieDesc").textContent = movieData[movie].desc;
     }
 
-    video.addEventListener('loadedmetadata', () => {
-      time.innerText = `0:00 / ${format(video.duration)}`;
+    video.load();
+
+    const playBtn = document.getElementById("playPauseBtn");
+    const timer = document.getElementById("timer");
+    const seekbar = document.getElementById("seekbar");
+    const volumeSlider = document.getElementById("volumeSlider");
+    const menuBtn = document.getElementById("menuBtn");
+    const menu = document.getElementById("menu");
+    const speedSelect = document.getElementById("speedSelect");
+    const pipBtn = document.getElementById("pipBtn");
+    const zoomBtn = document.getElementById("zoomBtn");
+
+    playBtn.addEventListener("click", () => {
+      if (video.paused) {
+        video.play();
+        playBtn.textContent = "⏸️";
+      } else {
+        video.pause();
+        playBtn.textContent = "▶️";
+      }
     });
 
-    video.addEventListener('timeupdate', () => {
-      time.innerText = `${format(video.currentTime)} / ${format(video.duration)}`;
-      progress.value = (video.currentTime / video.duration) * 100;
+    video.addEventListener("timeupdate", () => {
+      seekbar.value = video.currentTime;
+      timer.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
     });
 
-    progress.addEventListener('input', () => {
-      video.currentTime = (progress.value / 100) * video.duration;
+    video.addEventListener("loadedmetadata", () => {
+      seekbar.max = video.duration;
     });
 
-    video.addEventListener('click', () => {
-      video.paused ? video.play() : video.pause();
+    seekbar.addEventListener("input", () => {
+      video.currentTime = seekbar.value;
     });
 
-    volume.addEventListener('input', () => {
-      video.volume = Math.min(volume.value, 1);
+    volumeSlider.addEventListener("input", () => {
+      video.volume = Math.min(1, volumeSlider.value);
     });
 
-    muteBtn.onclick = () => {
-      muteContainer.classList.toggle('active');
-      video.muted = !video.muted;
-      muteBtn.innerText = video.muted ? '🔇' : '🔊';
-    };
+    speedSelect.addEventListener("change", () => {
+      video.playbackRate = parseFloat(speedSelect.value);
+      menu.classList.remove("active");
+    });
 
-    threeDots.onclick = () => {
-      optionsMenu.style.display = optionsMenu.style.display === 'flex' ? 'none' : 'flex';
-    };
+    menuBtn.addEventListener("click", () => {
+      menu.classList.toggle("active");
+    });
 
-    function format(sec) {
-      if (isNaN(sec)) return '0:00';
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60).toString().padStart(2, '0');
-      return `${m}:${s}`;
-    }
+    pipBtn.addEventListener("click", async () => {
+      if (document.pictureInPictureElement) {
+        document.exitPictureInPicture();
+      } else {
+        await video.requestPictureInPicture();
+      }
+    });
 
-    function toggleFull() {
+    zoomBtn.addEventListener("click", () => {
       if (!document.fullscreenElement) {
         video.requestFullscreen();
       } else {
         document.exitFullscreen();
       }
+    });
+
+    document.getElementById("descToggle").addEventListener("click", () => {
+      const desc = document.getElementById("movieDesc");
+      desc.style.display = desc.style.display === "block" ? "none" : "block";
+    });
+
+    function formatTime(t) {
+      const min = Math.floor(t / 60);
+      const sec = Math.floor(t % 60);
+      return `${min}:${sec < 10 ? "0" : ""}${sec}`;
     }
 
-    function toggleZoom() {
-      video.style.transform = video.style.transform === 'scale(1.2)' ? 'scale(1)' : 'scale(1.2)';
-    }
-
-    function toggleDesc() {
-      const desc = document.getElementById('desc');
-      const arrow = document.getElementById('arrow');
-      if (desc.style.display === 'block') {
-        desc.style.display = 'none';
-        arrow.innerText = '▼';
-      } else {
-        desc.style.display = 'block';
-        arrow.innerText = '▲';
-      }
-    }
-
-    function setSpeed(speed) {
-      video.playbackRate = speed;
-    }
-
-    function toggleCaptions() {
-      const track = video.textTracks[0];
-      track.mode = track.mode === 'showing' ? 'disabled' : 'showing';
-    }
-
-    function togglePiP() {
-      if (document.pictureInPictureElement) {
-        document.exitPictureInPicture();
-      } else {
-        video.requestPictureInPicture();
-      }
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === ' ') {
+    document.addEventListener("keydown", e => {
+      if (e.key === " ") {
         e.preventDefault();
-        video.paused ? video.play() : video.pause();
+        playBtn.click();
+      } else if (e.key.toLowerCase() === "f") {
+        zoomBtn.click();
+      } else if (e.key.toLowerCase() === "m") {
+        video.muted = !video.muted;
       }
-      if (e.key === 'f') toggleFull();
-      if (e.key === 'm') muteBtn.click();
     });
   </script>
 </body>
