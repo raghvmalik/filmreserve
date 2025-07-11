@@ -2,346 +2,233 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FilmReserve | Trailer</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: radial-gradient(#0d0d0d, #000);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+    /* Basic Reset + Dark Theme */
+    body { margin:0; background:#000; color:#fff; font-family:Arial,sans-serif; display:flex; flex-direction:column; min-height:100vh; }
+    header, footer { background:#111; text-align:center; padding:12px; }
+    header { font-size:24px; font-weight:bold; }
+    main { flex:1; display:flex; justify-content:center; align-items:start; padding:20px; }
+
+    /* Player Container */
+    .player-wrapper {
+      width:800px; max-width:95%;
+      background:#000; padding:20px; border-radius:10px;
+      box-shadow:0 0 20px #00aeff; margin-bottom:20px;
     }
-    .navbar {
-      background: #111;
-      color: white;
-      text-align: center;
-      padding: 14px 0;
-      font-size: 22px;
-      font-weight: bold;
-    }
-    .player-container {
-      max-width: 1000px;
-      margin: 40px auto 20px;
-      padding: 16px;
-      background: #000;
-      border-radius: 12px;
-      box-shadow: 0 0 20px #00baff;
-    }
-    video {
-      width: 100%;
-      border-radius: 8px;
-      display: block;
-      cursor: pointer;
-    }
-    .controls {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-    .left-controls, .right-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .time {
-      color: white;
-      font-size: 14px;
-    }
-    .seekbar {
-      flex-grow: 1;
-      margin: 8px 10px;
-    }
-    .seekbar input[type=range] {
-      width: 100%;
-      cursor: pointer;
-      accent-color: #00baff;
-    }
-    .volume-button {
-      position: relative;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 18px;
-      color: white;
-    }
-    .volume-slider {
-      display: none;
-      position: absolute;
-      bottom: 30px;
-      left: 5px;
-      height: 80px;
-      width: 4px;
-      background: white;
-      border-radius: 6px;
-      transform: rotate(270deg);
-    }
-    .volume-button:hover .volume-slider {
-      display: block;
-    }
-    .volume-slider input {
-      width: 80px;
-      height: 4px;
-    }
-    .three-dot-menu {
-      position: relative;
-    }
-    .three-dot-menu button {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    .three-dot-options {
-      display: none;
-      position: absolute;
-      bottom: 30px;
-      right: 0;
-      background: #222;
-      padding: 8px 12px;
-      border-radius: 6px;
-      z-index: 2;
-      width: 140px;
-    }
-    .three-dot-options.active { display: block; }
-    .three-dot-options label {
-      font-size: 13px;
-      color: #ccc;
-      margin-bottom: 4px;
-      display: block;
-    }
-    .three-dot-options select {
-      background: #333;
-      color: white;
-      border: none;
-      width: 100%;
-    }
-    .three-dot-options button {
-      background: #444;
-      color: white;
-      border: none;
-      width: 100%;
-      margin-top: 6px;
-    }
-    .zoom-button {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    .title-container {
-      text-align: center;
-      margin-top: 10px;
-      font-weight: bold;
-      font-size: 18px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-    }
-    .desc-toggle {
-      background: none;
-      border: none;
-      color: #ddd;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .description {
-      display: none;
-      font-size: 14px;
-      margin-top: 6px;
-      text-align: center;
-      color: #bbb;
-    }
-    .footer {
-      text-align: center;
-      padding: 14px 0;
-      font-size: 13px;
-      color: #777;
-      background: #111;
-      margin-top: auto;
-    }
+    video { width:100%; max-height:450px; background:#000; cursor:pointer; border-radius:8px; }
+
+    /* Controls */
+    .controls { display:flex; align-items:center; gap:12px; margin-top:10px; flex-wrap:wrap; }
+    button, select, input[type=range] { background:none; border:none; color:#fff; cursor:pointer; }
+    #seek { flex:1; height:6px; accent-color:#00aeff; }
+
+    /* Volume */
+    .vol-container { position:relative; }
+    #volume-slider { position:absolute; bottom:30px; left:-30px; transform:rotate(-90deg); width:120px; display:none; }
+    .vol-container.clicked #volume-slider { display:block; }
+
+    /* Menu */
+    .menu { position:relative; }
+    #menu-popup { position:absolute; bottom:35px; right:0; background:#222; padding:10px; border-radius:6px; display:none; box-shadow:0 0 10px #000; }
+    .menu.open #menu-popup { display:flex; flex-direction:column; gap:8px; }
+
+    /* Title & Description */
+    .title-section { display:flex; align-items:center; justify-content:center; gap:10px; margin-top:15px; font-size:22px; }
+    #toggle-desc { background:#222; padding:4px 8px; border-radius:4px; }
+    #movie-description { display:none; margin-top:10px; color:#bbb; font-size:15px; text-align:center; }
+
+    footer { font-size:14px; color:#aaa; }
   </style>
 </head>
+
 <body>
-  <div class="navbar">🎥 FilmReserve</div>
+  <header>🎬 FilmReserve</header>
 
-  <div class="player-container">
-    <video id="video" poster="" crossorigin="anonymous">
-      <source id="videoSource" src="" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+  <main>
+    <div class="player-wrapper">
+      <video id="trailer-video" preload="metadata"></video>
 
-    <div class="controls">
-      <div class="left-controls">
-        <div class="volume-button" id="muteBtn">🔊
-          <div class="volume-slider">
-            <input id="volumeSlider" type="range" min="0" max="2" step="0.1" value="1"/>
-          </div>
+      <div class="controls">
+        <div class="vol-container">
+          <button id="mute-btn" title="Press M to mute/unmute">🔊</button>
+          <input type="range" id="volume-slider" min="0" max="2" step="0.05" value="1">
         </div>
-        <div class="time" id="timer">0:00 / 0:00</div>
-      </div>
 
-      <div class="seekbar">
-        <input id="seekbar" type="range" min="0" value="0" />
-      </div>
+        <span id="time">0:00 / 0:00</span>
 
-      <div class="right-controls">
-        <div class="three-dot-menu">
-          <button id="menuBtn">⋮</button>
-          <div class="three-dot-options" id="menuOptions">
-            <label for="speedSelect">Playback Speed</label>
-            <select id="speedSelect">
-              <option value="0.25">0.25x</option>
-              <option value="0.5">0.5x</option>
-              <option value="0.75">0.75x</option>
-              <option value="1" selected>1x</option>
-              <option value="1.25">1.25x</option>
-              <option value="1.5">1.5x</option>
-              <option value="1.75">1.75x</option>
-              <option value="2">2x</option>
+        <input type="range" id="seek" value="0" step="0.01">
+
+        <button id="zoom-btn" title="Press F to toggle fullscreen">⛶</button>
+
+        <div class="menu">
+          <button id="menu-btn">⋮</button>
+          <div id="menu-popup">
+            <label for="speed-select" style="color:#ccc;font-size:13px;">Playback Speed</label>
+            <select id="speed-select">
+              <option value="0.25">0.25×</option>
+              <option value="0.5">0.5×</option>
+              <option value="0.75">0.75×</option>
+              <option value="1" selected>1×</option>
+              <option value="1.25">1.25×</option>
+              <option value="1.5">1.5×</option>
+              <option value="1.75">1.75×</option>
+              <option value="2">2×</option>
             </select>
-            <button id="captionBtn">Captions</button>
-            <button id="pipBtn">PiP Mode</button>
+            <button id="pip-btn">📺 Picture-in-Picture</button>
           </div>
         </div>
-        <button class="zoom-button" id="zoomBtn">⛶</button>
       </div>
+
+      <div class="title-section">
+        <h2 id="movie-title">Loading...</h2>
+        <button id="toggle-desc">▼</button>
+      </div>
+      <p id="movie-description"></p>
     </div>
-  </div>
+  </main>
 
-  <div class="title-container">
-    <span id="movieTitle"></span>
-    <button class="desc-toggle" id="descToggle">▾</button>
-  </div>
-  <div class="description" id="movieDesc"></div>
-
-  <div class="footer">FilmReserve | Streaming entertainment anytime anywhere</div>
+  <footer>FilmReserve | Streaming entertainment anytime anywhere</footer>
 
   <script>
-    const movieData = {
-      'fantastic4': {
+    // Video resources
+    const trailers = {
+      fantastic4: {
+        url: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4',
         title: 'Fantastic 4: First Steps',
-        desc: 'A reboot of Marvel’s first family as they face cosmic threats.',
-        src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4'
+        desc: 'Four astronauts gain cosmic abilities and must unite to face a new threat.'
       },
-      'avengers': {
+      jurassicworld: {
+        url: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/y2mate.gg_-_Jurassic_World_Rebirth_Official_Trailer_360_bjil0w.mp4',
+        title: 'Jurassic World Rebirth',
+        desc: 'Dinosaurs return with vengeance in this thrilling reboot of Jurassic World.'
+      },
+      twenty8days: {
+        url: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/videoplayback_3_d2szfo.mp4',
+        title: '28 Days Later',
+        desc: 'A deadly virus has devastated the world. Desperate survivors must fight to stay alive.'
+      },
+      f1trailer: {
+        url: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136569/videoplayback_4_sp9lr3.mp4',
+        title: 'F1: The Movie',
+        desc: 'High-speed racing drama set in the world of Formula 1.'
+      },
+      avengers: {
+        url: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4', // replace if original
         title: 'Avengers: Doomsday',
-        desc: 'The Avengers return for a final face-off against galactic danger.',
-        src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122967/videoplayback_5_xlgkqv.mp4'
+        desc: 'The Avengers assemble once again to face an apocalyptic threat.'
       },
-      'jurassic': {
-        title: 'Jurassic World: Extinction',
-        desc: 'Dinosaurs run wild once again as survival is tested.',
-        src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122902/videoplayback_4_b6sgrl.mp4'
+      superman: {
+        url: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122503/videoplayback_1_wooh5o.mp4',
+        title: 'Superman: Legacy',
+        desc: 'The Man of Steel faces a new challenge as he embraces his destiny.'
       }
     };
 
-    const video = document.getElementById("video");
-    const source = document.getElementById("videoSource");
-    const urlParams = new URLSearchParams(window.location.search);
-    const movie = urlParams.get("movie");
+    // Elements
+    const video = document.getElementById('trailer-video');
+    const muteBtn = document.getElementById('mute-btn');
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumeContainer = document.querySelector('.vol-container');
+    const timeDisplay = document.getElementById('time');
+    const seek = document.getElementById('seek');
+    const zoomBtn = document.getElementById('zoom-btn');
+    const pipBtn = document.getElementById('pip-btn');
+    const menuBtn = document.getElementById('menu-btn');
+    const menuPopup = document.getElementById('menu-popup');
+    const speedSelect = document.getElementById('speed-select');
+    const titleEl = document.getElementById('movie-title');
+    const descEl = document.getElementById('movie-description');
+    const toggleDescBtn = document.getElementById('toggle-desc');
 
-    if (movieData[movie]) {
-      source.src = movieData[movie].src;
-      document.getElementById("movieTitle").textContent = movieData[movie].title;
-      document.getElementById("movieDesc").textContent = movieData[movie].desc;
+    // Load proper trailer
+    const key = new URLSearchParams(location.search).get('movie') || 'fantastic4';
+    const trailer = trailers[key];
+    if (!trailer) {
+      titleEl.textContent = 'Trailer Not Found';
+      video.outerHTML = '<p style="color:red; text-align:center;">Trailer not found.</p>';
+    } else {
+      video.src = trailer.url;
+      titleEl.textContent = trailer.title;
+      descEl.textContent = trailer.desc;
     }
 
-    video.load();
+    // Playback and timeupdate
+    video.addEventListener('timeupdate', () => {
+      seek.value = video.currentTime;
+      timeDisplay.textContent = formatTime(video.currentTime) + ' / ' + formatTime(video.duration);
+    });
+    video.addEventListener('loadedmetadata', () => { seek.max = video.duration; });
 
-    const timer = document.getElementById("timer");
-    const seekbar = document.getElementById("seekbar");
-    const volumeSlider = document.getElementById("volumeSlider");
-    const speedSelect = document.getElementById("speedSelect");
-    const pipBtn = document.getElementById("pipBtn");
-    const zoomBtn = document.getElementById("zoomBtn");
-    const muteBtn = document.getElementById("muteBtn");
-    const menuBtn = document.getElementById("menuBtn");
-    const menuOptions = document.getElementById("menuOptions");
+    // Seek
+    seek.addEventListener('input', () => { video.currentTime = seek.value; });
 
-    video.addEventListener("timeupdate", () => {
-      seekbar.value = video.currentTime;
-      timer.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration || 0)}`;
+    // Play/pause by clicking video or spacebar
+    video.addEventListener('click', () => { video.paused ? video.play() : video.pause(); });
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space') { e.preventDefault(); video.paused ? video.play() : video.pause(); }
+      if (e.key.toLowerCase() === 'm') muteBtn.click();
+      if (e.key.toLowerCase() === 'f') zoomBtn.click();
     });
 
-    video.addEventListener("loadedmetadata", () => {
-      seekbar.max = video.duration;
-    });
-
-    seekbar.addEventListener("input", () => {
-      video.currentTime = seekbar.value;
-    });
-
-    volumeSlider.addEventListener("input", () => {
-      video.volume = Math.min(1, volumeSlider.value);
-      video.muted = false;
-    });
-
-    muteBtn.addEventListener("click", () => {
+    // Mute/unmute
+    muteBtn.addEventListener('click', () => {
       video.muted = !video.muted;
+      muteBtn.textContent = video.muted ? '🔇' : '🔊';
     });
 
-    speedSelect.addEventListener("change", () => {
+    // Volume slider toggle
+    muteBtn.addEventListener('click', () => volumeContainer.classList.toggle('clicked'));
+    volumeSlider.addEventListener('input', () => {
+      video.volume = Math.min(volumeSlider.value, 1);
+      video.muted = false;
+      muteBtn.textContent = '🔊';
+    });
+
+    // Fullscreen
+    zoomBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) video.parentElement.requestFullscreen();
+      else document.exitFullscreen();
+    });
+
+    // PiP
+    pipBtn.addEventListener('click', async () => {
+      if (document.pictureInPictureEnabled) {
+        try { await video.requestPictureInPicture(); }
+        catch { /* ignore */ }
+      }
+      closeMenu();
+    });
+
+    // Speed selector
+    speedSelect.addEventListener('change', () => {
       video.playbackRate = parseFloat(speedSelect.value);
-      menuOptions.classList.remove("active");
+      closeMenu();
     });
 
-    menuBtn.addEventListener("click", () => {
-      menuOptions.classList.toggle("active");
+    function closeMenu() { menuBtn.parentElement.classList.remove('open'); }
+
+    // Menu open/close
+    menuBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      menuBtn.parentElement.classList.toggle('open');
+    });
+    document.addEventListener('click', e => {
+      if (!menuBtn.contains(e.target)) closeMenu();
     });
 
-    pipBtn.addEventListener("click", async () => {
-      if (document.pictureInPictureElement) {
-        document.exitPictureInPicture();
-      } else {
-        await video.requestPictureInPicture();
-      }
+    // Description toggle
+    toggleDescBtn.addEventListener('click', () => {
+      descEl.style.display = descEl.style.display === 'block' ? 'none' : 'block';
+      toggleDescBtn.textContent = descEl.style.display === 'block' ? '▲' : '▼';
     });
 
-    zoomBtn.addEventListener("click", () => {
-      if (!document.fullscreenElement) {
-        video.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    });
-
-    document.getElementById("descToggle").addEventListener("click", () => {
-      const desc = document.getElementById("movieDesc");
-      desc.style.display = desc.style.display === "block" ? "none" : "block";
-    });
-
-    video.addEventListener("click", () => {
-      if (video.paused) video.play();
-      else video.pause();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.code === "Space") {
-        e.preventDefault();
-        video.paused ? video.play() : video.pause();
-      }
-      if (e.key.toLowerCase() === "m") {
-        video.muted = !video.muted;
-      }
-      if (e.key.toLowerCase() === "f") {
-        if (!document.fullscreenElement) video.requestFullscreen();
-        else document.exitFullscreen();
-      }
-    });
-
+    // Formatting
     function formatTime(t) {
-      const min = Math.floor(t / 60);
-      const sec = Math.floor(t % 60);
-      return `${min}:${sec < 10 ? "0" : ""}${sec}`;
+      if (!t || isNaN(t)) return '0:00';
+      const m = Math.floor(t/60), s = Math.floor(t%60).toString().padStart(2, '0');
+      return `${m}:${s}`;
     }
   </script>
 </body>
