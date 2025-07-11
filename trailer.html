@@ -3,233 +3,310 @@
 <head>
   <meta charset="UTF-8" />
   <title>FilmReserve | Trailer</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="style.css">
   <style>
-    /* Basic Reset + Dark Theme */
-    body { margin:0; background:#000; color:#fff; font-family:Arial,sans-serif; display:flex; flex-direction:column; min-height:100vh; }
-    header, footer { background:#111; text-align:center; padding:12px; }
-    header { font-size:24px; font-weight:bold; }
-    main { flex:1; display:flex; justify-content:center; align-items:start; padding:20px; }
-
-    /* Player Container */
-    .player-wrapper {
-      width:800px; max-width:95%;
-      background:#000; padding:20px; border-radius:10px;
-      box-shadow:0 0 20px #00aeff; margin-bottom:20px;
+    body {
+      margin: 0;
+      background: radial-gradient(#111, #000);
+      color: #fff;
+      font-family: Arial, sans-serif;
     }
-    video { width:100%; max-height:450px; background:#000; cursor:pointer; border-radius:8px; }
 
-    /* Controls */
-    .controls { display:flex; align-items:center; gap:12px; margin-top:10px; flex-wrap:wrap; }
-    button, select, input[type=range] { background:none; border:none; color:#fff; cursor:pointer; }
-    #seek { flex:1; height:6px; accent-color:#00aeff; }
+    header {
+      background: #111;
+      padding: 10px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
 
-    /* Volume */
-    .vol-container { position:relative; }
-    #volume-slider { position:absolute; bottom:30px; left:-30px; transform:rotate(-90deg); width:120px; display:none; }
-    .vol-container.clicked #volume-slider { display:block; }
+    .player-container {
+      max-width: 720px;
+      margin: 40px auto 0;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px #00bcd4;
+      background-color: #111;
+      position: relative;
+    }
 
-    /* Menu */
-    .menu { position:relative; }
-    #menu-popup { position:absolute; bottom:35px; right:0; background:#222; padding:10px; border-radius:6px; display:none; box-shadow:0 0 10px #000; }
-    .menu.open #menu-popup { display:flex; flex-direction:column; gap:8px; }
+    video {
+      width: 100%;
+      border-radius: 8px;
+      background: black;
+    }
 
-    /* Title & Description */
-    .title-section { display:flex; align-items:center; justify-content:center; gap:10px; margin-top:15px; font-size:22px; }
-    #toggle-desc { background:#222; padding:4px 8px; border-radius:4px; }
-    #movie-description { display:none; margin-top:10px; color:#bbb; font-size:15px; text-align:center; }
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      position: relative;
+    }
 
-    footer { font-size:14px; color:#aaa; }
+    .progress {
+      flex-grow: 1;
+      margin: 0 10px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      appearance: none;
+      height: 6px;
+      background: #555;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      background: #03a9f4;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .mute-btn {
+      position: relative;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .mute-btn.muted::after {
+      content: '🔇';
+      color: red;
+      position: absolute;
+      left: 0;
+    }
+
+    .volume-slider {
+      display: none;
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      width: 5px;
+      height: 80px;
+      background: #333;
+      border-radius: 4px;
+    }
+
+    .volume-slider input {
+      transform: rotate(-90deg);
+      width: 80px;
+      position: absolute;
+      left: -37.5px;
+      top: 35px;
+    }
+
+    .mute-wrapper:hover .volume-slider,
+    .volume-slider.active {
+      display: block;
+    }
+
+    .title-bar {
+      text-align: center;
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    .menu-wrapper {
+      position: relative;
+    }
+
+    .menu-btn {
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      bottom: 30px;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 6px;
+      padding: 6px 10px;
+    }
+
+    .menu.active {
+      display: block;
+    }
+
+    .menu label {
+      display: block;
+      padding: 4px 0;
+      cursor: pointer;
+    }
+
+    .zoom-btn {
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 60px;
+      color: #888;
+    }
   </style>
 </head>
-
 <body>
-  <header>🎬 FilmReserve</header>
 
-  <main>
-    <div class="player-wrapper">
-      <video id="trailer-video" preload="metadata"></video>
+<header>🎬 FilmReserve</header>
 
-      <div class="controls">
-        <div class="vol-container">
-          <button id="mute-btn" title="Press M to mute/unmute">🔊</button>
-          <input type="range" id="volume-slider" min="0" max="2" step="0.05" value="1">
-        </div>
-
-        <span id="time">0:00 / 0:00</span>
-
-        <input type="range" id="seek" value="0" step="0.01">
-
-        <button id="zoom-btn" title="Press F to toggle fullscreen">⛶</button>
-
-        <div class="menu">
-          <button id="menu-btn">⋮</button>
-          <div id="menu-popup">
-            <label for="speed-select" style="color:#ccc;font-size:13px;">Playback Speed</label>
-            <select id="speed-select">
-              <option value="0.25">0.25×</option>
-              <option value="0.5">0.5×</option>
-              <option value="0.75">0.75×</option>
-              <option value="1" selected>1×</option>
-              <option value="1.25">1.25×</option>
-              <option value="1.5">1.5×</option>
-              <option value="1.75">1.75×</option>
-              <option value="2">2×</option>
-            </select>
-            <button id="pip-btn">📺 Picture-in-Picture</button>
-          </div>
-        </div>
+<div class="player-container">
+  <video id="video" controls></video>
+  <div class="controls">
+    <div class="mute-wrapper">
+      <div class="mute-btn" id="mute">🔊</div>
+      <div class="volume-slider" id="volumeSliderWrapper">
+        <input type="range" id="volume" min="0" max="1" step="0.05" value="1">
       </div>
-
-      <div class="title-section">
-        <h2 id="movie-title">Loading...</h2>
-        <button id="toggle-desc">▼</button>
-      </div>
-      <p id="movie-description"></p>
     </div>
-  </main>
+    <div class="time" id="time">0:00 / 0:00</div>
+    <input type="range" id="seek" class="progress" value="0">
+    <div class="zoom-btn" id="zoomBtn">⛶</div>
+    <div class="menu-wrapper">
+      <div class="menu-btn" id="threeDots">⋮</div>
+      <div class="menu" id="menu">
+        <strong>Playback Speed</strong>
+        <label><input type="radio" name="speed" value="0.5"> 0.5x</label>
+        <label><input type="radio" name="speed" value="1" checked> 1x</label>
+        <label><input type="radio" name="speed" value="1.25"> 1.25x</label>
+        <label><input type="radio" name="speed" value="1.5"> 1.5x</label>
+        <label><input type="radio" name="speed" value="1.75"> 1.75x</label>
+        <label><input type="radio" name="speed" value="2"> 2x</label>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <footer>FilmReserve | Streaming entertainment anytime anywhere</footer>
+<div class="title-bar" id="title"></div>
 
-  <script>
-    // Video resources
-    const trailers = {
-      fantastic4: {
-        url: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4',
-        title: 'Fantastic 4: First Steps',
-        desc: 'Four astronauts gain cosmic abilities and must unite to face a new threat.'
-      },
-      jurassicworld: {
-        url: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/y2mate.gg_-_Jurassic_World_Rebirth_Official_Trailer_360_bjil0w.mp4',
-        title: 'Jurassic World Rebirth',
-        desc: 'Dinosaurs return with vengeance in this thrilling reboot of Jurassic World.'
-      },
-      twenty8days: {
-        url: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136552/videoplayback_3_d2szfo.mp4',
-        title: '28 Days Later',
-        desc: 'A deadly virus has devastated the world. Desperate survivors must fight to stay alive.'
-      },
-      f1trailer: {
-        url: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752136569/videoplayback_4_sp9lr3.mp4',
-        title: 'F1: The Movie',
-        desc: 'High-speed racing drama set in the world of Formula 1.'
-      },
-      avengers: {
-        url: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4', // replace if original
-        title: 'Avengers: Doomsday',
-        desc: 'The Avengers assemble once again to face an apocalyptic threat.'
-      },
-      superman: {
-        url: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122503/videoplayback_1_wooh5o.mp4',
-        title: 'Superman: Legacy',
-        desc: 'The Man of Steel faces a new challenge as he embraces his destiny.'
-      }
-    };
+<footer>FilmReserve | Streaming entertainment anytime, anywhere.</footer>
 
-    // Elements
-    const video = document.getElementById('trailer-video');
-    const muteBtn = document.getElementById('mute-btn');
-    const volumeSlider = document.getElementById('volume-slider');
-    const volumeContainer = document.querySelector('.vol-container');
-    const timeDisplay = document.getElementById('time');
-    const seek = document.getElementById('seek');
-    const zoomBtn = document.getElementById('zoom-btn');
-    const pipBtn = document.getElementById('pip-btn');
-    const menuBtn = document.getElementById('menu-btn');
-    const menuPopup = document.getElementById('menu-popup');
-    const speedSelect = document.getElementById('speed-select');
-    const titleEl = document.getElementById('movie-title');
-    const descEl = document.getElementById('movie-description');
-    const toggleDescBtn = document.getElementById('toggle-desc');
+<script>
+  const video = document.getElementById("video");
+  const muteBtn = document.getElementById("mute");
+  const volumeSlider = document.getElementById("volume");
+  const seek = document.getElementById("seek");
+  const time = document.getElementById("time");
+  const zoomBtn = document.getElementById("zoomBtn");
+  const titleEl = document.getElementById("title");
+  const menu = document.getElementById("menu");
+  const threeDots = document.getElementById("threeDots");
 
-    // Load proper trailer
-    const key = new URLSearchParams(location.search).get('movie') || 'fantastic4';
-    const trailer = trailers[key];
-    if (!trailer) {
-      titleEl.textContent = 'Trailer Not Found';
-      video.outerHTML = '<p style="color:red; text-align:center;">Trailer not found.</p>';
-    } else {
-      video.src = trailer.url;
-      titleEl.textContent = trailer.title;
-      descEl.textContent = trailer.desc;
+  const trailers = {
+    fantastic4: {
+      src: "https://filmreserve-trailers.github.io/fantastic4.webm",
+      title: "Fantastic 4: First Steps"
+    },
+    avengers5: {
+      src: "https://filmreserve-trailers.github.io/avengers5.mp4",
+      title: "Avengers: Doomsday"
+    },
+    superman: {
+      src: "https://filmreserve-trailers.github.io/superman.mp4",
+      title: "Superman"
+    },
+    jurassicworld: {
+      src: "https://filmreserve-trailers.github.io/jurassicworld.webm",
+      title: "Jurassic World: Rebirth"
+    },
+    f1movie: {
+      src: "https://filmreserve-trailers.github.io/f1movie.mp4",
+      title: "F1: The Movie"
+    },
+    "28yearslater": {
+      src: "https://filmreserve-trailers.github.io/28yearslater.webm",
+      title: "28 Years Later"
     }
+  };
 
-    // Playback and timeupdate
-    video.addEventListener('timeupdate', () => {
-      seek.value = video.currentTime;
-      timeDisplay.textContent = formatTime(video.currentTime) + ' / ' + formatTime(video.duration);
-    });
-    video.addEventListener('loadedmetadata', () => { seek.max = video.duration; });
+  const params = new URLSearchParams(location.search);
+  const movie = params.get("movie");
+  if (trailers[movie]) {
+    video.src = trailers[movie].src;
+    titleEl.textContent = trailers[movie].title;
+  }
 
-    // Seek
-    seek.addEventListener('input', () => { video.currentTime = seek.value; });
+  // Time update
+  video.addEventListener("timeupdate", () => {
+    seek.value = video.currentTime / video.duration * 100 || 0;
+    time.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+  });
 
-    // Play/pause by clicking video or spacebar
-    video.addEventListener('click', () => { video.paused ? video.play() : video.pause(); });
-    document.addEventListener('keydown', e => {
-      if (e.code === 'Space') { e.preventDefault(); video.paused ? video.play() : video.pause(); }
-      if (e.key.toLowerCase() === 'm') muteBtn.click();
-      if (e.key.toLowerCase() === 'f') zoomBtn.click();
-    });
+  function formatTime(t) {
+    if (isNaN(t)) return "0:00";
+    const minutes = Math.floor(t / 60);
+    const seconds = Math.floor(t % 60).toString().padStart(2, "0");
+    return `${minutes}:${seconds}`;
+  }
 
-    // Mute/unmute
-    muteBtn.addEventListener('click', () => {
-      video.muted = !video.muted;
-      muteBtn.textContent = video.muted ? '🔇' : '🔊';
-    });
+  // Seek
+  seek.addEventListener("input", () => {
+    video.currentTime = seek.value / 100 * video.duration;
+  });
 
-    // Volume slider toggle
-    muteBtn.addEventListener('click', () => volumeContainer.classList.toggle('clicked'));
-    volumeSlider.addEventListener('input', () => {
-      video.volume = Math.min(volumeSlider.value, 1);
-      video.muted = false;
-      muteBtn.textContent = '🔊';
-    });
+  // Mute
+  muteBtn.addEventListener("click", () => {
+    video.muted = !video.muted;
+    muteBtn.classList.toggle("muted", video.muted);
+  });
 
-    // Fullscreen
-    zoomBtn.addEventListener('click', () => {
-      if (!document.fullscreenElement) video.parentElement.requestFullscreen();
-      else document.exitFullscreen();
-    });
+  volumeSlider.addEventListener("input", () => {
+    video.volume = volumeSlider.value;
+    video.muted = volumeSlider.value == 0;
+    muteBtn.classList.toggle("muted", video.muted);
+  });
 
-    // PiP
-    pipBtn.addEventListener('click', async () => {
-      if (document.pictureInPictureEnabled) {
-        try { await video.requestPictureInPicture(); }
-        catch { /* ignore */ }
-      }
-      closeMenu();
-    });
-
-    // Speed selector
-    speedSelect.addEventListener('change', () => {
-      video.playbackRate = parseFloat(speedSelect.value);
-      closeMenu();
-    });
-
-    function closeMenu() { menuBtn.parentElement.classList.remove('open'); }
-
-    // Menu open/close
-    menuBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      menuBtn.parentElement.classList.toggle('open');
-    });
-    document.addEventListener('click', e => {
-      if (!menuBtn.contains(e.target)) closeMenu();
-    });
-
-    // Description toggle
-    toggleDescBtn.addEventListener('click', () => {
-      descEl.style.display = descEl.style.display === 'block' ? 'none' : 'block';
-      toggleDescBtn.textContent = descEl.style.display === 'block' ? '▲' : '▼';
-    });
-
-    // Formatting
-    function formatTime(t) {
-      if (!t || isNaN(t)) return '0:00';
-      const m = Math.floor(t/60), s = Math.floor(t%60).toString().padStart(2, '0');
-      return `${m}:${s}`;
+  // Volume closes on outside click
+  document.addEventListener("click", e => {
+    if (!e.target.closest(".mute-wrapper")) {
+      document.getElementById("volumeSliderWrapper").classList.remove("active");
     }
-  </script>
+    if (!e.target.closest(".menu-wrapper")) {
+      menu.classList.remove("active");
+    }
+  });
+
+  muteBtn.addEventListener("mouseenter", () => {
+    document.getElementById("volumeSliderWrapper").classList.add("active");
+  });
+
+  // Fullscreen
+  zoomBtn.onclick = () => {
+    if (!document.fullscreenElement) video.requestFullscreen();
+    else document.exitFullscreen();
+  };
+
+  // Playback speed menu
+  threeDots.onclick = () => {
+    menu.classList.toggle("active");
+  };
+
+  document.querySelectorAll("input[name='speed']").forEach(input => {
+    input.addEventListener("change", () => {
+      video.playbackRate = parseFloat(input.value);
+      menu.classList.remove("active");
+    });
+  });
+
+  // Shortcuts
+  document.addEventListener("keydown", e => {
+    if (e.code === "Space") {
+      video.paused ? video.play() : video.pause();
+      e.preventDefault();
+    } else if (e.key === "f") {
+      zoomBtn.click();
+    } else if (e.key === "m") {
+      muteBtn.click();
+    }
+  });
+</script>
+
 </body>
 </html>
