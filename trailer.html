@@ -24,7 +24,7 @@
       font-weight: bold;
     }
     .player-container {
-      max-width: 800px;
+      max-width: 1000px;
       margin: 40px auto 20px;
       padding: 16px;
       background: #000;
@@ -55,7 +55,7 @@
     }
     .seekbar {
       flex-grow: 1;
-      margin: 8px 0;
+      margin: 8px 10px;
     }
     .seekbar input[type=range] {
       width: 100%;
@@ -73,20 +73,20 @@
     .volume-slider {
       display: none;
       position: absolute;
-      left: 0;
-      bottom: 35px;
+      bottom: 30px;
+      left: 5px;
       height: 80px;
       width: 4px;
       background: white;
       border-radius: 6px;
+      transform: rotate(270deg);
+    }
+    .volume-button:hover .volume-slider {
+      display: block;
     }
     .volume-slider input {
-      transform: rotate(-90deg);
       width: 80px;
       height: 4px;
-    }
-    .volume-button:focus-within .volume-slider {
-      display: block;
     }
     .three-dot-menu {
       position: relative;
@@ -181,12 +181,12 @@
 
     <div class="controls">
       <div class="left-controls">
-        <div class="time" id="timer">0:00 / 0:00</div>
         <div class="volume-button" id="muteBtn">🔊
           <div class="volume-slider">
             <input id="volumeSlider" type="range" min="0" max="2" step="0.1" value="1"/>
           </div>
         </div>
+        <div class="time" id="timer">0:00 / 0:00</div>
       </div>
 
       <div class="seekbar">
@@ -322,6 +322,20 @@
     video.addEventListener("click", () => {
       if (video.paused) video.play();
       else video.pause();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+        video.paused ? video.play() : video.pause();
+      }
+      if (e.key.toLowerCase() === "m") {
+        video.muted = !video.muted;
+      }
+      if (e.key.toLowerCase() === "f") {
+        if (!document.fullscreenElement) video.requestFullscreen();
+        else document.exitFullscreen();
+      }
     });
 
     function formatTime(t) {
