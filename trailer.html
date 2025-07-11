@@ -9,8 +9,11 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #000000, #1a1a1a);
+      background: radial-gradient(#0d0d0d, #000);
       color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
     .navbar {
       background: #111;
@@ -19,11 +22,6 @@
       padding: 14px 0;
       font-size: 22px;
       font-weight: bold;
-    }
-    .navbar img {
-      height: 24px;
-      vertical-align: middle;
-      margin-right: 8px;
     }
     .player-container {
       max-width: 800px;
@@ -37,13 +35,14 @@
       width: 100%;
       border-radius: 8px;
       display: block;
+      cursor: pointer;
     }
     .controls {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      padding-top: 8px;
+      margin-top: 8px;
     }
     .left-controls, .right-controls {
       display: flex;
@@ -74,18 +73,16 @@
     .volume-slider {
       display: none;
       position: absolute;
-      left: 10px;
+      left: 0;
       bottom: 35px;
-      width: 30px;
-      height: 100px;
-      background: rgba(255,255,255,0.1);
+      height: 80px;
+      width: 4px;
+      background: white;
       border-radius: 6px;
-      padding: 4px;
     }
     .volume-slider input {
-      writing-mode: bt-lr;
-      transform: rotate(270deg);
-      width: 100px;
+      transform: rotate(-90deg);
+      width: 80px;
       height: 4px;
     }
     .volume-button:focus-within .volume-slider {
@@ -107,15 +104,22 @@
       bottom: 30px;
       right: 0;
       background: #222;
-      padding: 6px 12px;
+      padding: 8px 12px;
       border-radius: 6px;
       z-index: 2;
+      width: 140px;
+    }
+    .three-dot-options.active { display: block; }
+    .three-dot-options label {
+      font-size: 13px;
+      color: #ccc;
+      margin-bottom: 4px;
+      display: block;
     }
     .three-dot-options select {
       background: #333;
       color: white;
       border: none;
-      margin-bottom: 6px;
       width: 100%;
     }
     .three-dot-options button {
@@ -123,10 +127,7 @@
       color: white;
       border: none;
       width: 100%;
-      margin-top: 4px;
-    }
-    .three-dot-menu.active .three-dot-options {
-      display: block;
+      margin-top: 6px;
     }
     .zoom-button {
       background: none;
@@ -136,33 +137,41 @@
       cursor: pointer;
     }
     .title-container {
-      text-align: left;
-      padding: 0 8px;
-      margin: 10px auto;
-      max-width: 800px;
+      text-align: center;
+      margin-top: 10px;
       font-weight: bold;
       font-size: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
     }
     .desc-toggle {
       background: none;
       border: none;
-      color: white;
-      font-size: 18px;
+      color: #ddd;
+      font-size: 16px;
       cursor: pointer;
-      margin-right: 8px;
     }
     .description {
       display: none;
       font-size: 14px;
-      margin-top: 4px;
-      color: #ccc;
+      margin-top: 6px;
+      text-align: center;
+      color: #bbb;
+    }
+    .footer {
+      text-align: center;
+      padding: 14px 0;
+      font-size: 13px;
+      color: #777;
+      background: #111;
+      margin-top: auto;
     }
   </style>
 </head>
 <body>
-  <div class="navbar">
-    <img src="https://img.icons8.com/ios-filled/50/film-reel.png" width="24" /> FilmReserve
-  </div>
+  <div class="navbar">🎥 FilmReserve</div>
 
   <div class="player-container">
     <video id="video" poster="" crossorigin="anonymous">
@@ -172,10 +181,8 @@
 
     <div class="controls">
       <div class="left-controls">
-        <button id="playPauseBtn">▶️</button>
         <div class="time" id="timer">0:00 / 0:00</div>
-        <div class="volume-button">
-          🔊
+        <div class="volume-button" id="muteBtn">🔊
           <div class="volume-slider">
             <input id="volumeSlider" type="range" min="0" max="2" step="0.1" value="1"/>
           </div>
@@ -187,9 +194,10 @@
       </div>
 
       <div class="right-controls">
-        <div class="three-dot-menu" id="menu">
+        <div class="three-dot-menu">
           <button id="menuBtn">⋮</button>
-          <div class="three-dot-options">
+          <div class="three-dot-options" id="menuOptions">
+            <label for="speedSelect">Playback Speed</label>
             <select id="speedSelect">
               <option value="0.25">0.25x</option>
               <option value="0.5">0.5x</option>
@@ -201,19 +209,21 @@
               <option value="2">2x</option>
             </select>
             <button id="captionBtn">Captions</button>
-            <button id="pipBtn">PiP</button>
+            <button id="pipBtn">PiP Mode</button>
           </div>
         </div>
-        <button class="zoom-button" id="zoomBtn">🔳</button>
+        <button class="zoom-button" id="zoomBtn">⛶</button>
       </div>
     </div>
   </div>
 
   <div class="title-container">
-    <button class="desc-toggle" id="descToggle">▾</button>
     <span id="movieTitle"></span>
-    <div class="description" id="movieDesc"></div>
+    <button class="desc-toggle" id="descToggle">▾</button>
   </div>
+  <div class="description" id="movieDesc"></div>
+
+  <div class="footer">FilmReserve | Streaming entertainment anytime anywhere</div>
 
   <script>
     const movieData = {
@@ -225,7 +235,7 @@
       'avengers': {
         title: 'Avengers: Doomsday',
         desc: 'The Avengers return for a final face-off against galactic danger.',
-        src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122783/videoplayback_2_tpuqob.mp4'
+        src: 'https://res.cloudinary.com/da2rgo4zr/video/upload/v1752122967/videoplayback_5_xlgkqv.mp4'
       },
       'jurassic': {
         title: 'Jurassic World: Extinction',
@@ -247,29 +257,19 @@
 
     video.load();
 
-    const playBtn = document.getElementById("playPauseBtn");
     const timer = document.getElementById("timer");
     const seekbar = document.getElementById("seekbar");
     const volumeSlider = document.getElementById("volumeSlider");
-    const menuBtn = document.getElementById("menuBtn");
-    const menu = document.getElementById("menu");
     const speedSelect = document.getElementById("speedSelect");
     const pipBtn = document.getElementById("pipBtn");
     const zoomBtn = document.getElementById("zoomBtn");
-
-    playBtn.addEventListener("click", () => {
-      if (video.paused) {
-        video.play();
-        playBtn.textContent = "⏸️";
-      } else {
-        video.pause();
-        playBtn.textContent = "▶️";
-      }
-    });
+    const muteBtn = document.getElementById("muteBtn");
+    const menuBtn = document.getElementById("menuBtn");
+    const menuOptions = document.getElementById("menuOptions");
 
     video.addEventListener("timeupdate", () => {
       seekbar.value = video.currentTime;
-      timer.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+      timer.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration || 0)}`;
     });
 
     video.addEventListener("loadedmetadata", () => {
@@ -282,15 +282,20 @@
 
     volumeSlider.addEventListener("input", () => {
       video.volume = Math.min(1, volumeSlider.value);
+      video.muted = false;
+    });
+
+    muteBtn.addEventListener("click", () => {
+      video.muted = !video.muted;
     });
 
     speedSelect.addEventListener("change", () => {
       video.playbackRate = parseFloat(speedSelect.value);
-      menu.classList.remove("active");
+      menuOptions.classList.remove("active");
     });
 
     menuBtn.addEventListener("click", () => {
-      menu.classList.toggle("active");
+      menuOptions.classList.toggle("active");
     });
 
     pipBtn.addEventListener("click", async () => {
@@ -314,22 +319,16 @@
       desc.style.display = desc.style.display === "block" ? "none" : "block";
     });
 
+    video.addEventListener("click", () => {
+      if (video.paused) video.play();
+      else video.pause();
+    });
+
     function formatTime(t) {
       const min = Math.floor(t / 60);
       const sec = Math.floor(t % 60);
       return `${min}:${sec < 10 ? "0" : ""}${sec}`;
     }
-
-    document.addEventListener("keydown", e => {
-      if (e.key === " ") {
-        e.preventDefault();
-        playBtn.click();
-      } else if (e.key.toLowerCase() === "f") {
-        zoomBtn.click();
-      } else if (e.key.toLowerCase() === "m") {
-        video.muted = !video.muted;
-      }
-    });
   </script>
 </body>
 </html>
