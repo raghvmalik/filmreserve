@@ -4,319 +4,347 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FilmReserve | Trailer</title>
-  <link rel="stylesheet" href="style.css" />
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+    }
+
+    body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #0d0d0d, #1a1a1a);
-      color: white;
-      overflow-x: hidden;
-    }
-
-    .navbar {
+      background: linear-gradient(to bottom, #0e0e0e, #1c1c1c);
+      color: #fff;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      padding: 12px;
-      background-color: #111;
-      font-size: 1.2rem;
+    }
+
+    header.navbar {
+      width: 100%;
+      padding: 1rem 2rem;
+      background: #111;
+      display: flex;
+      align-items: center;
+      font-size: 1.3rem;
       font-weight: bold;
-      border-bottom: 2px solid #000;
+      gap: 0.5rem;
     }
 
-    .navbar a {
-      color: white;
-      text-decoration: none;
+    header.navbar::before {
+      content: "🎬";
+      font-size: 1.5rem;
     }
 
-    .navbar a:hover {
-      text-decoration: underline;
-    }
-
-    .player-container {
-      max-width: 960px;
-      margin: 60px auto 20px;
-      padding: 20px;
-      background-color: #111;
+    .video-wrapper {
+      margin-top: 30px;
+      background: #111;
       border-radius: 12px;
-      box-shadow: 0 0 25px #00f0ff70;
+      box-shadow: 0 0 15px #00ffff44;
+      padding: 10px;
+      width: 80%;
+      max-width: 900px;
       position: relative;
     }
 
     video {
       width: 100%;
+      height: auto;
+      background: #000;
       border-radius: 8px;
-      outline: none;
-      background: black;
     }
 
     .controls {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 10px;
-      margin-top: 10px;
-      position: relative;
+      padding: 8px;
     }
 
-    .progress {
+    .time, .volume-slider {
+      color: #ccc;
+      font-size: 14px;
+    }
+
+    .seekbar {
       flex: 1;
-      appearance: none;
-      height: 6px;
-      background: #444;
-      border-radius: 5px;
-      outline: none;
-      cursor: pointer;
     }
 
-    .progress::-webkit-slider-thumb {
-      appearance: none;
-      height: 14px;
-      width: 14px;
-      background: #00f0ff;
-      border-radius: 50%;
+    input[type="range"] {
+      width: 100%;
       cursor: pointer;
     }
 
     .icon-btn {
       background: none;
       border: none;
-      color: white;
-      font-size: 1.1rem;
       cursor: pointer;
-      position: relative;
+      font-size: 1.2rem;
+      color: #ccc;
     }
 
-    .volume-slider {
-      display: none;
+    .icon-btn:hover {
+      color: #00f0ff;
+    }
+
+    .speed-menu, .volume-popup {
       position: absolute;
-      bottom: 30px;
-      left: 0;
-      height: 60px;
-      writing-mode: bt-lr;
-      transform: rotate(-90deg);
-    }
-
-    .icon-btn:hover .volume-slider {
-      display: block;
-    }
-
-    .dropdown {
-      position: relative;
-    }
-
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      bottom: 40px;
-      right: 0;
-      background-color: #222;
-      padding: 10px;
+      background: #222;
+      border: 1px solid #444;
+      padding: 5px;
       border-radius: 6px;
-      box-shadow: 0 0 10px #000;
+      display: none;
+      z-index: 10;
     }
 
-    .dropdown-menu button {
-      display: block;
+    .speed-menu button, .volume-popup input {
       background: none;
       border: none;
       color: white;
-      text-align: left;
       padding: 4px 10px;
+      width: 100%;
       cursor: pointer;
     }
 
-    .dropdown-menu button:hover {
-      background: #333;
+    .volume-popup {
+      top: -80px;
+      left: 20px;
     }
 
-    .dropdown:hover .dropdown-menu {
-      display: block;
+    .speed-menu {
+      right: 5px;
+      bottom: 40px;
+      min-width: 100px;
     }
 
-    .video-info {
+    .video-title {
+      margin-top: 15px;
+      font-size: 1.5rem;
+      font-weight: bold;
       text-align: center;
-      margin: 20px 0;
     }
 
-    .video-info h2 {
-      margin: 5px 0;
-    }
-
-    .buttons {
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    .buttons button {
-      margin: 0 10px;
-      padding: 6px 12px;
-      font-size: 1rem;
+    .desc-btn {
+      font-size: 0.85rem;
+      margin-left: 0.5rem;
+      padding: 4px 10px;
       background: #333;
       border: none;
-      border-radius: 5px;
-      color: white;
+      border-radius: 4px;
       cursor: pointer;
     }
 
-    .buttons button:hover {
-      background: #555;
+    .desc-btn:hover {
+      background: #444;
+    }
+
+    .description {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #ccc;
+      display: none;
     }
 
     footer {
-      text-align: center;
-      padding: 10px;
-      font-size: 0.9rem;
+      margin-top: 40px;
       color: #999;
-      background-color: #0d0d0d;
-      border-top: 1px solid #222;
+      font-size: 0.85rem;
     }
+
+    /* Show menus when active */
+    .show { display: block; }
   </style>
 </head>
 <body>
 
-  <header class="navbar">
-    <a href="index.html">🎬 FilmReserve</a>
-  </header>
+  <header class="navbar">FilmReserve</header>
 
-  <div class="player-container">
-    <video id="trailer" controls disablepictureinpicture></video>
+  <div class="video-wrapper">
+    <video id="trailer" controls></video>
 
     <div class="controls">
       <button id="muteBtn" class="icon-btn">🔊</button>
-      <span id="time">0:00 / 0:00</span>
-      <input type="range" id="seek" class="progress" value="0" />
-
-      <div class="icon-btn">
-        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.1" value="1" />
-      </div>
-
+      <span class="time" id="time">0:00 / 0:00</span>
+      <input type="range" id="seekbar" class="seekbar" value="0">
+      <button id="zoomBtn" class="icon-btn">🔍</button>
       <button id="pipBtn" class="icon-btn">📺</button>
-      <button id="fsBtn" class="icon-btn">⛶</button>
+      <button id="menuBtn" class="icon-btn">⋮</button>
 
-      <div class="dropdown">
-        <button class="icon-btn">⋮</button>
-        <div class="dropdown-menu" id="menu">
-          <strong>Playback Speed</strong>
-          <button data-speed="0.5">0.5x</button>
-          <button data-speed="1">1x</button>
-          <button data-speed="1.25">1.25x</button>
-          <button data-speed="1.5">1.5x</button>
-          <button data-speed="1.75">1.75x</button>
-          <button data-speed="2">2x</button>
-        </div>
+      <!-- Volume slider on hover -->
+      <div class="volume-popup" id="volumePopup">
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" orient="vertical" />
+      </div>
+
+      <!-- Playback Speed Menu -->
+      <div class="speed-menu" id="speedMenu">
+        <button data-speed="0.5">0.5x</button>
+        <button data-speed="1">1x</button>
+        <button data-speed="1.25">1.25x</button>
+        <button data-speed="1.5">1.5x</button>
+        <button data-speed="1.75">1.75x</button>
+        <button data-speed="2">2x</button>
       </div>
     </div>
   </div>
 
-  <div class="video-info">
-    <div class="buttons">
-      <button onclick="history.back()">⬅ Back</button>
-      <button onclick="alert('Description coming soon!')">▶ Description</button>
-    </div>
-    <h2 id="movieTitle">Movie Title</h2>
+  <div class="video-title" id="title">
+    Loading... <button id="descBtn" class="desc-btn">▶ Description</button>
   </div>
+  <div class="description" id="desc">No description available.</div>
 
   <footer>
     FilmReserve | Streaming entertainment anytime, anywhere.
   </footer>
 
   <script>
-    const video = document.getElementById('trailer');
-    const seek = document.getElementById('seek');
-    const muteBtn = document.getElementById('muteBtn');
-    const volumeSlider = document.getElementById('volumeSlider');
-    const timeDisplay = document.getElementById('time');
-    const pipBtn = document.getElementById('pipBtn');
-    const fsBtn = document.getElementById('fsBtn');
+    const video = document.getElementById("trailer");
+    const title = document.getElementById("title");
+    const desc = document.getElementById("desc");
+    const time = document.getElementById("time");
+    const seekbar = document.getElementById("seekbar");
+    const muteBtn = document.getElementById("muteBtn");
+    const volumePopup = document.getElementById("volumePopup");
+    const volumeSlider = document.getElementById("volumeSlider");
+    const zoomBtn = document.getElementById("zoomBtn");
+    const pipBtn = document.getElementById("pipBtn");
+    const menuBtn = document.getElementById("menuBtn");
+    const speedMenu = document.getElementById("speedMenu");
+    const descBtn = document.getElementById("descBtn");
 
-    const params = new URLSearchParams(window.location.search);
-    const movie = params.get('movie');
-
-    const movieMap = {
-      'fantastic4': { title: 'Fantastic 4: First Steps', file: 'trailers/fantastic4.mp4' },
-      'avengers5': { title: 'Avengers: Doomsday', file: 'trailers/avengers5.mp4' },
-      'superman': { title: 'Superman', file: 'trailers/superman.mp4' },
-      'f1movie': { title: 'F1: The Movie', file: 'trailers/F1.mp4' },
-      '28yearslater': { title: '28 Years Later', file: 'trailers/28yearslater.mp4' },
-      'jurassicworld': { title: 'Jurassic World: Rebirth', file: 'trailers/jurassicworld.mp4' }
+    const movieData = {
+      "fantastic4": {
+        title: "Fantastic 4: First Steps",
+        video: "trailers/fantastic4.mp4",
+        description: "The Fantastic Four face their first mission, confronting an ancient power."
+      },
+      "avengers5": {
+        title: "Avengers: Doomsday",
+        video: "trailers/avengers5.mp4",
+        description: "The Avengers face their ultimate threat in this dramatic final chapter."
+      },
+      "superman": {
+        title: "Superman",
+        video: "trailers/superman.mp4",
+        description: "A new beginning for the Man of Steel with heart and power."
+      },
+      "f1movie": {
+        title: "F1: The Movie",
+        video: "trailers/F1.mp4",
+        description: "Brad Pitt enters the high-octane world of Formula 1 racing."
+      },
+      "28yearslater": {
+        title: "28 Years Later",
+        video: "trailers/28yearslater.mp4",
+        description: "A haunting continuation of the post-apocalyptic saga."
+      },
+      "jurassicworld": {
+        title: "Jurassic World: Rebirth",
+        video: "trailers/jurassicworld.mp4",
+        description: "Dinosaurs return again—smarter, faster, and deadlier."
+      }
     };
 
-    if (movieMap[movie]) {
-      video.src = movieMap[movie].file;
-      document.getElementById('movieTitle').textContent = movieMap[movie].title;
+    // Load movie
+    const params = new URLSearchParams(window.location.search);
+    const movie = params.get("movie");
+
+    if (movieData[movie]) {
+      const data = movieData[movie];
+      video.src = data.video;
+      title.innerHTML = `${data.title} <button id="descBtn" class="desc-btn">▶ Description</button>`;
+      desc.innerText = data.description;
+    } else {
+      video.poster = "images/notfound.png";
+      title.textContent = "Movie not found";
     }
 
-    video.addEventListener('loadedmetadata', () => {
-      seek.max = video.duration;
+    // Update time
+    video.addEventListener("timeupdate", () => {
+      const current = Math.floor(video.currentTime);
+      const duration = Math.floor(video.duration);
+      time.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
+      seekbar.value = (video.currentTime / video.duration) * 100 || 0;
     });
 
-    video.addEventListener('timeupdate', () => {
-      seek.value = video.currentTime;
-      const format = t => {
-        const m = Math.floor(t / 60);
-        const s = Math.floor(t % 60).toString().padStart(2, '0');
-        return `${m}:${s}`;
-      };
-      timeDisplay.textContent = `${format(video.currentTime)} / ${format(video.duration)}`;
+    // Seek
+    seekbar.addEventListener("input", () => {
+      video.currentTime = (seekbar.value / 100) * video.duration;
     });
 
-    seek.addEventListener('input', () => {
-      video.currentTime = seek.value;
-    });
+    function formatTime(sec) {
+      return `${Math.floor(sec / 60)}:${("0" + Math.floor(sec % 60)).slice(-2)}`;
+    }
 
-    muteBtn.addEventListener('click', () => {
+    // Mute/Unmute
+    muteBtn.addEventListener("click", () => {
       video.muted = !video.muted;
-      muteBtn.textContent = video.muted ? '🔇' : '🔊';
+      muteBtn.textContent = video.muted ? "🔇" : "🔊";
     });
 
-    volumeSlider.addEventListener('input', () => {
+    // Volume slider
+    muteBtn.addEventListener("mouseover", () => {
+      volumePopup.classList.add("show");
+    });
+
+    volumeSlider.addEventListener("input", () => {
       video.volume = volumeSlider.value;
       video.muted = video.volume === 0;
-      muteBtn.textContent = video.muted ? '🔇' : '🔊';
+      muteBtn.textContent = video.muted ? "🔇" : "🔊";
     });
 
-    document.addEventListener('click', e => {
-      if (!e.target.closest('.dropdown')) {
-        document.querySelector('.dropdown-menu').style.display = 'none';
+    document.addEventListener("click", (e) => {
+      if (!volumePopup.contains(e.target) && e.target !== muteBtn) {
+        volumePopup.classList.remove("show");
+      }
+      if (!speedMenu.contains(e.target) && e.target !== menuBtn) {
+        speedMenu.classList.remove("show");
       }
     });
 
-    document.querySelector('.dropdown > button').addEventListener('click', e => {
-      const menu = document.getElementById('menu');
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    // Playback speed
+    menuBtn.addEventListener("click", () => {
+      speedMenu.classList.toggle("show");
     });
 
-    document.querySelectorAll('.dropdown-menu button[data-speed]').forEach(btn => {
-      btn.addEventListener('click', () => {
+    speedMenu.querySelectorAll("button").forEach(btn => {
+      btn.addEventListener("click", () => {
         video.playbackRate = parseFloat(btn.dataset.speed);
-        document.getElementById('menu').style.display = 'none';
+        speedMenu.classList.remove("show");
       });
     });
 
-    pipBtn.addEventListener('click', async () => {
-      if (document.pictureInPictureEnabled && !video.disablePictureInPicture) {
-        await video.requestPictureInPicture();
-      }
-    });
-
-    fsBtn.addEventListener('click', () => {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
+    // PiP
+    pipBtn.addEventListener("click", () => {
+      if (video !== document.pictureInPictureElement) {
+        video.requestPictureInPicture();
       } else {
-        video.parentElement.requestFullscreen();
+        document.exitPictureInPicture();
       }
     });
 
-    document.addEventListener('keydown', e => {
-      if (e.key === ' ') {
-        e.preventDefault();
+    // Description toggle
+    document.body.addEventListener("click", (e) => {
+      if (e.target.id === "descBtn") {
+        desc.classList.toggle("show");
+      }
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space") {
         video.paused ? video.play() : video.pause();
-      } else if (e.key === 'm' || e.key === 'M') {
+        e.preventDefault();
+      } else if (e.key === "f") {
+        video.requestFullscreen();
+      } else if (e.key === "m") {
         video.muted = !video.muted;
-        muteBtn.textContent = video.muted ? '🔇' : '🔊';
-      } else if (e.key === 'f' || e.key === 'F') {
-        fsBtn.click();
+        muteBtn.textContent = video.muted ? "🔇" : "🔊";
+      } else if (e.key === "ArrowRight") {
+        video.currentTime += 5;
+      } else if (e.key === "ArrowLeft") {
+        video.currentTime -= 5;
       }
     });
   </script>
