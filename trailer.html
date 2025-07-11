@@ -9,9 +9,9 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      background-color: black;
+      background: url('images/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: white;
-      overflow: hidden;
     }
     header {
       text-align: center;
@@ -20,12 +20,13 @@
       font-size: 24px;
     }
     .video-box {
-      margin: 20px auto;
+      margin: 40px auto 10px;
       width: 80%;
       max-width: 900px;
       border-radius: 10px;
       box-shadow: 0 0 20px cyan;
       overflow: hidden;
+      background: black;
     }
     video {
       width: 100%;
@@ -35,16 +36,25 @@
     .controls {
       display: flex;
       align-items: center;
-      padding: 5px 10px;
-      background: rgba(0,0,0,0.7);
+      padding: 6px 10px;
+      background: rgba(0, 0, 0, 0.7);
       gap: 10px;
+      position: relative;
     }
-    .time, .volume-btn, .fullscreen-btn, .zoom-btn, .options {
+    .mute-container {
+      position: relative;
+    }
+    .mute-btn {
       color: white;
       cursor: pointer;
     }
     .volume-slider {
+      position: absolute;
+      bottom: 28px;
+      left: 2px;
+      transform: rotate(-90deg);
       width: 70px;
+      display: none;
       appearance: none;
       height: 4px;
       background: gray;
@@ -55,6 +65,13 @@
       height: 10px;
       background: cyan;
       border-radius: 50%;
+      cursor: pointer;
+    }
+    .mute-container.active .volume-slider {
+      display: block;
+    }
+    .time, .fullscreen-btn, .zoom-btn, .options {
+      color: white;
       cursor: pointer;
     }
     .progress {
@@ -68,6 +85,9 @@
       margin-inline: auto;
       font-size: 18px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .description {
       display: none;
@@ -84,12 +104,9 @@
       border-radius: 6px;
       display: none;
       flex-direction: column;
-      right: 10px;
-      bottom: 50px;
+      bottom: 35px;
+      right: 40px;
       z-index: 9;
-    }
-    .options:hover .options-menu {
-      display: flex;
     }
     .options-menu button {
       background: none;
@@ -102,6 +119,9 @@
     .options-menu button:hover {
       background: #333;
     }
+    .options {
+      position: relative;
+    }
   </style>
 </head>
 <body>
@@ -112,12 +132,15 @@
       <track label="English" kind="subtitles" srclang="en" src="captions.vtt" default />
     </video>
     <div class="controls">
-      <span class="mute-btn">🔊</span>
+      <div class="mute-container" id="muteContainer">
+        <span class="mute-btn" id="muteBtn">🔊</span>
+        <input type="range" id="volume" class="volume-slider" min="0" max="2" step="0.01" value="1" />
+      </div>
       <span class="time" id="time">0:00 / 0:00</span>
       <input type="range" id="progress" class="progress" value="0" />
-      <input type="range" id="volume" class="volume-slider" min="0" max="2" step="0.01" value="1" />
-      <div class="options">⋮
-        <div class="options-menu">
+      <div class="options">
+        <span class="three-dots" id="threeDots">⋮</span>
+        <div class="options-menu" id="optionsMenu">
           <button onclick="setSpeed(0.25)">0.25x</button>
           <button onclick="setSpeed(0.5)">0.5x</button>
           <button onclick="setSpeed(0.75)">0.75x</button>
@@ -134,10 +157,11 @@
   </div>
 
   <div class="desc-toggle" onclick="toggleDesc()">
-    <span id="arrow">▼</span> <b id="title">Movie Title</b>
+    <span id="arrow">▼</span>
+    <b id="title">Movie Title</b>
   </div>
   <div class="description" id="desc">
-    This is the trailer description. Exciting visuals, plot insights, and more await.
+    Watch the official trailer of this blockbuster. Featuring your favorite heroes and epic scenes.
   </div>
 
   <script>
@@ -145,7 +169,10 @@
     const progress = document.getElementById('progress');
     const time = document.getElementById('time');
     const volume = document.getElementById('volume');
-    const muteBtn = document.querySelector('.mute-btn');
+    const muteBtn = document.getElementById('muteBtn');
+    const muteContainer = document.getElementById('muteContainer');
+    const optionsMenu = document.getElementById('optionsMenu');
+    const threeDots = document.getElementById('threeDots');
 
     const params = new URLSearchParams(location.search);
     const movie = params.get('movie');
@@ -192,8 +219,13 @@
     });
 
     muteBtn.onclick = () => {
+      muteContainer.classList.toggle('active');
       video.muted = !video.muted;
       muteBtn.innerText = video.muted ? '🔇' : '🔊';
+    };
+
+    threeDots.onclick = () => {
+      optionsMenu.style.display = optionsMenu.style.display === 'flex' ? 'none' : 'flex';
     };
 
     function format(sec) {
