@@ -1,1 +1,81 @@
 <!--watching movies/shows-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Watch Movie | FilmReserve</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="sidebar-wrapper">
+      <div class="menu-btn">☰</div>
+      <div class="sidebar">
+        <h2>👤 Profile</h2>
+        <ul class="sidebar-menu" id="sidebar-menu">
+          <!-- Filled by JS -->
+        </ul>
+      </div>
+    </div>
+
+    <a href="index.html" class="logo">🎬 <b>FilmReserve</b></a>
+
+    <div class="search-area">
+      <input type="search" id="search" placeholder="Search movies to stream" oninput="filterMovies()" />
+    </div>
+  </header>
+
+  <!-- Watch Section -->
+  <main style="padding-top: 100px; text-align: center;">
+    <h1 class="section-title">Now Streaming</h1>
+    
+    <div style="display: flex; justify-content: center; padding: 20px;">
+      <video controls width="80%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+        <source src="videos/sample.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </main>
+
+  <footer>
+    FilmReserve | Streaming entertainment anytime, anywhere.
+  </footer>
+
+  <script>
+    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+    const sidebarMenu = document.getElementById('sidebar-menu');
+    sidebarMenu.innerHTML = isLoggedIn
+      ? `<li><a href="profile.html">My Profile</a></li>
+         <li><a href="#">My Watchlist</a></li>
+         <li><a href="#">Streaming History</a></li>
+         <li><a href="#">Account Settings</a></li>
+         <li><a href="#">Help & Support</a></li>
+         <li><a href="#" onclick="logout()">Logout</a></li>`
+      : `<li><a href="login.html">Login</a></li>
+         <li><a href="signup.html">Signup</a></li>`;
+
+    if (!isLoggedIn) {
+      window.location.href = 'login.html';
+    }
+
+    function logout() {
+      localStorage.setItem('loggedIn', 'false');
+      location.reload();
+    }
+
+    function filterMovies() {
+      const input = document.getElementById('search').value.toLowerCase();
+      const cards = document.querySelectorAll('.movie-card');
+      cards.forEach(card => {
+        const name = card.getAttribute('data-name').toLowerCase();
+        card.style.display = name.includes(input) ? 'flex' : 'none';
+      });
+    }
+  </script>
+
+</body>
+</html>
+
