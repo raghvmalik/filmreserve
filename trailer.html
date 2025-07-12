@@ -201,6 +201,28 @@
     const mute = document.getElementById('mute');
     const dotsMenu = document.getElementById('dotsMenu');
 
+    // Play/Pause on video click
+video.addEventListener('click', () => {
+  if (video.paused) {
+    video.play();
+  } else {
+    video.pause();
+  }
+});
+
+// Spacebar to play/pause
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  }
+});
+
+
     video.muted = false;
 
     mute.onclick = () => {
