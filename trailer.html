@@ -64,7 +64,7 @@
     .controls {
       display: flex;
       align-items: center;
-      padding: 5px 10px;
+      padding: 6px 10px;
       background-color: #111;
     }
 
@@ -73,7 +73,7 @@
       border: none;
       color: #ccc;
       cursor: pointer;
-      margin: 0 4px;
+      margin: 0 5px;
       font-size: 16px;
     }
 
@@ -83,7 +83,7 @@
 
     .timer {
       font-size: 14px;
-      margin: 0 8px;
+      margin: 0 10px;
       color: #aaa;
     }
 
@@ -143,31 +143,28 @@
       display: none;
       flex-direction: column;
       z-index: 5;
+      width: max-content;
     }
 
-    .options-menu button {
+    .options-menu button, .options-menu select {
       text-align: left;
       padding: 6px 10px;
       white-space: nowrap;
       width: 100%;
       font-size: 14px;
+      background: none;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
     }
 
-    .volume-slider {
-      position: absolute;
-      left: 48px;
-      bottom: 45px;
-      height: 80px;
-      background: #1e1e1e;
-      display: none;
-      align-items: center;
-      padding: 4px;
+    .zoom-btn {
+      font-size: 18px;
       border-radius: 4px;
-    }
-
-    .volume-slider input {
-      transform: rotate(-90deg);
-      width: 60px;
+      padding: 4px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .footer {
@@ -177,6 +174,20 @@
       font-size: 14px;
       padding: 10px;
       margin-top: auto;
+    }
+
+    /* Fullscreen custom layout */
+    video::cue {
+      background: transparent;
+      color: #fff;
+    }
+
+    :-webkit-full-screen .player-wrapper,
+    :-moz-full-screen .player-wrapper,
+    :-ms-fullscreen .player-wrapper,
+    :fullscreen .player-wrapper {
+      width: 100% !important;
+      height: 100% !important;
     }
   </style>
 </head>
@@ -196,10 +207,7 @@
       <button id="mute">🔊</button>
       <span class="timer" id="time">0:00 / 0:00</span>
       <input type="range" id="seekbar" class="seekbar" value="0" />
-      <div class="volume-slider" id="volumeSlider">
-        <input type="range" min="0" max="1" step="0.05" value="1" id="volumeRange" />
-      </div>
-      <button id="pip">⧉</button>
+      <button id="zoom" class="zoom-btn">⛶</button>
       <div style="position: relative;">
         <button id="settings">⋮</button>
         <div class="options-menu" id="settingsMenu">
@@ -214,6 +222,7 @@
             <option value="2">2x</option>
             <option value="3">3x</option>
           </select>
+          <button id="pip">Picture-in-Picture</button>
         </div>
       </div>
     </div>
@@ -243,13 +252,11 @@
   const muteBtn = document.getElementById('mute');
   const seekbar = document.getElementById('seekbar');
   const timeDisplay = document.getElementById('time');
-  const volumeSlider = document.getElementById('volumeSlider');
-  const volumeRange = document.getElementById('volumeRange');
   const settingsBtn = document.getElementById('settings');
   const settingsMenu = document.getElementById('settingsMenu');
   const playbackRate = document.getElementById('playbackRate');
-
-  let isMuted = false;
+  const pipBtn = document.getElementById('pip');
+  const zoomBtn = document.getElementById('zoom');
 
   video.addEventListener('loadedmetadata', () => {
     timeDisplay.textContent = formatTime(0) + ' / ' + formatTime(video.duration);
@@ -269,19 +276,6 @@
     muteBtn.textContent = video.muted ? '🔇' : '🔊';
   });
 
-  muteBtn.addEventListener('mouseenter', () => {
-    volumeSlider.style.display = 'flex';
-  });
-  muteBtn.addEventListener('mouseleave', () => {
-    setTimeout(() => volumeSlider.style.display = 'none', 1000);
-  });
-
-  volumeRange.addEventListener('input', () => {
-    video.volume = volumeRange.value;
-    video.muted = video.volume === 0;
-    muteBtn.textContent = video.muted ? '🔇' : '🔊';
-  });
-
   document.addEventListener('click', (e) => {
     if (!settingsMenu.contains(e.target) && !settingsBtn.contains(e.target)) {
       settingsMenu.style.display = 'none';
@@ -296,11 +290,19 @@
     video.playbackRate = parseFloat(playbackRate.value);
   });
 
-  document.getElementById('pip').addEventListener('click', async () => {
+  pipBtn.addEventListener('click', async () => {
     if (document.pictureInPictureElement) {
       await document.exitPictureInPicture();
     } else {
       await video.requestPictureInPicture();
+    }
+  });
+
+  zoomBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      video.parentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
     }
   });
 
@@ -315,8 +317,7 @@
     }
     if (e.key.toLowerCase() === 'm') muteBtn.click();
     if (e.key.toLowerCase() === 'f') {
-      if (!document.fullscreenElement) video.requestFullscreen();
-      else document.exitFullscreen();
+      zoomBtn.click();
     }
     if (e.key === 'ArrowRight') video.currentTime += 5;
     if (e.key === 'ArrowLeft') video.currentTime -= 5;
