@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Fantastic 4 - Trailer</title>
+  <title>FilmReserve - Trailer</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -123,7 +123,6 @@
       border-radius: 6px;
       margin-top: 10px;
       display: none;
-      transition: all 0.3s ease;
     }
 
     .details {
@@ -135,7 +134,7 @@
 
     .options-menu {
       position: absolute;
-      right: 10px;
+      right: 50px;
       bottom: 45px;
       background: #1e1e1e;
       border-radius: 6px;
@@ -165,6 +164,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: absolute;
+      right: 10px;
+      bottom: 8px;
     }
 
     .footer {
@@ -176,7 +178,6 @@
       margin-top: auto;
     }
 
-    /* Fullscreen custom layout */
     video::cue {
       background: transparent;
       color: #fff;
@@ -199,15 +200,14 @@
 
 <div class="trailer-container">
   <div class="player-wrapper">
-    <video id="trailer" poster="images/f4poster.avif">
-      <source src="https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4" type="video/mp4">
+    <video id="trailer" controlslist="nodownload nofullscreen noremoteplayback" controls="false" poster="">
+      <source id="videoSource" src="" type="video/mp4">
     </video>
 
     <div class="controls">
       <button id="mute">🔊</button>
       <span class="timer" id="time">0:00 / 0:00</span>
       <input type="range" id="seekbar" class="seekbar" value="0" />
-      <button id="zoom" class="zoom-btn">⛶</button>
       <div style="position: relative;">
         <button id="settings">⋮</button>
         <div class="options-menu" id="settingsMenu">
@@ -225,22 +225,24 @@
           <button id="pip">Picture-in-Picture</button>
         </div>
       </div>
+      <button id="zoom" class="zoom-btn">🗖</button>
     </div>
   </div>
 
-  <h1 style="margin-top: 15px;">
-    Fantastic 4: First Steps
+  <h1 id="movieTitle" style="margin-top: 15px;">
+    Movie Title
     <button class="desc-toggle" onclick="toggleDesc()">▼</button>
   </h1>
 
   <div class="desc-box" id="descBox">
-    After a cosmic accident transforms four astronauts into superheroes, they must learn to control their powers and face a rising threat. Experience the rebirth of the iconic team in stunning visuals and explosive action.<br><br>
-    🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 25 July 2025
+    <div id="description"></div>
+    <br>
+    <div id="details" class="details"></div>
   </div>
 
-<footer class="footer">
-  FilmReserve | Streaming Entertainment anytime, anywhere
-</footer>
+  <footer class="footer">
+    FilmReserve | Streaming Entertainment anytime, anywhere
+  </footer>
 
 <script>
   const video = document.getElementById('trailer');
@@ -252,6 +254,36 @@
   const playbackRate = document.getElementById('playbackRate');
   const pipBtn = document.getElementById('pip');
   const zoomBtn = document.getElementById('zoom');
+
+  const movieData = {
+    'fantastic4': {
+      title: "Fantastic 4: First Steps",
+      description: "After a cosmic accident transforms four astronauts into superheroes, they must learn to control their powers and face a rising threat.",
+      details: "🎥 Directed by: Matt Shackman | 🎬 Genre: Action, Sci-Fi | 📅 In Theatres 25 July 2025",
+      poster: "images/f4poster.avif",
+      src: "https://res.cloudinary.com/da2rgo4zr/video/upload/v1752118393/videoplayback_c38bfl.mp4"
+    },
+    'oppenheimer': {
+      title: "Oppenheimer: The Atomic Legacy",
+      description: "The story of J. Robert Oppenheimer, the scientist behind the atomic bomb during WWII.",
+      details: "🎥 Directed by: Christopher Nolan | 🎬 Genre: Biography, Drama | 📅 In Theatres 21 July 2023",
+      poster: "images/oppenheimer.jpg",
+      src: "https://example.com/oppenheimer-trailer.mp4"
+    },
+    // Add more trailers here
+  };
+
+  const params = new URLSearchParams(window.location.search);
+  const movieId = params.get('movie') || 'fantastic4';
+
+  if (movieData[movieId]) {
+    document.getElementById('movieTitle').childNodes[0].nodeValue = movieData[movieId].title;
+    document.getElementById('description').textContent = movieData[movieId].description;
+    document.getElementById('details').textContent = movieData[movieId].details;
+    document.getElementById('trailer').poster = movieData[movieId].poster;
+    document.getElementById('videoSource').src = movieData[movieId].src;
+    video.load();
+  }
 
   video.addEventListener('loadedmetadata', () => {
     timeDisplay.textContent = formatTime(0) + ' / ' + formatTime(video.duration);
@@ -278,7 +310,7 @@
   });
 
   settingsBtn.addEventListener('click', () => {
-    settingsMenu.style.display = settingsMenu.style.display === 'flex' ? 'none' : 'flex';
+    settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
   });
 
   playbackRate.addEventListener('change', () => {
@@ -311,9 +343,7 @@
       video.paused ? video.play() : video.pause();
     }
     if (e.key.toLowerCase() === 'm') muteBtn.click();
-    if (e.key.toLowerCase() === 'f') {
-      zoomBtn.click();
-    }
+    if (e.key.toLowerCase() === 'f') zoomBtn.click();
     if (e.key === 'ArrowRight') video.currentTime += 5;
     if (e.key === 'ArrowLeft') video.currentTime -= 5;
   });
