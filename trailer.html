@@ -295,10 +295,13 @@
     movieDetails.textContent = movie.details;
     video.load();
   }
-
-  video.addEventListener('loadedmetadata', () => {
+  
+video.addEventListener('loadedmetadata', () => {
+  if (isFinite(video.duration)) {
     timeDisplay.textContent = formatTime(0) + ' / ' + formatTime(video.duration);
-  });
+    seekbar.value = 0;
+  }
+});
 
   video.addEventListener('timeupdate', () => {
     timeDisplay.textContent = formatTime(video.currentTime) + ' / ' + formatTime(video.duration);
