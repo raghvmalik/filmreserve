@@ -1,4 +1,4 @@
-<!--Homepage ref-->
+<!-- Profile Page - FilmReserve -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +19,7 @@
     }
 
     .profile-box {
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       padding: 40px;
       border-radius: 12px;
       color: white;
@@ -32,6 +32,7 @@
     .profile-box h1 {
       font-size: 28px;
       margin-bottom: 10px;
+      color: #5bb0ff;
     }
 
     .profile-box p {
@@ -39,17 +40,20 @@
       margin-bottom: 30px;
     }
 
-    .profile-box a {
+    .profile-box a, .profile-box button {
       background-color: #5bb0ff;
       text-decoration: none;
       padding: 12px 24px;
       font-size: 16px;
       color: white;
       border-radius: 6px;
-      display: inline-block;
+      border: none;
+      cursor: pointer;
+      margin: 6px;
     }
 
-    .profile-box a:hover {
+    .profile-box a:hover,
+    .profile-box button:hover {
       background-color: #3f9de1;
     }
   </style>
@@ -57,7 +61,7 @@
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBMPr-C_p--9isHVBmH6QuOxCR93dgscYs",
@@ -65,27 +69,44 @@
       projectId: "film-reserve-255bc",
       storageBucket: "film-reserve-255bc.appspot.com",
       messagingSenderId: "856235605413",
-      appId: "1:856235605413:web:your-app-id"
+      appId: "1:856235605413:web:c9a232f9b47c510d0144c3"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
+    const userEmail = document.getElementById("user-email");
+    const homeButton = document.getElementById("home-button");
+    const logoutButton = document.getElementById("logout-button");
+
     onAuthStateChanged(auth, user => {
       if (user) {
-        document.getElementById("user-email").innerText = user.email;
-        document.getElementById("home-button").style.display = "inline-block";
+        userEmail.innerText = user.email;
+        homeButton.style.display = "inline-block";
+        logoutButton.style.display = "inline-block";
+        localStorage.setItem("loggedIn", "true");
       } else {
+        localStorage.removeItem("loggedIn");
         window.location.href = "login.html";
       }
     });
+
+    window.logout = () => {
+      signOut(auth).then(() => {
+        localStorage.removeItem("loggedIn");
+        window.location.href = "login.html";
+      }).catch((error) => {
+        alert("Logout failed: " + error.message);
+      });
+    };
   </script>
 </head>
 <body>
   <div class="profile-box">
-    <h1>Welcome,</h1>
+    <h1>Welcome</h1>
     <p id="user-email">Loading...</p>
     <a href="index.html" id="home-button" style="display:none;">Home</a>
+    <button id="logout-button" style="display:none;" onclick="logout()">Logout</button>
   </div>
 </body>
 </html>
