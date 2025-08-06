@@ -5,53 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FilmReserve</title>
   <link rel="stylesheet" href="main.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="nav-left">
-      <button id="menu-btn">&#9776;</button>
-      <span id="logo">FilmReserve</span>
-    </div>
-    <div class="nav-right">
-      <input type="text" id="search-input" placeholder="Search..." />
-    </div>
-  </nav>
-
-  <aside id="sidebar" class="sidebar hidden">
-    <ul id="menu-items"></ul>
-  </aside>
-
-  <main>
+  <header class="navbar">
+    <div class="menu-icon" id="menu-toggle">☰</div>
+    <div class="brand" onclick="location.reload()">FilmReserve</div>
     <div class="filters">
-      <select id="genre-filter">
+      <select id="genreFilter">
         <option value="All">All Genres</option>
         <option value="Action">Action</option>
-        <option value="Sci-Fi">Sci-Fi</option>
         <option value="Drama">Drama</option>
+        <option value="Sci-Fi">Sci-Fi</option>
         <option value="Thriller">Thriller</option>
-        <option value="Animation">Animation</option>
         <option value="Historical">Historical</option>
+        <option value="Animation">Animation</option>
       </select>
-
-      <select id="language-filter">
+      <select id="languageFilter">
         <option value="All">All Languages</option>
         <option value="English">English</option>
         <option value="Hindi">Hindi</option>
       </select>
-
-      <select id="format-filter">
+      <select id="resolutionFilter">
         <option value="All">All Resolutions</option>
-        <option value="Auto">Auto</option>
-        <option value="1080p">FullHD (1080p)</option>
-        <option value="4K">UHD (4K)</option>
+        <option value="1080p">Full HD (1080p)</option>
+        <option value="4K">Ultra HD (4K)</option>
       </select>
     </div>
+    <input type="text" id="searchBar" placeholder="Search..." />
+  </header>
 
-    <section class="movies" id="movie-list">
-      <!-- Movies will be populated by JS -->
-    </section>
-  </main>
+  <aside id="sidebar" class="sidebar">
+    <ul id="sidebarLinks"></ul>
+  </aside>
 
-  <script type="module" src="main.js"></script>
+  <main class="movie-container" id="movieContainer"></main>
+
+  <footer class="footer">FilmReserve | The ultimate streaming destination.</footer>
+
+  <script src="main.js"></script>
 </body>
 </html>
