@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('bgimg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(80, 80, 80, 0.6);
+  padding: 10px 20px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.filters select,
+#searchBar {
+  margin-left: 10px;
+  padding: 5px;
+}
+
+main {
+  padding-top: 80px;
+}
+
+#movieContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.movie-card {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 10px;
+  width: 180px;
+  text-align: center;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.movie-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.movie-card .watch-btn {
+  display: none;
+  margin-top: 5px;
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.movie-card:hover .watch-btn {
+  display: block;
+}
+
+.watchlist-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
