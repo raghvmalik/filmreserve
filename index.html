@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FilmReserve</title>
+  <link rel="stylesheet" href="main.css" />
+</head>
+<body>
+  <header class="navbar">
+    <h1 class="logo">FilmReserve</h1>
+    <div class="filters">
+      <select id="genreFilter">
+        <option value="">All Genres</option>
+        <option value="action">Action</option>
+        <option value="sci-fi">Sci-Fi</option>
+        <option value="drama">Drama</option>
+        <option value="thriller">Thriller</option>
+        <option value="fantasy">Fantasy</option>
+      </select>
+      <select id="languageFilter">
+        <option value="">All Languages</option>
+        <option value="english">English</option>
+        <option value="hindi">Hindi</option>
+      </select>
+      <select id="resolutionFilter">
+        <option value="">All Resolutions</option>
+        <option value="1080p">Full HD (1080p)</option>
+        <option value="4k">UHD (4K)</option>
+      </select>
+    </div>
+    <input type="text" id="searchBar" placeholder="Search movies..." />
+  </header>
+
+  <main>
+    <section id="movieContainer">
+
+      <!-- ✅ ALL 24 MOVIE CARDS BELOW -->
+
+      <div class="movie-card" data-genre="action" data-language="english" data-resolution="4k">
+        <img src="images/fantastic4.jpg" alt="Fantastic 4">
+        <h2>Fantastic 4<br>First Steps</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="action" data-language="english" data-resolution="1080p">
+        <img src="images/avengers.jpg" alt="Avengers: Doomsday">
+        <h2>Avengers<br>Doomsday</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="drama" data-language="english" data-resolution="4k">
+        <img src="images/oppenheimer.jpg" alt="Oppenheimer">
+        <h2>Oppenheimer</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="action" data-language="english" data-resolution="4k">
+        <img src="images/superman.jpg" alt="Superman">
+        <h2>Superman<br>The Last Hope</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="sci-fi" data-language="english" data-resolution="4k">
+        <img src="images/interstellar.jpg" alt="Interstellar">
+        <h2>Interstellar</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="sci-fi" data-language="english" data-resolution="4k">
+        <img src="images/inception.jpg" alt="Inception">
+        <h2>Inception</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="thriller" data-language="english" data-resolution="1080p">
+        <img src="images/28days.jpg" alt="28 Days Later">
+        <h2>28 Days Later</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="fantasy" data-language="english" data-resolution="1080p">
+        <img src="images/minecraft.jpg" alt="Minecraft">
+        <h2>Minecraft</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="documentary" data-language="english" data-resolution="1080p">
+        <img src="images/f1.jpg" alt="F1">
+        <h2>F1</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="horror" data-language="english" data-resolution="1080p">
+        <img src="images/finaldestination.jpg" alt="Final Destination">
+        <h2>Final Destination</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="sci-fi" data-language="english" data-resolution="4k">
+        <img src="images/dune.jpg" alt="Dune">
+        <h2>Dune</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="fantasy" data-language="english" data-resolution="1080p">
+        <img src="images/wicked.jpg" alt="Wicked">
+        <h2>Wicked</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="action" data-language="english" data-resolution="1080p">
+        <img src="images/thunderbolts.jpg" alt="Thunderbolts">
+        <h2>Thunderbolts</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="action" data-language="english" data-resolution="1080p">
+        <img src="images/spiderman.jpg" alt="Spider-Man">
+        <h2>Spider-Man<br>No Way Home</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="sci-fi" data-language="english" data-resolution="4k">
+        <img src="images/matrix.jpg" alt="Matrix Resurrections">
+        <h2>Matrix<br>Resurrections</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="sci-fi" data-language="hindi" data-resolution="4k">
+        <img src="images/kalki.jpg" alt="Kalki 2898 AD">
+        <h2>Kalki 2898 AD</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="drama" data-language="hindi" data-resolution="1080p">
+        <img src="images/emergency.jpg" alt="Emergency">
+        <h2>Emergency</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="fantasy" data-language="english" data-resolution="1080p">
+        <img src="images/jurassic.jpg" alt="Jurassic World">
+        <h2>Jurassic World</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="drama" data-language="english" data-resolution="1080p">
+        <img src="images/joker2.jpg" alt="Joker 2">
+        <h2>Joker 2</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="action" data-language="english" data-resolution="1080p">
+        <img src="images/flash.jpg" alt="Flash">
+        <h2>Flash</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="action" data-language="english" data-resolution="1080p">
+        <img src="images/deadpoolwolverine.jpg" alt="Deadpool and Wolverine">
+        <h2>Deadpool and<br>Wolverine</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="action" data-language="english" data-resolution="1080p">
+        <img src="images/batman.jpg" alt="Batman">
+        <h2>Batman</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="drama" data-language="english" data-resolution="1080p">
+        <img src="images/ballerina.jpg" alt="Ballerina">
+        <h2>Ballerina</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+      <div class="movie-card" data-genre="sci-fi" data-language="english" data-resolution="4k">
+        <img src="images/avatar.jpg" alt="Avatar">
+        <h2>Avatar</h2>
+        <button class="watch-btn">Watch Now</button>
+        <button class="watchlist-btn">+</button>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
