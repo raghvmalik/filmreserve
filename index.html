@@ -7,37 +7,51 @@
   <link rel="stylesheet" href="main.css" />
 </head>
 <body>
-  <header class="navbar">
-    <div class="brand" onclick="location.reload()">FilmReserve</div>
-    <div class="filters">
-      <select id="genreFilter">
-        <option value="">All Genres</option>
-        <option value="action">Action</option>
-        <option value="drama">Drama</option>
-        <option value="sci-fi">Sci-Fi</option>
-      </select>
-      <select id="languageFilter">
-        <option value="">All Languages</option>
-        <option value="english">English</option>
-        <option value="hindi">Hindi</option>
-      </select>
-      <select id="resolutionFilter">
-        <option value="">All</option>
-        <option value="auto">Auto</option>
-        <option value="1080p">Full HD (1080p)</option>
-        <option value="4k">UHD (4K)</option>
-      </select>
-      <input type="text" id="searchBar" placeholder="Search movies..." />
+  <nav class="navbar">
+    <div class="nav-left">
+      <button id="menu-btn">&#9776;</button>
+      <span id="logo">FilmReserve</span>
     </div>
-    <div class="hamburger" onclick="toggleSidebar()">☰</div>
-  </header>
+    <div class="nav-right">
+      <input type="text" id="search-input" placeholder="Search..." />
+    </div>
+  </nav>
 
-  <aside id="sidebar" class="sidebar"></aside>
+  <aside id="sidebar" class="sidebar hidden">
+    <ul id="menu-items"></ul>
+  </aside>
 
-  <main id="movieList" class="movie-list">
-    <!-- Movie cards inserted by JavaScript -->
+  <main>
+    <div class="filters">
+      <select id="genre-filter">
+        <option value="All">All Genres</option>
+        <option value="Action">Action</option>
+        <option value="Sci-Fi">Sci-Fi</option>
+        <option value="Drama">Drama</option>
+        <option value="Thriller">Thriller</option>
+        <option value="Animation">Animation</option>
+        <option value="Historical">Historical</option>
+      </select>
+
+      <select id="language-filter">
+        <option value="All">All Languages</option>
+        <option value="English">English</option>
+        <option value="Hindi">Hindi</option>
+      </select>
+
+      <select id="format-filter">
+        <option value="All">All Resolutions</option>
+        <option value="Auto">Auto</option>
+        <option value="1080p">FullHD (1080p)</option>
+        <option value="4K">UHD (4K)</option>
+      </select>
+    </div>
+
+    <section class="movies" id="movie-list">
+      <!-- Movies will be populated by JS -->
+    </section>
   </main>
 
-  <script src="main.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
