@@ -1,55 +1,90 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+const movies = [
+  { title: "Avengers: Doomsday", image: "avengers.jpg", genre: "action", language: "english", format: "3D" },
+  { title: "Batman: Rise", image: "batman.jpg", genre: "action", language: "english", format: "2D" },
+  { title: "Ballerina: Vengeance", image: "ballerina.jpg", genre: "thriller", language: "english", format: "2D" },
+  { title: "Deadpool: Unleashed", image: "deadpool.jpg", genre: "action", language: "english", format: "3D" },
+  { title: "Emergency: India 2023", image: "emergency.jpg", genre: "thriller", language: "hindi", format: "2D" },
+  { title: "Fantastic 4: First Steps", image: "fantastic4.jpg", genre: "sci-fi", language: "english", format: "3D" },
+  { title: "Flashwave: Dimensions", image: "flashwave.jpg", genre: "action", language: "english", format: "3D" },
+  { title: "Inception: Layers", image: "inception.jpg", genre: "sci-fi", language: "english", format: "2D" },
+  { title: "Interstellar: Beyond", image: "interstellar.jpg", genre: "sci-fi", language: "english", format: "2D" },
+  { title: "Joker 2: Laugh's End", image: "joker2.jpg", genre: "thriller", language: "english", format: "2D" },
+  { title: "Jurassic World: Extinct", image: "jurassicworld.jpg", genre: "sci-fi", language: "english", format: "3D" },
+  { title: "Kalki 2898 AD", image: "kalki.jpg", genre: "sci-fi", language: "hindi", format: "3D" },
+  { title: "Matrix: Reloaded", image: "matrix.jpg", genre: "sci-fi", language: "english", format: "2D" },
+  { title: "Minecraft: Realm", image: "minecraft.jpg", genre: "animated", language: "english", format: "2D" },
+  { title: "Oppenheimer: Legacy", image: "oppenheimer.jpg", genre: "thriller", language: "english", format: "2D" },
+  { title: "Spiderman: No Hope", image: "spiderman.jpg", genre: "action", language: "english", format: "3D" },
+  { title: "Superman: Return", image: "superman.jpg", genre: "action", language: "english", format: "2D" },
+  { title: "Thunderbolt: Surge", image: "thunderbolt.jpg", genre: "action", language: "english", format: "2D" }
+];
 
-  document.querySelectorAll(".watchlist-btn").forEach((btn, index) => {
-    const card = btn.closest(".movie-card");
-    const movieId = index;
+const container = document.getElementById("movieContainer");
 
-    if (watchlist.includes(movieId)) {
-      btn.textContent = "✓";
-    }
+function createMovieCard(movie) {
+  const card = document.createElement("div");
+  card.className = "movie-card";
+  card.setAttribute("data-genre", movie.genre);
+  card.setAttribute("data-language", movie.language);
+  card.setAttribute("data-format", movie.format);
 
-    btn.addEventListener("click", () => {
-      const inList = watchlist.includes(movieId);
-      if (inList) {
-        watchlist.splice(watchlist.indexOf(movieId), 1);
-        btn.textContent = "+";
-      } else {
-        watchlist.push(movieId);
-        btn.textContent = "✓";
-      }
-      localStorage.setItem("watchlist", JSON.stringify(watchlist));
-    });
+  const titleParts = movie.title.split(":");
+
+  card.innerHTML = `
+    <img src="images/${movie.image}" alt="${movie.title}">
+    <button class="watchlist-btn">+</button>
+    <div class="movie-title">
+      <span>${titleParts[0]}</span>
+      <span>${titleParts[1] || ""}</span>
+    </div>
+    <button class="watch-now" onclick="handleWatch('${movie.title}')">Watch Now</button>
+  `;
+
+  const watchlistBtn = card.querySelector(".watchlist-btn");
+  const saved = localStorage.getItem(movie.title);
+  if (saved === "true") watchlistBtn.textContent = "✓";
+
+  watchlistBtn.addEventListener("click", () => {
+    const isSaved = localStorage.getItem(movie.title) === "true";
+    localStorage.setItem(movie.title, !isSaved);
+    watchlistBtn.textContent = !isSaved ? "✓" : "+";
   });
 
-  const searchInput = document.getElementById("searchInput");
-  const genreFilter = document.getElementById("genreFilter");
-  const formatFilter = document.getElementById("formatFilter");
-  const languageFilter = document.getElementById("languageFilter");
+  return card;
+}
 
-  function filterMovies() {
-    const searchText = searchInput.value.toLowerCase();
-    const selectedGenre = genreFilter.value;
-    const selectedFormat = formatFilter.value;
-    const selectedLanguage = languageFilter.value;
+function renderMovies() {
+  container.innerHTML = "";
+  movies.forEach(movie => container.appendChild(createMovieCard(movie)));
+}
 
-    document.querySelectorAll(".movie-card").forEach(card => {
-      const title = card.querySelector("h3").innerText.toLowerCase();
-      const matchesSearch = title.includes(searchText);
-      const matchesGenre = !selectedGenre || card.dataset.genre === selectedGenre;
-      const matchesFormat = !selectedFormat || card.dataset.format === selectedFormat;
-      const matchesLanguage = !selectedLanguage || card.dataset.language === selectedLanguage;
+function filterMovies() {
+  const genre = document.getElementById("genreFilter").value;
+  const lang = document.getElementById("languageFilter").value;
+  const format = document.getElementById("formatFilter").value;
+  const search = document.getElementById("searchInput").value.toLowerCase();
 
-      if (matchesSearch && matchesGenre && matchesFormat && matchesLanguage) {
-        card.style.display = "";
-      } else {
-        card.style.display = "none";
-      }
-    });
+  const cards = document.querySelectorAll(".movie-card");
+
+  cards.forEach(card => {
+    const matchGenre = genre === "all" || card.dataset.genre === genre;
+    const matchLang = lang === "all" || card.dataset.language === lang;
+    const matchFormat = format === "all" || card.dataset.format === format;
+    const matchSearch = card.textContent.toLowerCase().includes(search);
+
+    card.style.display = matchGenre && matchLang && matchFormat && matchSearch ? "block" : "none";
+  });
+}
+
+function handleWatch(title) {
+  if (confirm(`You need to log in to watch ${title}. Proceed to login?`)) {
+    window.location.href = "login.html";
   }
+}
 
-  searchInput.addEventListener("input", filterMovies);
-  genreFilter.addEventListener("change", filterMovies);
-  formatFilter.addEventListener("change", filterMovies);
-  languageFilter.addEventListener("change", filterMovies);
-});
+document.getElementById("genreFilter").addEventListener("change", filterMovies);
+document.getElementById("languageFilter").addEventListener("change", filterMovies);
+document.getElementById("formatFilter").addEventListener("change", filterMovies);
+document.getElementById("searchInput").addEventListener("input", filterMovies);
+
+renderMovies();
