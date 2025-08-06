@@ -4,71 +4,89 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login | FilmReserve</title>
-
   <style>
     body {
       margin: 0;
-      padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: url('background.jpg') no-repeat center center fixed;
-      background-color: #000;
-      background-size: cover;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
     }
 
     .auth-container {
-      background: rgba(0, 0, 0, 0.8);
-      padding: 40px;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 40px 30px;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.7);
       width: 100%;
       max-width: 400px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
       text-align: center;
-      color: #f0f0f0;
     }
 
-    .auth-container h1 {
-      margin-bottom: 25px;
-      color: #5bb0ff;
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #00ffcc;
     }
 
-    .auth-container input {
-      width: 100%;
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input {
       padding: 12px;
-      margin: 12px 0;
-      border-radius: 8px;
+      margin: 10px 0;
       border: none;
-      background: #222;
-      color: #fff;
-      font-size: 15px;
-    }
-
-    .auth-container button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      background-color: #5bb0ff;
-      color: white;
+      border-radius: 6px;
       font-size: 16px;
-      border-radius: 8px;
+    }
+
+    button {
+      background-color: #00c9a7;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 6px;
+      font-size: 16px;
       cursor: pointer;
-      margin-top: 10px;
+      transition: background 0.3s;
     }
 
-    .auth-container button:hover {
-      background-color: #3f9de1;
+    button:hover {
+      background-color: #00a98f;
     }
 
-    .auth-container a {
-      color: #5bb0ff;
+    p {
+      margin-top: 15px;
+    }
+
+    a {
+      color: #00ffcc;
       text-decoration: none;
     }
-  </style>
 
-  <!-- Firebase SDK -->
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <h1>Login to FilmReserve</h1>
+    <form onsubmit="login(event)">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+      <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+    </form>
+  </div>
+
+  <!-- Firebase SDK and Login Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -100,16 +118,5 @@
       }
     }
   </script>
-</head>
-<body>
-  <div class="auth-container">
-    <h1>Login</h1>
-    <form onsubmit="login(event)">
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <button type="submit">Login</button>
-      <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
-    </form>
-  </div>
 </body>
 </html>
