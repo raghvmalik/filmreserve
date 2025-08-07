@@ -10,6 +10,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+
 const movies = [
   { title: "Fantastic 4: First Steps", genre: "Action", lang: "English", format: "1080p", img: "fantastic4.jpeg" },
   { title: "Avengers: Doomsday", genre: "Action", lang: "English", format: "4K", img: "avengers.jpg" },
@@ -34,113 +35,121 @@ const movies = [
   { title: "Deadpool and Wolverine", genre: "Action", lang: "English", format: "4K", img: "deadpool.jpg" },
   { title: "Batman", genre: "Action", lang: "English", format: "4K", img: "batman.jpg" },
   { title: "Ballerina", genre: "Drama", lang: "English", format: "1080p", img: "ballerina.jpg" },
-  { title: "Avatar", genre: "Sci-Fi", lang: "English", format: "4K", img: "avatar.jpg" },
+  { title: "Avatar", genre: "Sci-Fi", lang: "English", format: "4K", img: "avatar.jpg" }
 ];
 
-const movieList = document.getElementById("movie-list");
-const searchInput = document.getElementById("search");
-const genreFilter = document.getElementById("genre-filter");
-const languageFilter = document.getElementById("language-filter");
-const formatFilter = document.getElementById("format-filter");
-const sidebar = document.querySelector(".sidebar");
-const hamburger = document.getElementById("hamburger");
-
-function isLoggedIn() {
-  return !!localStorage.getItem("loggedInUser");
+// Utility to split titles like "Fantastic 4: First Steps"
+function formatTitle(title) {
+  const parts = title.split(":");
+  return parts.length > 1 ? `${parts[0]}<br><span>${parts[1].trim()}</span>` : title;
 }
 
-function getWatchlist() {
-  const user = localStorage.getItem("loggedInUser");
-  if (!user) return [];
-  return JSON.parse(localStorage.getItem(`${user}_watchlist`) || "[]");
-}
+// Load all movies on page
+function displayMovies(list) {
+  const container = document.getElementById("movie-list");
+  container.innerHTML = "";
 
-function toggleWatchlist(title) {
-  const user = localStorage.getItem("loggedInUser");
-  if (!user) return;
-  let watchlist = getWatchlist();
-  if (watchlist.includes(title)) {
-    watchlist = watchlist.filter(item => item !== title);
-  } else {
-    watchlist.push(title);
-  }
-  localStorage.setItem(`${user}_watchlist`, JSON.stringify(watchlist));
-  renderMovies();
-}
+  list.forEach(movie => {
+    const card = document.createElement("div");
+    card.className = "movie-card";
+    card.dataset.genre = movie.genre;
+    card.dataset.lang = movie.lang;
+    card.dataset.format = movie.format;
 
-function createMovieCard(movie) {
-  const inWatchlist = getWatchlist().includes(movie.title);
-  return `
-    <div class="movie-card" data-genre="${movie.genre}" data-lang="${movie.lang}" data-format="${movie.format}">
-      <img src="./images/${movie.img}" alt="${movie.title}">
-      <div class="card-content">
-        <h3>${movie.title.split(":")[0]}${movie.title.includes(":") ? "<br>" + movie.title.split(":")[1] : ""}</h3>
-        ${isLoggedIn() ? `
-        <div class="hover-buttons">
-          <a href="watch.html?title=${encodeURIComponent(movie.title)}" class="watch-btn">Watch Now</a>
-          <button class="watchlist-btn" onclick="toggleWatchlist('${movie.title}')">${inWatchlist ? "✓" : "+"}</button>
-        </div>` : ""}
+    card.innerHTML = `
+      <img src="posters/${movie.img}" alt="${movie.title}">
+      <div class="card-overlay">
+        <div class="watch-now"><a href="watch.html">Watch Now</a></div>
+        <div class="add-watchlist">+</div>
       </div>
-    </div>
-  `;
+      <h3 class="movie-title">${formatTitle(movie.title)}</h3>
+    `;
+
+    container.appendChild(card);
+  });
+
+  setupWatchlist();
 }
 
-function renderMovies() {
-  const search = searchInput.value.toLowerCase();
-  const genre = genreFilter.value;
-  const lang = languageFilter.value;
-  const format = formatFilter.value;
+displayMovies(movies);
 
-  movieList.innerHTML = "";
+// Search functionality
+document.getElementById("search").addEventListener("input", function () {
+  const query = this.value.toLowerCase();
+  const filtered = movies.filter(m => m.title.toLowerCase().includes(query));
+  displayMovies(filtered);
+});
 
-  movies.forEach(movie => {
-    const matchSearch = movie.title.toLowerCase().includes(search);
-    const matchGenre = genre === "" || movie.genre === genre;
-    const matchLang = lang === "" || movie.lang === lang;
-    const matchFormat = format === "" || movie.format === format;
+// Filter by genre/language/format
+["genre", "lang", "format"].forEach(filterId => {
+  document.getElementById(filterId).addEventListener("change", function () {
+    const genre = document.getElementById("genre").value;
+    const lang = document.getElementById("lang").value;
+    const format = document.getElementById("format").value;
 
-    if (matchSearch && matchGenre && matchLang && matchFormat) {
-      movieList.innerHTML += createMovieCard(movie);
+    const filtered = movies.filter(movie =>
+      (genre === "" || movie.genre === genre) &&
+      (lang === "" || movie.lang === lang) &&
+      (format === "" || movie.format === format)
+    );
+
+    displayMovies(filtered);
+  });
+});
+
+// Hover behavior
+document.addEventListener("mouseover", function (e) {
+  if (e.target.closest(".movie-card")) {
+    e.target.closest(".movie-card").classList.add("hovered");
+  }
+});
+document.addEventListener("mouseout", function (e) {
+  if (e.target.closest(".movie-card")) {
+    e.target.closest(".movie-card").classList.remove("hovered");
+  }
+});
+
+// Sidebar menu toggle
+document.getElementById("hamburger").addEventListener("click", () => {
+  document.getElementById("sidebar").classList.toggle("active");
+});
+
+// Sidebar login/logout visibility
+function updateSidebarMenu() {
+  const loggedIn = localStorage.getItem("loggedIn") === "true";
+  document.querySelector(".sidebar .login").style.display = loggedIn ? "none" : "block";
+  document.querySelector(".sidebar .signup").style.display = loggedIn ? "none" : "block";
+  document.querySelector(".sidebar .logout").style.display = loggedIn ? "block" : "none";
+  document.querySelector(".watchlist-link").style.display = loggedIn ? "block" : "none";
+}
+updateSidebarMenu();
+
+// Logo click refresh
+document.getElementById("logo").addEventListener("click", () => location.reload());
+
+// Watchlist management
+function setupWatchlist() {
+  document.querySelectorAll(".add-watchlist").forEach(btn => {
+    btn.addEventListener("click", function () {
+      const title = this.closest(".movie-card").querySelector(".movie-title").innerText.replace(/\n/g, ": ").replace(/\s+/g, ' ').trim();
+      let watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
+
+      if (watchlist.includes(title)) {
+        watchlist = watchlist.filter(item => item !== title);
+        this.textContent = "+";
+      } else {
+        watchlist.push(title);
+        this.textContent = "✓";
+      }
+
+      localStorage.setItem("watchlist", JSON.stringify(watchlist));
+    });
+
+    // Show ✓ if already added
+    const title = btn.closest(".movie-card").querySelector(".movie-title").innerText.replace(/\n/g, ": ").replace(/\s+/g, ' ').trim();
+    const watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
+    if (watchlist.includes(title)) {
+      btn.textContent = "✓";
     }
   });
-}
-
-searchInput.addEventListener("input", renderMovies);
-genreFilter.addEventListener("change", renderMovies);
-languageFilter.addEventListener("change", renderMovies);
-formatFilter.addEventListener("change", renderMovies);
-
-hamburger.addEventListener("click", () => {
-  sidebar.classList.toggle("open");
-});
-
-document.getElementById("logo").addEventListener("click", () => {
-  window.location.reload();
-});
-
-window.onload = function () {
-  const sidebarLinks = document.querySelector(".sidebar-links");
-  if (isLoggedIn()) {
-    sidebarLinks.innerHTML = `
-      <a href="index.html">Home</a>
-      <a href="profile.html">Profile</a>
-      <a href="#" onclick="logout()">Logout</a>
-      <a href="watchlist.html">Watchlist</a>
-    `;
-  } else {
-    sidebarLinks.innerHTML = `
-      <a href="index.html">Home</a>
-      <a href="login.html">Login</a>
-      <a href="signup.html">Signup</a>
-    `;
-    const watchlistBtn = document.getElementById("watchlist-nav");
-    if (watchlistBtn) watchlistBtn.style.display = "none";
-  }
-
-  renderMovies();
-};
-
-function logout() {
-  localStorage.removeItem("loggedInUser");
-  window.location.reload();
 }
