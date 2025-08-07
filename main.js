@@ -1,9 +1,14 @@
 const firebaseConfig = {
-  // Replace with your config
+  apiKey: "...",
+  authDomain: "film-reserve-255bc.firebaseapp.com",
+  projectId: "film-reserve-255bc",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "1:856235605413:web:your-app-id"
 };
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 const movies = [
   { title: "Fantastic 4: First Steps", genre: "Action", lang: "English", format: "1080p", img: "fantastic4.jpeg" },
@@ -12,7 +17,7 @@ const movies = [
   { title: "Superman: The Last Hope", genre: "Action", lang: "English", format: "1080p", img: "superman.jpeg" },
   { title: "Interstellar", genre: "Sci-Fi", lang: "English", format: "4K", img: "interstellar.jpg" },
   { title: "Inception", genre: "Sci-Fi", lang: "English", format: "1080p", img: "inception.jpg" },
-  { title: "28 Years Later", genre: "Thriller", lang: "English", format: "1080p", img: "28yearslater.jpeg" },
+  { title: "28 Days Later", genre: "Thriller", lang: "English", format: "1080p", img: "28yearslater.jpeg" },
   { title: "Minecraft", genre: "Animation", lang: "English", format: "1080p", img: "minecraft.jpeg" },
   { title: "F1", genre: "Drama", lang: "English", format: "1080p", img: "F1.jpg" },
   { title: "Final Destination", genre: "Thriller", lang: "English", format: "1080p", img: "finaldestination.jpeg" },
@@ -32,69 +37,110 @@ const movies = [
   { title: "Avatar", genre: "Sci-Fi", lang: "English", format: "4K", img: "avatar.jpg" },
 ];
 
-const movieContainer = document.getElementById("movieContainer");
-const genreFilter = document.getElementById("genreFilter");
-const languageFilter = document.getElementById("languageFilter");
-const resolutionFilter = document.getElementById("resolutionFilter");
-const searchBar = document.getElementById("searchBar");
+const movieList = document.getElementById("movie-list");
+const searchInput = document.getElementById("search");
+const genreFilter = document.getElementById("genre-filter");
+const languageFilter = document.getElementById("language-filter");
+const formatFilter = document.getElementById("format-filter");
+const sidebar = document.querySelector(".sidebar");
+const hamburger = document.getElementById("hamburger");
+
+function isLoggedIn() {
+  return !!localStorage.getItem("loggedInUser");
+}
+
+function getWatchlist() {
+  const user = localStorage.getItem("loggedInUser");
+  if (!user) return [];
+  return JSON.parse(localStorage.getItem(`${user}_watchlist`) || "[]");
+}
+
+function toggleWatchlist(title) {
+  const user = localStorage.getItem("loggedInUser");
+  if (!user) return;
+  let watchlist = getWatchlist();
+  if (watchlist.includes(title)) {
+    watchlist = watchlist.filter(item => item !== title);
+  } else {
+    watchlist.push(title);
+  }
+  localStorage.setItem(`${user}_watchlist`, JSON.stringify(watchlist));
+  renderMovies();
+}
+
+function createMovieCard(movie) {
+  const inWatchlist = getWatchlist().includes(movie.title);
+  return `
+    <div class="movie-card" data-genre="${movie.genre}" data-lang="${movie.lang}" data-format="${movie.format}">
+      <img src="./images/${movie.img}" alt="${movie.title}">
+      <div class="card-content">
+        <h3>${movie.title.split(":")[0]}${movie.title.includes(":") ? "<br>" + movie.title.split(":")[1] : ""}</h3>
+        ${isLoggedIn() ? `
+        <div class="hover-buttons">
+          <a href="watch.html?title=${encodeURIComponent(movie.title)}" class="watch-btn">Watch Now</a>
+          <button class="watchlist-btn" onclick="toggleWatchlist('${movie.title}')">${inWatchlist ? "✓" : "+"}</button>
+        </div>` : ""}
+      </div>
+    </div>
+  `;
+}
 
 function renderMovies() {
+  const search = searchInput.value.toLowerCase();
   const genre = genreFilter.value;
   const lang = languageFilter.value;
-  const res = resolutionFilter.value;
-  const query = searchBar.value.toLowerCase();
+  const format = formatFilter.value;
 
-  movieContainer.innerHTML = "";
+  movieList.innerHTML = "";
+
   movies.forEach(movie => {
-    if ((genre === "All" || movie.genre === genre) &&
-        (lang === "All" || movie.lang === lang) &&
-        (res === "All" || movie.format === res) &&
-        movie.title.toLowerCase().includes(query)) {
-      const card = document.createElement("div");
-      card.className = "movie-card";
-      card.innerHTML = `
-        <img src="images/${movie.img}" alt="${movie.title}">
-        <h3>${movie.title.replace(":", "<br>")}</h3>
-        <div class="actions">
-          <button>Watch Now</button>
-          <button>+</button>
-        </div>
-      `;
-      movieContainer.appendChild(card);
+    const matchSearch = movie.title.toLowerCase().includes(search);
+    const matchGenre = genre === "" || movie.genre === genre;
+    const matchLang = lang === "" || movie.lang === lang;
+    const matchFormat = format === "" || movie.format === format;
+
+    if (matchSearch && matchGenre && matchLang && matchFormat) {
+      movieList.innerHTML += createMovieCard(movie);
     }
   });
 }
 
-[genreFilter, languageFilter, resolutionFilter, searchBar].forEach(el => {
-  el.addEventListener("input", renderMovies);
+searchInput.addEventListener("input", renderMovies);
+genreFilter.addEventListener("change", renderMovies);
+languageFilter.addEventListener("change", renderMovies);
+formatFilter.addEventListener("change", renderMovies);
+
+hamburger.addEventListener("click", () => {
+  sidebar.classList.toggle("open");
 });
 
-renderMovies();
-
-document.getElementById("menu-toggle").addEventListener("click", () => {
-  const sidebar = document.getElementById("sidebar");
-  sidebar.style.display = sidebar.style.display === "flex" ? "none" : "flex";
+document.getElementById("logo").addEventListener("click", () => {
+  window.location.reload();
 });
 
-auth.onAuthStateChanged(user => {
-  const sidebarLinks = document.getElementById("sidebarLinks");
-  sidebarLinks.innerHTML = "";
-
-  if (user) {
-    ["Profile", "Watchlist", "Already Watched", "Settings", "Logout"].forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      li.onclick = () => {
-        if (item === "Logout") auth.signOut();
-      };
-      sidebarLinks.appendChild(li);
-    });
+window.onload = function () {
+  const sidebarLinks = document.querySelector(".sidebar-links");
+  if (isLoggedIn()) {
+    sidebarLinks.innerHTML = `
+      <a href="index.html">Home</a>
+      <a href="profile.html">Profile</a>
+      <a href="#" onclick="logout()">Logout</a>
+      <a href="watchlist.html">Watchlist</a>
+    `;
   } else {
-    ["Login", "Signup"].forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      li.onclick = () => location.href = `${item.toLowerCase()}.html`;
-      sidebarLinks.appendChild(li);
-    });
+    sidebarLinks.innerHTML = `
+      <a href="index.html">Home</a>
+      <a href="login.html">Login</a>
+      <a href="signup.html">Signup</a>
+    `;
+    const watchlistBtn = document.getElementById("watchlist-nav");
+    if (watchlistBtn) watchlistBtn.style.display = "none";
   }
-});
+
+  renderMovies();
+};
+
+function logout() {
+  localStorage.removeItem("loggedInUser");
+  window.location.reload();
+}
