@@ -6,7 +6,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: url('images/bg.jpg') no-repeat center center fixed;
+  background: url('images/bgimg.jpg') no-repeat center center fixed;
   background-size: cover;
   overflow-x: hidden;
 }
