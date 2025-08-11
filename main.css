@@ -32,7 +32,7 @@ body {
     border-radius: 20px;
     outline: none;
     width: 220px;
-    margin-left: auto;
+    margin: auto;
 }
 
 /* FILTERS ON NAVBAR */
@@ -149,7 +149,7 @@ body {
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.3s ease;
+    transition: 0.3s ease;
 }
 
 .overlay button:hover {
