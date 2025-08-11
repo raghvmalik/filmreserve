@@ -8,50 +8,56 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="logo" onclick="location.reload()">FilmReserve</div>
-    <div class="filters">
-      <select id="genreFilter">
-        <option value="">All Genres</option>
-        <option value="Action">Action</option>
-        <option value="Adventure">Adventure</option>
-        <option value="Sci-Fi">Sci-Fi</option>
-        <option value="Thriller">Thriller</option>
-        <option value="Drama">Drama</option>
-        <option value="Fantasy">Fantasy</option>
-      </select>
-      <select id="languageFilter">
-        <option value="">All Languages</option>
-        <option value="English">English</option>
-        <option value="Hindi">Hindi</option>
-        <option value="Korean">Korean</option>
-      </select>
-      <select id="formatFilter">
-        <option value="">All Formats</option>
-        <option value="All">Auto</option>
-        <option value="HD">HD (1080p)</option>
-        <option value="4K">4K (UHD)</option>
-      </select>
-      <input type="text" id="searchInput" placeholder="Search movies...">
-    </div>
-    <div class="hamburger" onclick="toggleSidebar()">☰</div>
-  </header>
+<!-- NAVBAR -->
+<header class="navbar">
+  <!-- Hamburger moved to left -->
+  <div class="hamburger" onclick="toggleSidebar()">☰</div>
 
-  <!-- SIDEBAR -->
-  <aside id="sidebar" class="sidebar" aria-hidden="true">
-    <nav>
-      <ul id="sidebarMenu">
-        <li><a href="index.html">Home</a></li>
-        <li id="watchlistLink" style="display:none;"><a href="watchlist.html">Watchlist</a></li>
-        <li id="profileLink" style="display:none;"><a href="profile.html">Profile</a></li>
-        <li id="settingsLink" style="display:none;"><a href="settings.html">Settings</a></li>
-        <li id="loginLink"><a href="login.html">Login</a></li>
-        <li id="signupLink"><a href="signup.html">Signup</a></li>
-        <li id="logoutLink" style="display:none;"><a href="#" onclick="logout()">Logout</a></li>
-      </ul>
-    </nav>
-  </aside>
+  <!-- Logo -->
+  <div class="logo" onclick="location.reload()">FilmReserve</div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <select id="genreFilter">
+      <option value="">All Genres</option>
+      <option value="Action">Action</option>
+      <option value="Adventure">Adventure</option>
+      <option value="Sci-Fi">Sci-Fi</option>
+      <option value="Thriller">Thriller</option>
+      <option value="Drama">Drama</option>
+      <option value="Fantasy">Fantasy</option>
+    </select>
+    <select id="languageFilter">
+      <option value="">All Languages</option>
+      <option value="English">English</option>
+      <option value="Hindi">Hindi</option>
+      <option value="Korean">Korean</option>
+    </select>
+    <select id="formatFilter">
+      <option value="">All Formats</option>
+      <option value="All">Auto</option>
+      <option value="HD">HD (1080p)</option>
+      <option value="4K">4K (UHD)</option>
+    </select>
+    <input type="text" id="searchInput" placeholder="Search movies...">
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside id="sidebar" class="sidebar" aria-hidden="true">
+  <nav>
+    <ul id="sidebarMenu">
+      <li><a href="index.html">Home</a></li>
+      <li id="watchlistLink" style="display:none;"><a href="watchlist.html">Watchlist</a></li>
+      <li id="profileLink" style="display:none;"><a href="profile.html">Profile</a></li>
+      <li id="settingsLink" style="display:none;"><a href="settings.html">Settings</a></li>
+      <li id="loginLink"><a href="login.html">Login</a></li>
+      <li id="signupLink"><a href="signup.html">Signup</a></li>
+      <li id="logoutLink" style="display:none;"><a href="#" onclick="logout()">Logout</a></li>
+    </ul>
+  </nav>
+</aside>
+
 
   <!-- MOVIES -->
   <main class="movie-grid">
