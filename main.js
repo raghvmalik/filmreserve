@@ -1,3 +1,7 @@
+// ===== FIREBASE CONFIG =====
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
 const firebaseConfig = {
   apiKey: "...",
   authDomain: "film-reserve-255bc.firebaseapp.com",
@@ -10,146 +14,119 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-
+// ===== MOVIE DATA =====
 const movies = [
-  { title: "Fantastic 4: First Steps", genre: "Action", lang: "English", format: "1080p", img: "fantastic4.jpeg" },
-  { title: "Avengers: Doomsday", genre: "Action", lang: "English", format: "4K", img: "avengers.jpg" },
-  { title: "Oppenheimer", genre: "Historical", lang: "English", format: "1080p", img: "oppenheimer.jpg" },
-  { title: "Superman: The Last Hope", genre: "Action", lang: "English", format: "1080p", img: "superman.jpeg" },
-  { title: "Interstellar", genre: "Sci-Fi", lang: "English", format: "4K", img: "interstellar.jpg" },
-  { title: "Inception", genre: "Sci-Fi", lang: "English", format: "1080p", img: "inception.jpg" },
-  { title: "28 Days Later", genre: "Thriller", lang: "English", format: "1080p", img: "28yearslater.jpeg" },
-  { title: "Minecraft", genre: "Animation", lang: "English", format: "1080p", img: "minecraft.jpeg" },
-  { title: "F1", genre: "Drama", lang: "English", format: "1080p", img: "F1.jpg" },
-  { title: "Final Destination", genre: "Thriller", lang: "English", format: "1080p", img: "finaldestination.jpeg" },
-  { title: "Dune", genre: "Sci-Fi", lang: "English", format: "4K", img: "dune.jpg" },
-  { title: "Wicked", genre: "Drama", lang: "English", format: "1080p", img: "wicked.avif" },
-  { title: "Thunderbolts", genre: "Action", lang: "English", format: "4K", img: "thunderbolts.jpg" },
-  { title: "Spider-Man: No Way Home", genre: "Action", lang: "English", format: "1080p", img: "spiderman.jpg" },
-  { title: "Matrix Resurrections", genre: "Sci-Fi", lang: "English", format: "4K", img: "matrix.jpg" },
-  { title: "Kalki 2898 AD", genre: "Sci-Fi", lang: "Hindi", format: "4K", img: "kalki.jpg" },
-  { title: "Emergency", genre: "Historical", lang: "Hindi", format: "1080p", img: "emergency.jpeg" },
-  { title: "Jurassic World", genre: "Action", lang: "English", format: "4K", img: "jurassicworld.jpg" },
-  { title: "Joker 2", genre: "Drama", lang: "English", format: "1080p", img: "joker2.jpg" },
-  { title: "Flash", genre: "Action", lang: "English", format: "1080p", img: "flash.webp" },
-  { title: "Deadpool and Wolverine", genre: "Action", lang: "English", format: "4K", img: "deadpool.jpg" },
-  { title: "Batman", genre: "Action", lang: "English", format: "4K", img: "batman.jpg" },
-  { title: "Ballerina", genre: "Drama", lang: "English", format: "1080p", img: "ballerina.jpg" },
-  { title: "Avatar", genre: "Sci-Fi", lang: "English", format: "4K", img: "avatar.jpg" }
+  { title: "Fantastic 4: First Steps", genre: "Action", language: "English", resolution: "4k", image: "fantastic4.jpeg", link: "trailers/fantastic4.mp4" },
+  { title: "Avengers: Doomsday", genre: "Action", language: "English", resolution: "4k", image: "avengers.jpeg", link: "trailers/avengers.mp4" },
+  { title: "Oppenheimer", genre: "Drama", language: "English", resolution: "1080p", image: "oppenheimer.jpeg", link: "movie.html" },
+  { title: "Superman: The Last Hope", genre: "Action", language: "English", resolution: "4k", image: "superman.jpeg", link: "trailers/superman.mp4" },
+  { title: "Interstellar", genre: "Sci-Fi", language: "English", resolution: "1080p", image: "interstellar.jpeg", link: "movie.html" },
+  { title: "Inception", genre: "Sci-Fi", language: "English", resolution: "1080p", image: "inception.jpeg", link: "movie.html" },
+  { title: "28 Years Later", genre: "Horror", language: "English", resolution: "1080p", image: "28yearslater.jpeg", link: "trailers/28yearslater.mp4" },
+  { title: "Minecraft", genre: "Animation", language: "English", resolution: "1080p", image: "minecraft.jpeg", link: "movie.html" },
+  { title: "F1", genre: "Sports", language: "English", resolution: "4k", image: "f1.jpeg", link: "trailers/f1.mp4" },
+  { title: "Final Destination", genre: "Horror", language: "English", resolution: "1080p", image: "finaldestination.jpeg", link: "movie.html" },
+  { title: "Dune", genre: "Sci-Fi", language: "English", resolution: "4k", image: "dune.jpeg", link: "movie.html" },
+  { title: "Wicked", genre: "Musical", language: "English", resolution: "1080p", image: "wicked.avif", link: "movie.html" },
+  { title: "Thunderbolts", genre: "Action", language: "English", resolution: "4k", image: "thunderbolts.jpeg", link: "movie.html" },
+  { title: "Spider-Man: No Way Home", genre: "Action", language: "English", resolution: "4k", image: "spiderman.jpeg", link: "movie.html" },
+  { title: "Matrix Resurrections", genre: "Sci-Fi", language: "English", resolution: "1080p", image: "matrix.jpeg", link: "movie.html" },
+  { title: "Kalki 2898 AD", genre: "Action", language: "Hindi", resolution: "4k", image: "kalki.jpeg", link: "movie.html" },
+  { title: "Emergency", genre: "Drama", language: "Hindi", resolution: "1080p", image: "emergency.jpeg", link: "movie.html" },
+  { title: "Jurassic World", genre: "Adventure", language: "English", resolution: "4k", image: "jurassic.jpeg", link: "trailers/jurassic.mp4" },
+  { title: "Joker 2", genre: "Drama", language: "English", resolution: "4k", image: "joker2.jpeg", link: "movie.html" },
+  { title: "Flash", genre: "Action", language: "English", resolution: "1080p", image: "flash.jpeg", link: "movie.html" },
+  { title: "Deadpool and Wolverine", genre: "Action", language: "English", resolution: "4k", image: "deadpool.jpeg", link: "movie.html" },
+  { title: "Batman", genre: "Action", language: "English", resolution: "4k", image: "batman.jpeg", link: "movie.html" },
+  { title: "Ballerina", genre: "Action", language: "English", resolution: "1080p", image: "ballerina.jpeg", link: "movie.html" },
+  { title: "Avatar", genre: "Sci-Fi", language: "English", resolution: "4k", image: "avatar.jpeg", link: "movie.html" }
 ];
 
-// Utility to split titles like "Fantastic 4: First Steps"
-function formatTitle(title) {
-  const parts = title.split(":");
-  return parts.length > 1 ? `${parts[0]}<br><span>${parts[1].trim()}</span>` : title;
-}
+// ===== SIDEBAR LOGIN STATE =====
+onAuthStateChanged(auth, (user) => {
+  const sidebarMenu = document.getElementById("sidebarMenu");
+  sidebarMenu.innerHTML = `
+    <li><a href="index.html">Home</a></li>
+    ${user ? `
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="watchlist.html">Watchlist</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="#" id="logoutLink">Logout</a></li>
+    ` : `
+      <li><a href="login.html">Login</a></li>
+      <li><a href="signup.html">Signup</a></li>
+    `}
+  `;
+  if (user) {
+    document.getElementById("logoutLink").addEventListener("click", () => {
+      signOut(auth);
+    });
+  }
+});
 
-// Load all movies on page
-function displayMovies(list) {
-  const container = document.getElementById("movie-list");
-  container.innerHTML = "";
-
+// ===== RENDER MOVIES =====
+const movieList = document.getElementById("movieList");
+function renderMovies(list) {
+  movieList.innerHTML = "";
   list.forEach(movie => {
     const card = document.createElement("div");
-    card.className = "movie-card";
-    card.dataset.genre = movie.genre;
-    card.dataset.lang = movie.lang;
-    card.dataset.format = movie.format;
-
+    card.classList.add("movie-card");
     card.innerHTML = `
-      <img src="posters/${movie.img}" alt="${movie.title}">
-      <div class="card-overlay">
-        <div class="watch-now"><a href="watch.html">Watch Now</a></div>
-        <div class="add-watchlist">+</div>
+      <img src="images/${movie.image}" alt="${movie.title}">
+      <div class="movie-info">
+        <h3>${movie.title.replace(":", "<br>")}</h3>
+        <div class="movie-buttons">
+          <a href="${movie.link}" class="play-btn">Play</a>
+          <button class="watchlist-btn" data-title="${movie.title}">+</button>
+        </div>
       </div>
-      <h3 class="movie-title">${formatTitle(movie.title)}</h3>
     `;
-
-    container.appendChild(card);
+    movieList.appendChild(card);
   });
+  attachWatchlistEvents();
+}
+renderMovies(movies);
 
-  setupWatchlist();
+// ===== FILTERS =====
+document.getElementById("searchInput").addEventListener("input", applyFilters);
+document.getElementById("genreFilter").addEventListener("change", applyFilters);
+document.getElementById("languageFilter").addEventListener("change", applyFilters);
+document.getElementById("resolutionFilter").addEventListener("change", applyFilters);
+
+function applyFilters() {
+  const search = document.getElementById("searchInput").value.toLowerCase();
+  const genre = document.getElementById("genreFilter").value;
+  const language = document.getElementById("languageFilter").value;
+  const resolution = document.getElementById("resolutionFilter").value;
+
+  const filtered = movies.filter(movie =>
+    (movie.title.toLowerCase().includes(search)) &&
+    (genre === "all" || movie.genre === genre) &&
+    (language === "all" || movie.language === language) &&
+    (resolution === "all" || movie.resolution === resolution)
+  );
+  renderMovies(filtered);
 }
 
-displayMovies(movies);
-
-// Search functionality
-document.getElementById("search").addEventListener("input", function () {
-  const query = this.value.toLowerCase();
-  const filtered = movies.filter(m => m.title.toLowerCase().includes(query));
-  displayMovies(filtered);
-});
-
-// Filter by genre/language/format
-["genre", "lang", "format"].forEach(filterId => {
-  document.getElementById(filterId).addEventListener("change", function () {
-    const genre = document.getElementById("genre").value;
-    const lang = document.getElementById("lang").value;
-    const format = document.getElementById("format").value;
-
-    const filtered = movies.filter(movie =>
-      (genre === "" || movie.genre === genre) &&
-      (lang === "" || movie.lang === lang) &&
-      (format === "" || movie.format === format)
-    );
-
-    displayMovies(filtered);
-  });
-});
-
-// Hover behavior
-document.addEventListener("mouseover", function (e) {
-  if (e.target.closest(".movie-card")) {
-    e.target.closest(".movie-card").classList.add("hovered");
-  }
-});
-document.addEventListener("mouseout", function (e) {
-  if (e.target.closest(".movie-card")) {
-    e.target.closest(".movie-card").classList.remove("hovered");
-  }
-});
-
-// Sidebar menu toggle
-document.getElementById("hamburger").addEventListener("click", () => {
-  document.getElementById("sidebar").classList.toggle("active");
-});
-
-// Sidebar login/logout visibility
-function updateSidebarMenu() {
-  const loggedIn = localStorage.getItem("loggedIn") === "true";
-  document.querySelector(".sidebar .login").style.display = loggedIn ? "none" : "block";
-  document.querySelector(".sidebar .signup").style.display = loggedIn ? "none" : "block";
-  document.querySelector(".sidebar .logout").style.display = loggedIn ? "block" : "none";
-  document.querySelector(".watchlist-link").style.display = loggedIn ? "block" : "none";
-}
-updateSidebarMenu();
-
-// Logo click refresh
-document.getElementById("logo").addEventListener("click", () => location.reload());
-
-// Watchlist management
-function setupWatchlist() {
-  document.querySelectorAll(".add-watchlist").forEach(btn => {
-    btn.addEventListener("click", function () {
-      const title = this.closest(".movie-card").querySelector(".movie-title").innerText.replace(/\n/g, ": ").replace(/\s+/g, ' ').trim();
-      let watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
-
+// ===== WATCHLIST =====
+function attachWatchlistEvents() {
+  document.querySelectorAll(".watchlist-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const user = auth.currentUser;
+      if (!user) {
+        alert("Login to use watchlist");
+        return;
+      }
+      let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+      const title = btn.getAttribute("data-title");
       if (watchlist.includes(title)) {
-        watchlist = watchlist.filter(item => item !== title);
-        this.textContent = "+";
+        watchlist = watchlist.filter(m => m !== title);
+        btn.textContent = "+";
       } else {
         watchlist.push(title);
-        this.textContent = "✓";
+        btn.textContent = "✓";
       }
-
       localStorage.setItem("watchlist", JSON.stringify(watchlist));
     });
-
-    // Show ✓ if already added
-    const title = btn.closest(".movie-card").querySelector(".movie-title").innerText.replace(/\n/g, ": ").replace(/\s+/g, ' ').trim();
-    const watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
-    if (watchlist.includes(title)) {
-      btn.textContent = "✓";
-    }
   });
 }
