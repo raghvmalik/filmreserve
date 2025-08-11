@@ -6,7 +6,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: url('images/bgimg.jpg') no-repeat center center fixed;
+  background-color: rgb((31,31,31);
   background-size: cover;
   overflow-x: hidden;
 }
@@ -61,7 +61,7 @@ body {
   background-color: rgba(0, 0, 0, 0.85);
   padding-top: 60px;
   transition: left 0.3s ease;
-  z-index: 1001;
+  z-index: 1002;
 }
 
 .sidebar.open {
