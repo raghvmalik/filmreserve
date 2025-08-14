@@ -1,94 +1,125 @@
-// Sidebar Toggle
-function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    const isOpen = sidebar.style.left === "0px";
-    sidebar.style.left = isOpen ? "-260px" : "0px";
-    sidebar.setAttribute("aria-hidden", isOpen);
+// ======= Sidebar Toggle =======
+const hamburger = document.querySelector('.hamburger');
+const sidebar = document.querySelector('.sidebar');
+
+if (hamburger && sidebar) {
+    hamburger.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+    });
 }
 
-// Fake login state using localStorage
-function checkLoginStatus() {
-    const loggedIn = localStorage.getItem("loggedIn") === "true";
+// ======= Refresh Page on FilmReserve Click =======
+document.querySelector('.logo')?.addEventListener('click', () => {
+    location.reload();
+});
 
-    document.getElementById("watchlistLink").style.display = loggedIn ? "block" : "none";
-    document.getElementById("profileLink").style.display = loggedIn ? "block" : "none";
-    document.getElementById("settingsLink").style.display = loggedIn ? "block" : "none";
-    document.getElementById("logoutLink").style.display = loggedIn ? "block" : "none";
+// ======= Login Status & Sidebar Links =======
+const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+const sidebarMenu = document.querySelector('.sidebar-menu');
 
-    document.getElementById("loginLink").style.display = loggedIn ? "none" : "block";
-    document.getElementById("signupLink").style.display = loggedIn ? "none" : "block";
-}
-
-// Simulate logout
-function logout() {
-    localStorage.setItem("loggedIn", "false");
-    alert("You have been logged out!");
-    checkLoginStatus();
-}
-
-// Watchlist handling
-function toggleWatchlist(movieId) {
-    let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
-    const index = watchlist.indexOf(movieId);
-
-    if (index === -1) {
-        watchlist.push(movieId);
+if (sidebarMenu) {
+    if (isLoggedIn) {
+        sidebarMenu.innerHTML = `
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="#" id="logoutBtn">Logout</a></li>
+            <li><a href="watchlist.html">Watchlist</a></li>
+        `;
+        document.getElementById('logoutBtn')?.addEventListener('click', () => {
+            localStorage.removeItem('loggedIn');
+            location.reload();
+        });
     } else {
-        watchlist.splice(index, 1);
+        sidebarMenu.innerHTML = `
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Signup</a></li>
+        `;
     }
-    localStorage.setItem("watchlist", JSON.stringify(watchlist));
-    updateWatchlistButtons();
 }
 
-function updateWatchlistButtons() {
-    const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
-    document.querySelectorAll(".watchlist-btn").forEach(btn => {
-        const movieId = btn.getAttribute("data-id");
-        if (watchlist.includes(movieId)) {
-            btn.textContent = "✓";
+// ======= Watch Now Button Login Enforcement =======
+document.querySelectorAll('.play-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.preventDefault();
+        if (!isLoggedIn) {
+            alert("Please log in to watch this movie.");
+            window.location.href = "login.html";
         } else {
-            btn.textContent = "+";
+            window.location.href = "watch.html";
+        }
+    });
+});
+
+// ======= Watchlist Add/Remove =======
+document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.preventDefault();
+        if (!isLoggedIn) {
+            alert("Please log in to add to watchlist.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const card = btn.closest('.movie-card');
+        const movieTitle = card?.getAttribute('data-title');
+        if (!movieTitle) return;
+
+        let watchlist = JSON.parse(localStorage.getItem('watchlist') || '[]');
+
+        if (watchlist.includes(movieTitle)) {
+            watchlist = watchlist.filter(m => m !== movieTitle);
+            btn.textContent = '+';
+        } else {
+            watchlist.push(movieTitle);
+            btn.textContent = '✓';
+        }
+
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+    });
+});
+
+// ======= Search Functionality =======
+const searchInput = document.getElementById('searchBar');
+if (searchInput) {
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        document.querySelectorAll('.movie-card').forEach(card => {
+            const title = card.getAttribute('data-title')?.toLowerCase() || '';
+            card.style.display = title.includes(searchTerm) ? 'block' : 'none';
+        });
+    });
+}
+
+// ======= Filter Functionality =======
+const genreSelect = document.getElementById('genreFilter');
+const languageSelect = document.getElementById('languageFilter');
+const formatSelect = document.getElementById('formatFilter');
+
+function filterMovies() {
+    const genre = genreSelect?.value.toLowerCase() || '';
+    const language = languageSelect?.value.toLowerCase() || '';
+    const format = formatSelect?.value.toLowerCase() || '';
+
+    document.querySelectorAll('.movie-card').forEach(card => {
+        const matchesGenre = !genre || card.getAttribute('data-genre')?.toLowerCase() === genre;
+        const matchesLanguage = !language || card.getAttribute('data-language')?.toLowerCase() === language;
+        const matchesFormat = !format || card.getAttribute('data-format')?.toLowerCase() === format;
+
+        card.style.display = matchesGenre && matchesLanguage && matchesFormat ? 'block' : 'none';
+    });
+}
+
+[genreSelect, languageSelect, formatSelect].forEach(select => {
+    select?.addEventListener('change', filterMovies);
+});
+
+// ======= Initialize Watchlist Buttons (✓ if already added) =======
+if (isLoggedIn) {
+    let watchlist = JSON.parse(localStorage.getItem('watchlist') || '[]');
+    document.querySelectorAll('.movie-card').forEach(card => {
+        const title = card.getAttribute('data-title');
+        const btn = card.querySelector('.add-btn');
+        if (title && watchlist.includes(title)) {
+            btn.textContent = '✓';
         }
     });
 }
-
-// Search & Filters
-function applyFilters() {
-    const searchValue = document.getElementById("searchInput").value.toLowerCase();
-    const genreValue = document.getElementById("genreFilter").value;
-    const languageValue = document.getElementById("languageFilter").value;
-    const formatValue = document.getElementById("formatFilter").value;
-
-    document.querySelectorAll(".movie-card").forEach(card => {
-        const title = card.querySelector("h3").textContent.toLowerCase();
-        const genre = card.getAttribute("data-genre");
-        const language = card.getAttribute("data-language");
-        const format = card.getAttribute("data-format");
-
-        const matchesSearch = title.includes(searchValue);
-        const matchesGenre = !genreValue || genre === genreValue;
-        const matchesLanguage = !languageValue || language === languageValue;
-        const matchesFormat = !formatValue || format === formatValue || formatValue === "All";
-
-        card.style.display = (matchesSearch && matchesGenre && matchesLanguage && matchesFormat) ? "block" : "none";
-    });
-}
-
-// Event Listeners
-document.getElementById("searchInput").addEventListener("input", applyFilters);
-document.getElementById("genreFilter").addEventListener("change", applyFilters);
-document.getElementById("languageFilter").addEventListener("change", applyFilters);
-document.getElementById("formatFilter").addEventListener("change", applyFilters);
-
-document.addEventListener("DOMContentLoaded", () => {
-    checkLoginStatus();
-    updateWatchlistButtons();
-
-    // Add click events for watchlist buttons
-    document.querySelectorAll(".watchlist-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const movieId = btn.getAttribute("data-id");
-            toggleWatchlist(movieId);
-        });
-    });
-});
