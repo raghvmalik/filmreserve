@@ -1,169 +1,189 @@
-/* MAIN LAYOUT */
+/* ====== MAIN LAYOUT ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #1f1f1f; 
-    color: #ffffff; 
+  font-family: Arial, sans-serif;
+  background: url('images/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  overflow-x: hidden;
 }
 
-/* NAVBAR */
+/* ====== NAVBAR ====== */
 .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 15px;
-    background-color: #005f99;
-    padding: 10px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(34, 34, 34, 0.6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  z-index: 1000;
 }
 
-.navbar .logo {
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #ffffff;
+.navbar h1 {
+  cursor: pointer;
+  color: #00ffcc;
 }
 
-.navbar input[type="text"] {
-    padding: 6px 10px;
-    border: none;
-    border-radius: 20px;
-    outline: none;
-    width: 220px;
-    margin: auto;
+.navbar .search-bar {
+  border-radius: 20px;
+  padding: 5px 15px;
+  border: none;
+  outline: none;
 }
 
-/* FILTERS ON NAVBAR */
-.navbar select {
-    padding: 6px 10px;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-    margin-left: 10px;
+.hamburger {
+  font-size: 22px;
+  cursor: pointer;
+  margin-right: 10px;
 }
 
-/* SIDEBAR */
+/* ====== SIDEBAR ====== */
 .sidebar {
-    position: fixed;
-    left: -260px;
-    top: 0;
-    height: 100%;
-    width: 250px;
-    background-color: #2b2b2b;
-    padding-top: 60px;
-    transition: left 0.3s ease;
-    z-index: 10000;
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background: rgba(20, 20, 20, 0.95);
+  padding: 20px;
+  transition: left 0.3s ease;
+  z-index: 2000;
 }
 
-.sidebar nav ul {
-    list-style-type: none;
-    padding: 0;
+.sidebar.active {
+  left: 0;
 }
 
-.sidebar nav ul li {
-    padding: 12px 20px;
+.sidebar a {
+  display: block;
+  color: white;
+  padding: 10px 0;
+  text-decoration: none;
 }
 
-.sidebar nav ul li a {
-    color: #fff;
-    text-decoration: none;
+.sidebar a:hover {
+  color: #00ffcc;
 }
 
-.sidebar nav ul li a:hover {
-    background-color: #444;
-    border-radius: 4px;
+/* ====== FILTERS ====== */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-top: 70px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-/* MOVIE GRID */
+.filters select {
+  padding: 5px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+
+/* ====== MOVIE GRID ====== */
 .movie-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 20px;
-    padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+  padding: 100px 20px 20px;
 }
 
 .movie-card {
-    background-color: #2a2a2a; 
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    transition: transform 0.3s ease;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #111;
+  transition: transform 0.3s ease;
 }
 
 .movie-card:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .movie-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    aspect-ratio: 2/3; 
-    display: block;
+  width: 100%;
+  height: 270px;
+  object-fit: cover;
+  display: block;
 }
 
-/* MOVIE INFO */
-.movie-info {
-    padding: 10px;
+.movie-card h3 {
+  text-align: center;
+  padding: 10px;
+  font-size: 16px;
+  background: rgba(0, 0, 0, 0.7);
+  margin: 0;
 }
 
-.movie-info h3 {
-    font-size: 16px;
-    margin: 0 0 4px;
-    color: #ffffff;
-}
-
-.movie-info p {
-    margin: 0;
-    font-size: 13px;
-    color: #cccccc;
-}
-
-/* OVERLAY BUTTONS */
-.movie-card .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    opacity: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    transition: opacity 0.3s ease;
+/* ====== OVERLAY FOR HOVER ====== */
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+  color: white;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .movie-card:hover .overlay {
-    opacity: 1;
+  opacity: 1;
+}
+
+.overlay h4 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.overlay .button-group {
+  display: flex;
+  gap: 8px;
 }
 
 .overlay button {
-    background-color: #e50914;
-    border: none;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.3s ease;
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .overlay button:hover {
-    background-color: #b0060f;
+  background: darkred;
 }
 
-/* FOOTER */
-footer {
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-    padding: 12px 0;
-    font-size: 14px;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+/* ====== WATCHLIST ====== */
+.watchlist-hidden {
+  display: none;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+  .movie-card img {
+    height: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-card img {
+    height: 180px;
+  }
 }
