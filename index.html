@@ -1,350 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FilmReserve</title>
-  <link rel="stylesheet" href="main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilmReserve</title>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo" onclick="location.reload()">FilmReserve</div>
+        <div class="filters">
+            <select id="genreFilter">
+                <option value="">All Genres</option>
+                <option value="action">Action</option>
+                <option value="sci-fi">Sci-Fi</option>
+                <option value="drama">Drama</option>
+                <option value="horror">Horror</option>
+                <option value="fantasy">Fantasy</option>
+            </select>
+            <select id="langFilter">
+                <option value="">All Languages</option>
+                <option value="english">English</option>
+                <option value="hindi">Hindi</option>
+                <option value="korean">Korean</option>
+            </select>
+            <select id="resFilter">
+                <option value="">All</option>
+                <option value="1080p">HD (1080p)</option>
+                <option value="4k">4K UHD</option>
+            </select>
+        </div>
+        <input type="text" id="searchInput" placeholder="Search movies...">
+        <div class="hamburger" onclick="toggleSidebar()">☰</div>
+    </nav>
 
-<!-- NAVBAR -->
-<header class="navbar">
-  
-  <div class="hamburger" onclick="toggleSidebar()">☰</div>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <ul id="sidebarMenu"></ul>
+    </aside>
 
-  <!-- Logo -->
-  <div class="logo" onclick="location.reload()">FilmReserve</div>
-
-  <!-- Filters -->
-  <div class="filters">
-    <select id="genreFilter">
-      <option value="">All Genres</option>
-      <option value="Action">Action</option>
-      <option value="Adventure">Adventure</option>
-      <option value="Sci-Fi">Sci-Fi</option>
-      <option value="Thriller">Thriller</option>
-      <option value="Drama">Drama</option>
-      <option value="Fantasy">Fantasy</option>
-    </select>
-    <select id="languageFilter">
-      <option value="">All Languages</option>
-      <option value="English">English</option>
-      <option value="Hindi">Hindi</option>
-      <option value="Korean">Korean</option>
-    </select>
-    <select id="formatFilter">
-      <option value="">All Formats</option>
-      <option value="All">Auto</option>
-      <option value="HD">HD (1080p)</option>
-      <option value="4K">4K (UHD)</option>
-    </select>
-    <input type="text" id="searchInput" placeholder="Search movies...">
-  </div>
-</header>
-
-<!-- SIDEBAR -->
-<aside id="sidebar" class="sidebar" aria-hidden="true">
-  <nav>
-    <ul id="sidebarMenu">
-      <li><a href="index.html">Home</a></li>
-      <li id="watchlistLink" style="display:none;"><a href="watchlist.html">Watchlist</a></li>
-      <li id="profileLink" style="display:none;"><a href="profile.html">Profile</a></li>
-      <li id="settingsLink" style="display:none;"><a href="settings.html">Settings</a></li>
-      <li id="loginLink"><a href="login.html">Login</a></li>
-      <li id="signupLink"><a href="signup.html">Signup</a></li>
-      <li id="logoutLink" style="display:none;"><a href="#" onclick="logout()">Logout</a></li>
-    </ul>
-  </nav>
-</aside>
-
-
-  <!-- MOVIES -->
-  <main class="movie-grid">
-
-    <div class="movie-card" data-genre="Action" data-language="English" data-format="HD">
-      <img src="images/fantastic4.jpeg" alt="Fantastic 4: First Steps">
-      <div class="overlay">
-        <div class="overlay-bottom">
-          <h3 class="overlay-title">Fantastic 4: First Steps<br>trailer</h3>
-           <div class="overlay-buttons">
+    <!-- Movies Section -->
+    <main class="movies-container">
         
-        <button onclick="window.location.href='https://raghvmalik.github.io/filmreserve/trailer.html?movie=fantastic4'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-    
-    <div class="movie-card" data-genre="Action" data-language="English" data-format="4K">
-      <img src="images/avengers.jpg" alt="Avengers: Doomsday">
-      <div class="overlay">
-        <div class="overlay-bottom">
-          <h3 class="overlay-title">Avengers: Doomsday<br>teaser</h3>
-           <div class="overlay-buttons">
-        <button onclick="window.location.href='https://raghvmalik.github.io/filmreserve/trailer.html?movie=avengers5'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-    
-    <div class="movie-card" data-genre="Drama" data-language="English" data-format="4K">
-      <img src="images/oppenheimer.jpg" alt="Oppenheimer">
-      <div class="overlay">
-        <div class="overlay-bottom">
-        <h3 class="overlay-title">Oppenheimer</h3>
-         <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
- 
-    <div class="movie-card" data-genre="Action" data-language="English" data-format="4K">
-      <img src="images/superman.jpeg" alt="Superman: The Last Hope">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Superman(2025)<br>trailer</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='https://raghvmalik.github.io/filmreserve/trailer.html?movie=superman'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
- 
-    <div class="movie-card" data-genre="Sci-Fi" data-language="English" data-format="4K">
-      <img src="images/interstellar.jpg" alt="Interstellar">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Interstellar</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-  
-    <div class="movie-card" data-genre="Sci-Fi" data-language="English" data-format="4K">
-      <img src="images/inception.jpg" alt="Inception">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Inception</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-    
-    <div class="movie-card" data-genre="Thriller" data-language="English" data-format="HD">
-      <img src="images/28yearslater.jpeg" alt="28 Years Later">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">28 Years Later<br>trailer</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='https://raghvmalik.github.io/filmreserve/trailer.html?movie=28yearslater'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
- 
-    <div class="movie-card" data-genre="Adventure" data-language="English" data-format="HD">
-      <img src="images/minecraft.jpeg" alt="Minecraft">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">A Minecraft Movie</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-      <h3>Minecraft</h3>
-    </div>
- 
-    <div class="movie-card" data-genre="Action" data-language="English" data-format="4K">
-      <img src="images/F1.jpg" alt="F1">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">F1: The Movie<br>trailer</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='https://raghvmalik.github.io/filmreserve/trailer.html?movie=F1movie'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-  
-    <div class="movie-card" data-genre="Horror" data-language="English" data-format="4K">
-      <img src="images/finaldestination.jpeg" alt="Final Destination">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Final Destination</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-  
-    <div class="movie-card" data-genre="Sci-Fi" data-language="English" data-format="HD">
-      <img src="images/dune.jpg" alt="Dune">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Dune</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-  
-    <div class="movie-card" data-genre="Fantasy" data-language="English" data-format="All">
-      <img src="images/wicked.avif" alt="Wicked">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Wicked</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-  
-    <div class="movie-card" data-genre="Action" data-language="English" data-format="All">
-      <img src="images/thunderbolts.jpg" alt="Thunderbolts">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">New Avengers<br>(Thunderbolts)</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
- 
-    <div class="movie-card" data-genre="Action" data-language="English" data-format="4K">
-      <img src="images/spiderman.jpg" alt="Spider-Man: No Way Home">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Spiderman:<br>No Way Home</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-  
-    <div class="movie-card" data-genre="Sci-Fi" data-language="English" data-format="HD">
-      <img src="images/matrix.jpg" alt="Matrix Resurrections">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Matrix: Resurrections</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-   
-    <div class="movie-card" data-genre="Sci-Fi" data-language="Hindi" data-format="HD">
-      <img src="images/kalki.jpg" alt="Kalki 2898 AD">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Kalki 2898AD</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-   
-    <div class="movie-card" data-genre="Drama" data-language="Hindi" data-format="All">
-      <img src="images/emergency.jpeg" alt="Emergency">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Emergency</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-  
-    <div class="movie-card" data-genre="Adventure" data-language="English" data-format="4K">
-      <img src="images/jurassicworld.jpg" alt="Jurassic World">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Jurassic World</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='https://raghvmalik.github.io/filmreserve/trailer.html?movie=jurassicworld'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
- 
-    <div class="movie-card" data-genre="Drama" data-language="English" data-format="HD">
-      <img src="images/joker2.jpg" alt="Joker 2">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Joker:Folie A Deux</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-  
-    <div class="movie-card" data-genre="Action" data-language="English" data-format="HD">
-      <img src="images/flash.webp" alt="Flash">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Flash(2023)</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-  
-    <div class="movie-card" data-genre="Action" data-language="English" data-format="4K">
-      <img src="images/deadpool.jpg" alt="Deadpool and Wolverine">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Deadpool and Wolverine</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-  
-    <div class="movie-card" data-genre="Action" data-language="English" data-format="All">
-      <img src="images/batman.jpg" alt="Batman">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Batman</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-    
-    <div class="movie-card" data-genre="Action" data-language="English" data-format="HD">
-      <img src="images/ballerina.jpg" alt="Ballerina">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Ballerina<br>from the world of<br>John Wick</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-  
-    <div class="movie-card" data-genre="Sci-Fi" data-language="English" data-format="4K">
-      <img src="images/avatar.jpg" alt="Avatar">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Avatar</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
+        <!-- 6 Trailer-linked movies -->
+        <div class="movie-card" data-genre="sci-fi" data-lang="english" data-res="4k">
+            <img src="fantastic4.jpeg" alt="Fantastic 4: First Steps">
+            <div class="overlay">
+                <button onclick="location.href='trailer.html?movie=fantastic4'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Fantastic 4<br>First Steps</h3>
+        </div>
 
-    <div class="movie-card" data-genre="Thriller" data-language="Korean" data-format="4K">
-      <img src="images/squidgame.jpg" alt="Squid Games">
-      <div class="overlay">
-        <div class="overlay-bottom">
-      <h3 class="overlay-title">Squid Games △ ○ □</h3>
-      <div class="overlay-buttons">
-        <button onclick="window.location.href='watch.html'">Play</button>
-        <button class="add-watchlist">+</button>
-      </div>
-    </div>
-  </main>
+        <div class="movie-card" data-genre="action" data-lang="english" data-res="4k">
+            <img src="avengers.jpg" alt="Avengers: Doomsday">
+            <div class="overlay">
+                <button onclick="location.href='trailer.html?movie=avengers5'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Avengers<br>Doomsday</h3>
+        </div>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    FilmReserve | The ultimate streaming destination.
-  </footer>
+        <div class="movie-card" data-genre="action" data-lang="english" data-res="4k">
+            <img src="superman.jpeg" alt="Superman: The Last Hope">
+            <div class="overlay">
+                <button onclick="location.href='trailer.html?movie=superman'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Superman<br>The Last Hope</h3>
+        </div>
 
-  <script src="main.js"></script>
+        <div class="movie-card" data-genre="thriller" data-lang="english" data-res="1080p">
+            <img src="28yearslater.jpeg" alt="28 Years Later">
+            <div class="overlay">
+                <button onclick="location.href='trailer.html?movie=28yearslater'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>28 Years Later</h3>
+        </div>
+
+        <div class="movie-card" data-genre="drama" data-lang="english" data-res="4k">
+            <img src="joker2.jpg" alt="Joker 2">
+            <div class="overlay">
+                <button onclick="location.href='watch.html?movie=joker2'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Joker 2</h3>
+        </div>
+
+        <div class="movie-card" data-genre="action" data-lang="english" data-res="4k">
+            <img src="deadpoolwolverine.jpg" alt="Deadpool and Wolverine">
+            <div class="overlay">
+                <button onclick="location.href='watch.html?movie=deadpoolwolverine'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Deadpool and Wolverine</h3>
+        </div>
+
+       
+        <div class="movie-card" data-genre="drama" data-lang="english" data-res="4k">
+            <img src="oppenheimer.jpg" alt="Oppenheimer">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Oppenheimer</h3>
+        </div>
+
+        <div class="movie-card" data-genre="sci-fi" data-lang="english" data-res="4k">
+            <img src="interstellar.jpg" alt="Interstellar">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Interstellar</h3>
+        </div>
+
+        <div class="movie-card" data-genre="sci-fi" data-lang="english" data-res="4k">
+            <img src="inception.jpg" alt="Inception">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Inception</h3>
+        </div>
+
+        <div class="movie-card" data-genre="action" data-lang="english" data-res="1080p">
+            <img src="minecraft.jpeg" alt="Minecraft">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Minecraft</h3>
+        </div>
+
+        <div class="movie-card" data-genre="sport" data-lang="english" data-res="1080p">
+            <img src="F1.jpg" alt="F1">
+            <div class="overlay">
+                <button onclick="location.href='trailer.html?movie=F1'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>F1</h3>
+        </div>
+
+        <div class="movie-card" data-genre="horror" data-lang="english" data-res="1080p">
+            <img src="finaldestination.jpeg" alt="Final Destination">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Final Destination</h3>
+        </div>
+
+        <div class="movie-card" data-genre="sci-fi" data-lang="english" data-res="4k">
+            <img src="dune.jpg" alt="Dune">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Dune</h3>
+        </div>
+
+        <div class="movie-card" data-genre="fantasy" data-lang="english" data-res="4k">
+            <img src="wicked.avif" alt="Wicked">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Wicked</h3>
+        </div>
+
+        <div class="movie-card" data-genre="action" data-lang="english" data-res="1080p">
+            <img src="thunderbolts.jpg" alt="Thunderbolts">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Thunderbolts</h3>
+        </div>
+
+        <div class="movie-card" data-genre="sci-fi" data-lang="english" data-res="4k">
+            <img src="spiderman.jpg" alt="Spider-Man: No Way Home">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Spider-Man<br>No Way Home</h3>
+        </div>
+
+        <div class="movie-card" data-genre="sci-fi" data-lang="english" data-res="4k">
+            <img src="matrix.jpg" alt="Matrix Resurrections">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Matrix Resurrections</h3>
+        </div>
+
+        <div class="movie-card" data-genre="sci-fi" data-lang="hindi" data-res="4k">
+            <img src="kalki.jpg" alt="Kalki 2898 AD">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Kalki 2898 AD</h3>
+        </div>
+
+        <div class="movie-card" data-genre="drama" data-lang="hindi" data-res="1080p">
+            <img src="emergency.jpeg" alt="Emergency">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Emergency</h3>
+        </div>
+
+        <div class="movie-card" data-genre="adventure" data-lang="english" data-res="4k">
+            <img src="jurassicworld.jpg" alt="Jurassic World">
+            <div class="overlay">
+                <button onclick="location.href='trailer.html?movie=jurassicworld'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Jurassic World</h3>
+        </div>
+
+        <div class="movie-card" data-genre="action" data-lang="english" data-res="4k">
+            <img src="flash.webp" alt="Flash">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Flash</h3>
+        </div>
+
+        <div class="movie-card" data-genre="action" data-lang="english" data-res="4k">
+            <img src="batman.jpg" alt="Batman">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Batman</h3>
+        </div>
+
+        <div class="movie-card" data-genre="action" data-lang="english" data-res="4k">
+            <img src="ballerina.jpg" alt="Ballerina">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Ballerina</h3>
+        </div>
+
+        <div class="movie-card" data-genre="fantasy" data-lang="english" data-res="4k">
+            <img src="avatar.jpg" alt="Avatar">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Avatar</h3>
+        </div>
+
+        <div class="movie-card" data-genre="drama" data-lang="korean" data-res="4k">
+            <img src="squidgame.jpg" alt="Squid Game">
+            <div class="overlay">
+                <button onclick="location.href='watch.html'">▶</button>
+                <button class="watchlist-btn">+</button>
+            </div>
+            <h3>Squid Game</h3>
+        </div>
+
+    </main>
+
+    <script src="main.js"></script>
 </body>
 </html>
