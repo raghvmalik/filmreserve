@@ -1,163 +1,139 @@
-// === SIDEBAR ===
-function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  if (!sidebar) return;
-  const isOpen = sidebar.style.left === "0px";
-  sidebar.style.left = isOpen ? "-260px" : "0px";
-  sidebar.setAttribute("aria-hidden", isOpen ? "true" : "false");
-}
-window.toggleSidebar = toggleSidebar; // needed for inline onclick
+// main.js - FilmReserve Homepage
+// Author: Raghav
+// Handles sidebar, navbar, watchlist, filters, search, and play buttons
 
-// === LOGIN STATE (localStorage-based) ===
-function checkLoginStatus() {
-  const loggedIn = localStorage.getItem("loggedIn") === "true";
-  const show = (id, on) => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = on ? "block" : "none";
+document.addEventListener("DOMContentLoaded", () => {
+  const watchlistKey = "filmreserveWatchlist"; // Key for storing watchlist in localStorage
+
+  // ---------- NAVBAR & SIDEBAR ----------
+  const hamburger = document.querySelector(".hamburger");
+  const sidebar = document.querySelector(".sidebar");
+  const filmreserveLogo = document.querySelector(".logo");
+  const searchInput = document.querySelector("#search");
+
+  // Toggle sidebar when hamburger menu is clicked
+  if (hamburger && sidebar) {
+    hamburger.addEventListener("click", () => {
+      sidebar.classList.toggle("open");
+    });
+  }
+
+  // Refresh homepage when clicking FilmReserve logo
+  if (filmreserveLogo) {
+    filmreserveLogo.addEventListener("click", () => {
+      location.reload();
+    });
+  }
+
+  // ---------- LOGIN / LOGOUT MENU ----------
+  const sidebarMenu = document.querySelector(".sidebar-menu");
+  const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+
+  if (sidebarMenu) {
+    sidebarMenu.innerHTML = isLoggedIn
+      ? `<li><a href="profile.html">Profile</a></li>
+         <li><a href="#" id="logout">Logout</a></li>
+         <li><a href="watchlist.html">Watchlist</a></li>`
+      : `<li><a href="login.html">Login</a></li>
+         <li><a href="signup.html">Signup</a></li>`;
+
+    if (isLoggedIn) {
+      const logoutBtn = document.querySelector("#logout");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          localStorage.setItem("loggedIn", "false");
+          location.reload();
+        });
+      }
+    }
+  }
+
+  // ---------- WATCHLIST HANDLING ----------
+  let watchlist = JSON.parse(localStorage.getItem(watchlistKey)) || [];
+
+  // Update all watchlist buttons (+ / ✓)
+  const updateWatchlistButtons = () => {
+    document.querySelectorAll(".watchlist-btn").forEach((btn) => {
+      const movieId = btn.dataset.id;
+      if (!movieId) return; // safety check
+      btn.textContent = watchlist.includes(movieId) ? "✓" : "+";
+    });
   };
 
-  show("watchlistLink", loggedIn);
-  show("profileLink", loggedIn);
-  show("settingsLink", loggedIn);
-  show("logoutLink", loggedIn);
-
-  show("loginLink", !loggedIn);
-  show("signupLink", !loggedIn);
-}
-
-function bindAuthForms() {
-  // Works if your login.html / signup.html have these IDs
-  const loginForm = document.getElementById("loginForm");
-  if (loginForm) {
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      localStorage.setItem("loggedIn", "true");
-      location.href = "index.html";
-    });
-  }
-  const signupForm = document.getElementById("signupForm");
-  if (signupForm) {
-    signupForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      localStorage.setItem("loggedIn", "true");
-      location.href = "index.html";
-    });
-  }
-}
-
-function logout() {
-  localStorage.setItem("loggedIn", "false");
-  checkLoginStatus();
-  alert("You have been logged out!");
-}
-window.logout = logout;
-
-// === WATCHLIST ===
-function getWatchlist() {
-  try { return JSON.parse(localStorage.getItem("watchlist")) || []; }
-  catch { return []; }
-}
-function saveWatchlist(list) {
-  localStorage.setItem("watchlist", JSON.stringify(list));
-}
-function normalizeId(str) {
-  return (str || "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
-function getCardIdFromDom(btn) {
-  // Prefer explicit data-id
-  let id = btn.getAttribute("data-id");
-  if (id) return id;
-
-  const card = btn.closest(".movie-card");
-  if (!card) return "";
-
-  // Try overlay-title, then any h3 inside the card, then image alt
-  const titleEl = card.querySelector(".overlay-title") || card.querySelector("h3");
-  if (titleEl) return normalizeId(titleEl.textContent.trim());
-
-  const imgAlt = card.querySelector("img")?.getAttribute("alt");
-  if (imgAlt) return normalizeId(imgAlt);
-
-  return "";
-}
-function toggleWatchlistById(id) {
-  if (!id) return;
-  const list = getWatchlist();
-  const i = list.indexOf(id);
-  if (i === -1) list.push(id); else list.splice(i, 1);
-  saveWatchlist(list);
   updateWatchlistButtons();
-}
-function updateWatchlistButtons() {
-  const list = getWatchlist();
-  document.querySelectorAll(".add-watchlist, .watchlist-btn").forEach(btn => {
-    const id = btn.getAttribute("data-id") || getCardIdFromDom(btn);
-    const added = list.includes(id);
-    btn.textContent = added ? "✓" : "+";
-    btn.setAttribute("aria-pressed", added ? "true" : "false");
-    if (!btn.getAttribute("data-id") && id) btn.setAttribute("data-id", id);
-  });
-}
 
-// === FILTERS & SEARCH ===
-function applyFilters() {
-  const sVal = (document.getElementById("searchInput")?.value || "").toLowerCase();
-  const gVal = document.getElementById("genreFilter")?.value || "";
-  const lVal = document.getElementById("languageFilter")?.value || "";
-  const fVal = document.getElementById("formatFilter")?.value || "";
+  // Handle watchlist button clicks
+  document.querySelectorAll(".watchlist-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (!isLoggedIn) {
+        alert("Please log in to manage your watchlist.");
+        return;
+      }
+      const movieId = btn.dataset.id;
+      if (!movieId) return; // safety check
 
-  document.querySelectorAll(".movie-card").forEach(card => {
-    const title =
-      (card.querySelector(".overlay-title")?.textContent ||
-       card.querySelector("h3")?.textContent || "").toLowerCase();
-
-    const genre = card.getAttribute("data-genre") || "";
-    const lang  = card.getAttribute("data-language") || "";
-    const fmt   = card.getAttribute("data-format") || "";
-
-    const matchesSearch   = title.includes(sVal);
-    const matchesGenre    = !gVal || genre === gVal;
-    const matchesLanguage = !lVal || lang === lVal;
-    const matchesFormat   = !fVal || fVal === "All" || fmt === fVal;
-
-    card.style.display = (matchesSearch && matchesGenre && matchesLanguage && matchesFormat) ? "" : "none";
-  });
-}
-
-// === INIT ===
-document.addEventListener("DOMContentLoaded", () => {
-  // ensure sidebar starts closed
-  const sidebar = document.getElementById("sidebar");
-  if (sidebar) {
-    sidebar.style.left = "-260px";
-    sidebar.setAttribute("aria-hidden", "true");
-  }
-
-  checkLoginStatus();
-  bindAuthForms();
-
-  // Bind watchlist clicks (supports both .add-watchlist and .watchlist-btn)
-  document.querySelectorAll(".add-watchlist, .watchlist-btn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const id = btn.getAttribute("data-id") || getCardIdFromDom(btn);
-      toggleWatchlistById(id);
+      if (watchlist.includes(movieId)) {
+        // Remove from watchlist
+        watchlist = watchlist.filter((id) => id !== movieId);
+      } else {
+        // Add to watchlist
+        watchlist.push(movieId);
+      }
+      localStorage.setItem(watchlistKey, JSON.stringify(watchlist));
+      updateWatchlistButtons();
     });
   });
 
-  // Filters & search
-  const search = document.getElementById("searchInput");
-  if (search) search.addEventListener("input", applyFilters);
+  // ---------- FILTERS & SEARCH ----------
+  const genreFilter = document.querySelector("#genreFilter");
+  const languageFilter = document.querySelector("#languageFilter");
+  const formatFilter = document.querySelector("#formatFilter");
+  const movieCards = document.querySelectorAll(".movie-card");
 
-  const g = document.getElementById("genreFilter");
-  const l = document.getElementById("languageFilter");
-  const f = document.getElementById("formatFilter");
-  if (g) g.addEventListener("change", applyFilters);
-  if (l) l.addEventListener("change", applyFilters);
-  if (f) f.addEventListener("change", applyFilters);
+  const applyFilters = () => {
+    const genre = genreFilter ? genreFilter.value.toLowerCase() : "all";
+    const language = languageFilter ? languageFilter.value.toLowerCase() : "all";
+    const format = formatFilter ? formatFilter.value.toLowerCase() : "all";
+    const searchQuery = searchInput ? searchInput.value.toLowerCase() : "";
 
-  applyFilters();
+    movieCards.forEach((card) => {
+      if (!card.dataset) return; // safety check
+
+      const cardGenre = card.dataset.genre?.toLowerCase() || "";
+      const cardLanguage = card.dataset.language?.toLowerCase() || "";
+      const cardFormat = card.dataset.format?.toLowerCase() || "";
+      const cardTitle = card.dataset.title?.toLowerCase() || "";
+
+      const match =
+        (genre === "all" || cardGenre === genre) &&
+        (language === "all" || cardLanguage === language) &&
+        (format === "all" || cardFormat === format) &&
+        cardTitle.includes(searchQuery);
+
+      card.style.display = match ? "block" : "none";
+    });
+  };
+
+  // Event listeners for filters and search
+  if (genreFilter) genreFilter.addEventListener("change", applyFilters);
+  if (languageFilter) languageFilter.addEventListener("change", applyFilters);
+  if (formatFilter) formatFilter.addEventListener("change", applyFilters);
+  if (searchInput) searchInput.addEventListener("input", applyFilters);
+
+  // ---------- PLAY BUTTONS (▶) ----------
+  document.querySelectorAll(".watch-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (!btn.dataset.watch) return; // safety check
+
+      if (!isLoggedIn) {
+        window.location.href = "login.html";
+      } else {
+        window.location.href = btn.dataset.watch;
+      }
+    });
+  });
+
+  // ---------- INITIALIZATION ----------
+  applyFilters(); // Apply filters on page load
+  updateWatchlistButtons(); // Update buttons on page load
 });
