@@ -1,4 +1,3 @@
-<script>
 // === SIDEBAR ===
 function toggleSidebar() {
   const sidebar = document.getElementById("sidebar");
@@ -162,4 +161,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   applyFilters();
 });
-</script>
