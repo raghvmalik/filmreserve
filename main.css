@@ -1,189 +1,152 @@
-/* ====== MAIN LAYOUT ====== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* ====== Global Styles ====== */
 body {
-  font-family: Arial, sans-serif;
-  background: url('images/background.jpg') no-repeat center center fixed;
-  background-size: cover;
-  color: white;
-  overflow-x: hidden;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000015;
+    color: white;
+    overflow-x: hidden;
 }
 
-/* ====== NAVBAR ====== */
+/* ====== Navbar ====== */
 .navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: rgba(34, 34, 34, 0.6);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  z-index: 1000;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(0, 128, 128, 0.6);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
 }
 
 .navbar h1 {
-  cursor: pointer;
-  color: #00ffcc;
+    cursor: pointer;
+    color: white;
+    font-size: 1.5rem;
+    margin: 0;
 }
 
-.navbar .search-bar {
-  border-radius: 20px;
-  padding: 5px 15px;
-  border: none;
-  outline: none;
+.navbar input[type="text"] {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    width: 200px;
 }
 
-.hamburger {
-  font-size: 22px;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-/* ====== SIDEBAR ====== */
+/* ====== Sidebar ====== */
 .sidebar {
-  position: fixed;
-  top: 0;
-  left: -250px;
-  width: 250px;
-  height: 100%;
-  background: rgba(20, 20, 20, 0.95);
-  padding: 20px;
-  transition: left 0.3s ease;
-  z-index: 2000;
-}
-
-.sidebar.active {
-  left: 0;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: #1f1f1f;
+    color: white;
+    transition: left 0.3s ease;
+    padding-top: 60px;
+    z-index: 999;
 }
 
 .sidebar a {
-  display: block;
-  color: white;
-  padding: 10px 0;
-  text-decoration: none;
+    display: block;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
 }
 
 .sidebar a:hover {
-  color: #00ffcc;
+    background: #333;
 }
 
-/* ====== FILTERS ====== */
-.filters {
-  display: flex;
-  gap: 10px;
-  margin-top: 70px;
-  justify-content: center;
-  flex-wrap: wrap;
+.sidebar.open {
+    left: 0;
 }
 
-.filters select {
-  padding: 5px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-}
-
-/* ====== MOVIE GRID ====== */
+/* ====== Movie Grid ====== */
 .movie-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 20px;
-  padding: 100px 20px 20px;
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
 }
 
 .movie-card {
-  position: relative;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #111;
-  transition: transform 0.3s ease;
+    position: relative;
+    background: #1e1e1e;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
 }
 
 .movie-card:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .movie-card img {
-  width: 100%;
-  height: 270px;
-  object-fit: cover;
-  display: block;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
 }
 
-.movie-card h3 {
-  text-align: center;
-  padding: 10px;
-  font-size: 16px;
-  background: rgba(0, 0, 0, 0.7);
-  margin: 0;
+/* ====== Movie Info ====== */
+.movie-info {
+    padding: 10px;
+    text-align: center;
 }
 
-/* ====== OVERLAY FOR HOVER ====== */
-.overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
-  color: white;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+.movie-info h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: white;
 }
 
-.movie-card:hover .overlay {
-  opacity: 1;
+/* ====== Hover Buttons ====== */
+.movie-actions {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.overlay h4 {
-  font-size: 16px;
-  margin-bottom: 8px;
-  text-align: center;
+.movie-card:hover .movie-actions {
+    opacity: 1;
 }
 
-.overlay .button-group {
-  display: flex;
-  gap: 8px;
+.movie-actions button {
+    background-color: red;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
-.overlay button {
-  background: red;
-  color: white;
-  border: none;
-  padding: 5px 12px;
-  font-size: 14px;
-  border-radius: 5px;
-  cursor: pointer;
+.movie-actions button:hover {
+    background-color: darkred;
 }
 
-.overlay button:hover {
-  background: darkred;
+/* ====== Watchlist Icon ====== */
+.watchlist-added {
+    background-color: green !important;
 }
 
-/* ====== WATCHLIST ====== */
-.watchlist-hidden {
-  display: none;
-}
-
-/* ====== RESPONSIVE ====== */
+/* ====== Responsive ====== */
 @media (max-width: 768px) {
-  .movie-card img {
-    height: 220px;
-  }
-}
+    .movie-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
 
-@media (max-width: 480px) {
-  .movie-card img {
-    height: 180px;
-  }
+    .navbar input[type="text"] {
+        width: 150px;
+    }
 }
