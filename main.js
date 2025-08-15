@@ -1,80 +1,72 @@
-// Sidebar Toggle
-const sidebar = document.querySelector('.sidebar');
-const hamburger = document.querySelector('.hamburger');
+// ===== SIDEBAR TOGGLE =====
+const menuBtn = document.querySelector(".menu-btn");
+const sidebar = document.querySelector(".sidebar");
 
-hamburger.addEventListener('click', () => {
-    sidebar.classList.toggle('open');
+menuBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
 });
 
-// Movie Search
-const searchInput = document.querySelector('.search-bar');
-const movieCards = document.querySelectorAll('.movie-card');
+// ===== FILTER & SEARCH =====
+const searchBar = document.querySelector(".search-bar");
+const genreFilter = document.getElementById("genre-filter");
+const languageFilter = document.getElementById("language-filter");
+const formatFilter = document.getElementById("format-filter");
+const movies = document.querySelectorAll(".movie-card");
 
-searchInput.addEventListener('input', () => {
-    const query = searchInput.value.toLowerCase();
-    movieCards.forEach(card => {
-        const title = card.getAttribute('data-title').toLowerCase();
-        card.style.display = title.includes(query) ? 'block' : 'none';
-    });
-});
+function filterMovies() {
+    const searchTerm = searchBar.value.toLowerCase();
+    const genre = genreFilter.value;
+    const language = languageFilter.value;
+    const format = formatFilter.value;
 
-// Filters
-const genreFilter = document.getElementById('genreFilter');
-const languageFilter = document.getElementById('languageFilter');
-const formatFilter = document.getElementById('formatFilter');
+    movies.forEach(movie => {
+        const title = movie.querySelector("h3").innerText.toLowerCase();
+        const movieGenre = movie.dataset.genre;
+        const movieLanguage = movie.dataset.language;
+        const movieFormat = movie.dataset.format;
 
-function applyFilters() {
-    const genreVal = genreFilter.value.toLowerCase();
-    const langVal = languageFilter.value.toLowerCase();
-    const formatVal = formatFilter.value.toLowerCase();
-
-    movieCards.forEach(card => {
-        const genre = card.getAttribute('data-genre').toLowerCase();
-        const lang = card.getAttribute('data-language').toLowerCase();
-        const format = card.getAttribute('data-format').toLowerCase();
-
-        const genreMatch = genreVal === 'all' || genre.includes(genreVal);
-        const langMatch = langVal === 'all' || lang.includes(langVal);
-        const formatMatch = formatVal === 'all' || format.includes(formatVal);
-
-        card.style.display = (genreMatch && langMatch && formatMatch) ? 'block' : 'none';
+        if (
+            (title.includes(searchTerm) || searchTerm === "") &&
+            (genre === "" || movieGenre === genre) &&
+            (language === "" || movieLanguage === language) &&
+            (format === "" || movieFormat === format)
+        ) {
+            movie.style.display = "";
+        } else {
+            movie.style.display = "none";
+        }
     });
 }
 
-[genreFilter, languageFilter, formatFilter].forEach(filter => {
-    filter.addEventListener('change', applyFilters);
-});
+searchBar.addEventListener("input", filterMovies);
+genreFilter.addEventListener("change", filterMovies);
+languageFilter.addEventListener("change", filterMovies);
+formatFilter.addEventListener("change", filterMovies);
 
-// Watchlist
-let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+// ===== WATCHLIST =====
+let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+
+function toggleWatchlist(id) {
+    if (watchlist.includes(id)) {
+        watchlist = watchlist.filter(item => item !== id);
+    } else {
+        watchlist.push(id);
+    }
+    localStorage.setItem("watchlist", JSON.stringify(watchlist));
+    updateWatchlistButtons();
+}
 
 function updateWatchlistButtons() {
-    document.querySelectorAll('.watchlist-btn').forEach(button => {
-        const movieId = button.dataset.id;
-        if (watchlist.includes(movieId)) {
-            button.textContent = '✓';
-        } else {
-            button.textContent = '+';
-        }
+    document.querySelectorAll(".add-watchlist").forEach(btn => {
+        const id = btn.dataset.id;
+        btn.textContent = watchlist.includes(id) ? "✓" : "+";
     });
 }
 
-document.querySelectorAll('.watchlist-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const movieId = button.dataset.id;
-        if (watchlist.includes(movieId)) {
-            watchlist = watchlist.filter(id => id !== movieId);
-        } else {
-            watchlist.push(movieId);
-        }
-        localStorage.setItem('watchlist', JSON.stringify(watchlist));
-        updateWatchlistButtons();
+document.querySelectorAll(".add-watchlist").forEach(btn => {
+    btn.addEventListener("click", () => {
+        toggleWatchlist(btn.dataset.id);
     });
 });
 
 updateWatchlistButtons();
-
-// Navbar Logo Click Refresh
-document.querySelector('.navbar h1').addEventListener('click', () => {
-    window.location.reload();
-});
