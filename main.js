@@ -1,105 +1,80 @@
-// main.js
+// Sidebar Toggle
+const sidebar = document.querySelector('.sidebar');
+const hamburger = document.querySelector('.hamburger');
 
-// Sidebar toggle
-const sidebar = document.getElementById('sidebar');
-const hamburger = document.getElementById('hamburger');
 hamburger.addEventListener('click', () => {
     sidebar.classList.toggle('open');
 });
 
-// Refresh homepage on FilmReserve click
-document.getElementById('logo').addEventListener('click', () => {
-    window.location.href = 'index.html';
-});
+// Movie Search
+const searchInput = document.querySelector('.search-bar');
+const movieCards = document.querySelectorAll('.movie-card');
 
-// Simulate login status (replace with real auth check)
-let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-// Sidebar links update based on login status
-function updateSidebarLinks() {
-    const sidebarMenu = document.getElementById('sidebar-menu');
-    sidebarMenu.innerHTML = '';
-
-    if (isLoggedIn) {
-        sidebarMenu.innerHTML = `
-            <li><a href="profile.html">Profile</a></li>
-            <li><a href="watchlist.html">Watchlist</a></li>
-            <li id="logout-btn"><a href="#">Logout</a></li>
-        `;
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            localStorage.setItem('isLoggedIn', 'false');
-            isLoggedIn = false;
-            updateSidebarLinks();
-        });
-    } else {
-        sidebarMenu.innerHTML = `
-            <li><a href="login.html">Login</a></li>
-            <li><a href="signup.html">Signup</a></li>
-        `;
-    }
-}
-updateSidebarLinks();
-
-// Watchlist feature
-function toggleWatchlist(movieId, btn) {
-    if (!isLoggedIn) {
-        alert('Please log in to use the watchlist.');
-        return;
-    }
-
-    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-    if (watchlist.includes(movieId)) {
-        watchlist = watchlist.filter(id => id !== movieId);
-        btn.textContent = '+';
-    } else {
-        watchlist.push(movieId);
-        btn.textContent = '✓';
-    }
-    localStorage.setItem('watchlist', JSON.stringify(watchlist));
-}
-
-// Apply watchlist state on load
-function loadWatchlistState() {
-    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-    document.querySelectorAll('.watchlist-btn').forEach(btn => {
-        const movieId = btn.dataset.movieId;
-        if (watchlist.includes(movieId)) {
-            btn.textContent = '✓';
-        }
-    });
-}
-loadWatchlistState();
-
-// Attach click events to watchlist buttons
-document.querySelectorAll('.watchlist-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const movieId = btn.dataset.movieId;
-        toggleWatchlist(movieId, btn);
+searchInput.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase();
+    movieCards.forEach(card => {
+        const title = card.getAttribute('data-title').toLowerCase();
+        card.style.display = title.includes(query) ? 'block' : 'none';
     });
 });
 
 // Filters
+const genreFilter = document.getElementById('genreFilter');
+const languageFilter = document.getElementById('languageFilter');
+const formatFilter = document.getElementById('formatFilter');
+
 function applyFilters() {
-    const genre = document.getElementById('genre-filter').value;
-    const language = document.getElementById('language-filter').value;
-    const format = document.getElementById('format-filter').value;
-    const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+    const genreVal = genreFilter.value.toLowerCase();
+    const langVal = languageFilter.value.toLowerCase();
+    const formatVal = formatFilter.value.toLowerCase();
 
-    document.querySelectorAll('.movie-card').forEach(card => {
-        const matchesGenre = genre === '' || card.dataset.genre === genre;
-        const matchesLanguage = language === '' || card.dataset.language === language;
-        const matchesFormat = format === '' || card.dataset.format === format;
-        const matchesSearch = card.querySelector('h3').textContent.toLowerCase().includes(searchQuery);
+    movieCards.forEach(card => {
+        const genre = card.getAttribute('data-genre').toLowerCase();
+        const lang = card.getAttribute('data-language').toLowerCase();
+        const format = card.getAttribute('data-format').toLowerCase();
 
-        if (matchesGenre && matchesLanguage && matchesFormat && matchesSearch) {
-            card.style.display = '';
+        const genreMatch = genreVal === 'all' || genre.includes(genreVal);
+        const langMatch = langVal === 'all' || lang.includes(langVal);
+        const formatMatch = formatVal === 'all' || format.includes(formatVal);
+
+        card.style.display = (genreMatch && langMatch && formatMatch) ? 'block' : 'none';
+    });
+}
+
+[genreFilter, languageFilter, formatFilter].forEach(filter => {
+    filter.addEventListener('change', applyFilters);
+});
+
+// Watchlist
+let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+
+function updateWatchlistButtons() {
+    document.querySelectorAll('.watchlist-btn').forEach(button => {
+        const movieId = button.dataset.id;
+        if (watchlist.includes(movieId)) {
+            button.textContent = '✓';
         } else {
-            card.style.display = 'none';
+            button.textContent = '+';
         }
     });
 }
 
-document.getElementById('genre-filter').addEventListener('change', applyFilters);
-document.getElementById('language-filter').addEventListener('change', applyFilters);
-document.getElementById('format-filter').addEventListener('change', applyFilters);
-document.getElementById('search-bar').addEventListener('input', applyFilters);
+document.querySelectorAll('.watchlist-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        const movieId = button.dataset.id;
+        if (watchlist.includes(movieId)) {
+            watchlist = watchlist.filter(id => id !== movieId);
+        } else {
+            watchlist.push(movieId);
+        }
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        updateWatchlistButtons();
+    });
+});
+
+updateWatchlistButtons();
+
+// Navbar Logo Click Refresh
+document.querySelector('.navbar h1').addEventListener('click', () => {
+    window.location.reload();
+});
