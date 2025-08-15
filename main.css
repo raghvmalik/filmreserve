@@ -1,152 +1,170 @@
-/* ====== Global Styles ====== */
-body {
+/* Styling */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     font-family: Arial, sans-serif;
-    background-color: #000015;
+    background-color: #2c2c2c;
     color: white;
     overflow-x: hidden;
 }
 
-/* ====== Navbar ====== */
+/* Navbar */
 .navbar {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
-    background: rgba(0, 128, 128, 0.6);
+    background: rgba(40, 40, 40, 0.9);
+    backdrop-filter: blur(5px);
     padding: 10px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     z-index: 1000;
-    backdrop-filter: blur(5px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .navbar h1 {
+    color: #4ecdc4;
     cursor: pointer;
-    color: white;
     font-size: 1.5rem;
-    margin: 0;
 }
 
-.navbar input[type="text"] {
-    padding: 6px 12px;
+.search-bar {
     border-radius: 20px;
     border: none;
+    padding: 8px 15px;
     outline: none;
-    width: 200px;
+    background-color: #3a3a3a;
+    color: white;
 }
 
-/* ====== Sidebar ====== */
+/* Sidebar */
 .sidebar {
     position: fixed;
     top: 0;
     left: -250px;
     width: 250px;
     height: 100%;
-    background: #1f1f1f;
-    color: white;
-    transition: left 0.3s ease;
+    background-color: #1f1f1f;
     padding-top: 60px;
+    transition: left 0.3s ease;
     z-index: 999;
+}
+
+.sidebar.active {
+    left: 0;
 }
 
 .sidebar a {
     display: block;
-    padding: 12px 20px;
+    padding: 15px 20px;
     color: white;
     text-decoration: none;
+    transition: background 0.2s;
 }
 
 .sidebar a:hover {
-    background: #333;
+    background: rgba(255, 255, 255, 0.1);
 }
 
-.sidebar.open {
-    left: 0;
-}
-
-/* ====== Movie Grid ====== */
-.movie-grid {
-    margin-top: 80px;
+/* Movie Grid */
+.movies-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
-    padding: 20px;
+    padding: 100px 20px 40px;
 }
 
 .movie-card {
     position: relative;
-    background: #1e1e1e;
-    border-radius: 10px;
     overflow: hidden;
+    border-radius: 8px;
+    background-color: #1a1a1a;
     transition: transform 0.2s ease;
-}
-
-.movie-card:hover {
-    transform: scale(1.05);
 }
 
 .movie-card img {
     width: 100%;
-    height: 300px;
-    object-fit: cover;
+    height: auto;
+    display: block;
 }
 
-/* ====== Movie Info ====== */
-.movie-info {
-    padding: 10px;
-    text-align: center;
+.movie-card:hover {
+    transform: scale(1.03);
 }
 
-.movie-info h3 {
-    margin: 0;
-    font-size: 1rem;
-    color: white;
-}
-
-/* ====== Hover Buttons ====== */
-.movie-actions {
+/* Overlay for Hover Effects */
+.movie-overlay {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 15px;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
-.movie-card:hover .movie-actions {
+.movie-card:hover .movie-overlay {
     opacity: 1;
 }
 
-.movie-actions button {
-    background-color: red;
-    border: none;
-    color: white;
+.movie-title {
     font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.movie-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.movie-actions button {
+    border: none;
     padding: 8px 12px;
-    border-radius: 5px;
+    border-radius: 4px;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    background-color: red;
+    color: white;
+    transition: background 0.2s;
 }
 
 .movie-actions button:hover {
-    background-color: darkred;
+    background-color: #cc0000;
 }
 
-/* ====== Watchlist Icon ====== */
-.watchlist-added {
-    background-color: green !important;
+/* Filters */
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 10px;
 }
 
-/* ====== Responsive ====== */
+.filters select {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: none;
+    background-color: #3a3a3a;
+    color: white;
+    outline: none;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-    .movie-grid {
+    .movies-container {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    }
-
-    .navbar input[type="text"] {
-        width: 150px;
     }
 }
