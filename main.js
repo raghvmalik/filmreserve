@@ -1,72 +1,50 @@
-// ===== SIDEBAR TOGGLE =====
-const menuBtn = document.querySelector(".menu-btn");
-const sidebar = document.querySelector(".sidebar");
-
-menuBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("active");
+// Sidebar Toggle
+document.querySelector(".sidebar-toggle").addEventListener("click", () => {
+    document.querySelector(".sidebar").classList.toggle("active");
 });
 
-// ===== FILTER & SEARCH =====
-const searchBar = document.querySelector(".search-bar");
-const genreFilter = document.getElementById("genre-filter");
-const languageFilter = document.getElementById("language-filter");
-const formatFilter = document.getElementById("format-filter");
-const movies = document.querySelectorAll(".movie-card");
+// Search Filter
+document.getElementById("searchInput").addEventListener("input", function () {
+    let searchValue = this.value.toLowerCase();
+    document.querySelectorAll(".movie-card").forEach(card => {
+        let title = card.querySelector(".movie-title").innerText.toLowerCase();
+        card.style.display = title.includes(searchValue) ? "block" : "none";
+    });
+});
 
-function filterMovies() {
-    const searchTerm = searchBar.value.toLowerCase();
-    const genre = genreFilter.value;
-    const language = languageFilter.value;
-    const format = formatFilter.value;
+// Genre/Language/Format Filters
+function applyFilters() {
+    let genre = document.getElementById("genreFilter").value;
+    let language = document.getElementById("languageFilter").value;
+    let format = document.getElementById("formatFilter").value;
 
-    movies.forEach(movie => {
-        const title = movie.querySelector("h3").innerText.toLowerCase();
-        const movieGenre = movie.dataset.genre;
-        const movieLanguage = movie.dataset.language;
-        const movieFormat = movie.dataset.format;
+    document.querySelectorAll(".movie-card").forEach(card => {
+        let matchGenre = genre === "" || card.dataset.genre === genre;
+        let matchLanguage = language === "" || card.dataset.language === language;
+        let matchFormat = format === "" || card.dataset.format === format;
 
-        if (
-            (title.includes(searchTerm) || searchTerm === "") &&
-            (genre === "" || movieGenre === genre) &&
-            (language === "" || movieLanguage === language) &&
-            (format === "" || movieFormat === format)
-        ) {
-            movie.style.display = "";
-        } else {
-            movie.style.display = "none";
-        }
+        card.style.display = (matchGenre && matchLanguage && matchFormat) ? "block" : "none";
     });
 }
 
-searchBar.addEventListener("input", filterMovies);
-genreFilter.addEventListener("change", filterMovies);
-languageFilter.addEventListener("change", filterMovies);
-formatFilter.addEventListener("change", filterMovies);
+document.getElementById("genreFilter").addEventListener("change", applyFilters);
+document.getElementById("languageFilter").addEventListener("change", applyFilters);
+document.getElementById("formatFilter").addEventListener("change", applyFilters);
 
-// ===== WATCHLIST =====
-let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
-
-function toggleWatchlist(id) {
-    if (watchlist.includes(id)) {
-        watchlist = watchlist.filter(item => item !== id);
-    } else {
-        watchlist.push(id);
-    }
-    localStorage.setItem("watchlist", JSON.stringify(watchlist));
-    updateWatchlistButtons();
-}
-
-function updateWatchlistButtons() {
-    document.querySelectorAll(".add-watchlist").forEach(btn => {
-        const id = btn.dataset.id;
-        btn.textContent = watchlist.includes(id) ? "✓" : "+";
-    });
-}
-
-document.querySelectorAll(".add-watchlist").forEach(btn => {
+// Watchlist Functionality
+document.querySelectorAll(".plus-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-        toggleWatchlist(btn.dataset.id);
+        let movieId = btn.dataset.id;
+        let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+
+        if (watchlist.includes(movieId)) {
+            watchlist = watchlist.filter(id => id !== movieId);
+            btn.textContent = "+";
+        } else {
+            watchlist.push(movieId);
+            btn.textContent = "✓";
+        }
+
+        localStorage.setItem("watchlist", JSON.stringify(watchlist));
     });
 });
-
-updateWatchlistButtons();
