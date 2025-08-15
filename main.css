@@ -1,101 +1,86 @@
-/* Main Layout */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f0f0f url('background.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: white;
-}
-
-/* Navbar */
+/* ===== NAVBAR ===== */
 .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: rgba(30, 60, 50, 0.6);
-    padding: 10px 20px;
     position: fixed;
     top: 0;
     width: 100%;
+    background: rgba(60, 120, 100, 0.6);
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
     z-index: 1000;
 }
 
-.navbar h1 {
+.menu-btn {
     cursor: pointer;
-    color: #00ffaa;
+    font-size: 24px;
+    margin-right: 15px;
+    background: none;
+    border: none;
+    color: white;
+}
+
+.nav-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    margin-right: auto;
+}
+
+.nav-filters {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    margin-right: 15px;
+}
+
+.nav-filters select {
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
 }
 
 .search-bar {
-    border-radius: 20px;
     padding: 5px 10px;
+    border-radius: 20px;
     border: none;
-    outline: none;
 }
 
-/* Sidebar (Right Side) */
+/* ===== SIDEBAR (RIGHT) ===== */
 .sidebar {
     position: fixed;
     top: 0;
     right: -250px;
     width: 250px;
     height: 100%;
-    background-color: rgba(20, 20, 20, 0.95);
-    overflow-x: hidden;
-    transition: 0.4s;
-    padding-top: 60px;
+    background: #1c1c1c;
+    padding: 20px;
+    transition: right 0.3s ease;
     z-index: 2000;
 }
 
-.sidebar.open {
+.sidebar.active {
     right: 0;
 }
 
 .sidebar a {
-    padding: 10px 20px;
     display: block;
-    color: #ccc;
+    padding: 10px 0;
+    color: white;
     text-decoration: none;
-    transition: background 0.3s;
 }
 
 .sidebar a:hover {
-    background-color: rgba(0, 255, 170, 0.2);
-    color: white;
+    color: #00bfff;
 }
 
-/* Hamburger Button */
-.hamburger {
-    cursor: pointer;
-    font-size: 20px;
-}
-
-/* Movie Grid */
-.movie-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 20px;
-    padding: 80px 20px;
-}
-
+/* ===== MOVIE CARDS ===== */
 .movie-card {
     position: relative;
     overflow: hidden;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    transition: transform 0.3s;
 }
 
-.movie-card img {
-    width: 100%;
-    display: block;
-}
-
-.movie-card:hover {
-    transform: scale(1.05);
-}
-
-/* Hover Buttons */
-.movie-card .hover-buttons {
+.movie-hover {
     position: absolute;
     bottom: 10px;
     left: 50%;
@@ -103,37 +88,23 @@ body {
     display: flex;
     gap: 10px;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s ease;
 }
 
-.movie-card:hover .hover-buttons {
+.movie-card:hover .movie-hover {
     opacity: 1;
 }
 
-.movie-card button {
-    padding: 5px 10px;
+.movie-hover button {
+    background: rgba(0,0,0,0.6);
     border: none;
-    background-color: rgba(0, 255, 170, 0.8);
-    color: black;
-    border-radius: 5px;
+    color: white;
+    padding: 8px 12px;
+    font-size: 18px;
+    border-radius: 50%;
     cursor: pointer;
 }
 
-/* Filters */
-.filters {
-    display: flex;
-    gap: 10px;
-    padding: 10px 20px;
-    background-color: rgba(30, 60, 50, 0.6);
-    margin-top: 60px;
-    position: sticky;
-    top: 50px;
-    z-index: 999;
-}
-
-.filters select {
-    border-radius: 10px;
-    padding: 5px;
-    border: none;
-    outline: none;
+.movie-hover button:hover {
+    background: rgba(0,0,0,0.8);
 }
