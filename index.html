@@ -162,7 +162,8 @@
       transition: opacity 0.2s;
     }
 
-    .movie-card:focus .card-buttons {
+    .movie-card:hover .card-buttons,
+    .movie-card:focus-visible .card-buttons {
       opacity: 1;
       pointer-events: auto;
     }
@@ -175,6 +176,7 @@
       border-radius: 5px;
       cursor: pointer;
       transition: background 0.2s ease;
+      transform: scale(1.1);
     }
 
     .plus-btn {
