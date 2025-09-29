@@ -166,6 +166,26 @@
       background: #b20710;
     }
 
+    .card-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.play-btn {
+  background: #1db954;
+  border: none;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.play-btn:hover {
+  background: #15883e;
+}
+
     footer {
       text-align: center;
       padding: 20px;
@@ -219,131 +239,155 @@
   <!-- Movie Section -->
   <main class="movie-container">
     <!-- 25 Movie Cards -->
-    <div class="movie-card" data-name="Fantastic 4 First Steps" data-genre="action" data-language="english" data-format="3d">
-      <img src="images/fantastic4.jpg" alt="Fantastic 4: First Steps">
+    <div class="movie-card" data-name="Fantastic 4 First Steps" data-page="trailer" data-genre="action" data-language="english" data-format="3d">
+      <img src="images/fantastic4.jpeg" alt="Fantastic 4: First Steps">
       <div class="movie-title">Fantastic 4<br>First Steps</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Avengers Doomsday" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" data-name="Avengers Doomsday" data-page="trailer" data-genre="action" data-language="english" data-format="3d">
       <img src="images/avengers.jpg" alt="Avengers: Doomsday">
       <div class="movie-title">Avengers<br>Doomsday</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Oppenheimer" data-genre="drama" data-language="english" data-format="2d">
+    <div class="movie-card" data-name="Oppenheimer" data-page="watch" data-genre="drama" data-language="english" data-format="2d">
       <img src="images/oppenheimer.jpg" alt="Oppenheimer">
       <div class="movie-title">Oppenheimer</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Superman The Last Hope" data-genre="action" data-language="english" data-format="3d">
-      <img src="images/superman.jpg" alt="Superman: The Last Hope">
+    <div class="movie-card" data-name="Superman The Last Hope"  data-page="trailer"data-genre="action" data-language="english" data-format="3d">
+      <img src="images/superman.jpeg" alt="Superman: The Last Hope">
       <div class="movie-title">Superman<br>The Last Hope</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Interstellar" data-genre="sci-fi" data-language="english" data-format="2d">
+    <div class="movie-card" data-name="Interstellar" data-page="watch" data-genre="sci-fi" data-language="english" data-format="2d">
       <img src="images/interstellar.jpg" alt="Interstellar">
       <div class="movie-title">Interstellar</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Inception" data-genre="sci-fi" data-language="english" data-format="2d">
+    <div class="movie-card" data-name="Inception" data-page="watch" data-genre="sci-fi" data-language="english" data-format="2d">
       <img src="images/inception.jpg" alt="Inception">
       <div class="movie-title">Inception</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="28 Days Later" data-genre="drama" data-language="english" data-format="2d">
-      <img src="images/28days.jpg" alt="28 Days Later">
-      <div class="movie-title">28 Days Later</div>
-      <button class="plus-btn">+ Watchlist</button>
+    <div class="movie-card" data-name="28 Years Later" data-page="trailer" data-genre="drama" data-language="english" data-format="2d">
+      <img src="images/28yearslater.jpeg" alt="28 Years Later">
+      <div class="movie-title">28 Years Later</div>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Minecraft" data-genre="drama" data-language="english" data-format="3d">
-      <img src="images/minecraft.jpg" alt="Minecraft">
+    <div class="movie-card" data-name="Minecraft" data-page="watch" data-genre="drama" data-language="english" data-format="3d">
+      <img src="images/minecraft.jpeg" alt="Minecraft">
       <div class="movie-title">Minecraft</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="F1" data-genre="action" data-language="english" data-format="2d">
-      <img src="images/f1.jpg" alt="F1">
+    <div class="movie-card" data-name="F1" data-page="trailer" data-genre="action" data-language="english" data-format="2d">
+      <img src="images/F1.jpg" alt="F1">
       <div class="movie-title">F1</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Final Destination" data-genre="action" data-language="english" data-format="2d">
-      <img src="images/finaldestination.jpg" alt="Final Destination">
+    <div class="movie-card" data-name="Final Destination" data-page="trailer" data-genre="action" data-language="english" data-format="2d">
+      <img src="images/finaldestination.jpeg" alt="Final Destination">
       <div class="movie-title">Final Destination</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Dune" data-genre="sci-fi" data-language="english" data-format="2d">
+    <div class="movie-card" data-name="Dune" data-page="watch" data-genre="sci-fi" data-language="english" data-format="2d">
       <img src="images/dune.jpg" alt="Dune">
       <div class="movie-title">Dune</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Wicked" data-genre="drama" data-language="english" data-format="2d">
-      <img src="images/wicked.jpg" alt="Wicked">
+    <div class="movie-card" data-name="Wicked" data-page="watch" data-genre="drama" data-language="english" data-format="2d">
+      <img src="images/wicked.avif" alt="Wicked">
       <div class="movie-title">Wicked</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Thunderbolts" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" data-name="Thunderbolts" data-page="watch" data-genre="action" data-language="english" data-format="3d">
       <img src="images/thunderbolts.jpg" alt="Thunderbolts">
       <div class="movie-title">Thunderbolts</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Spider-Man No Way Home" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" data-name="Spider-Man No Way Home" data-page="watch" data-genre="action" data-language="english" data-format="3d">
       <img src="images/spiderman.jpg" alt="Spider-Man: No Way Home">
       <div class="movie-title">Spider-Man<br>No Way Home</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Matrix Resurrections" data-genre="sci-fi" data-language="english" data-format="2d">
+    <div class="movie-card" data-name="Matrix Resurrections" data-page="watch" data-genre="sci-fi" data-language="english" data-format="2d">
       <img src="images/matrix.jpg" alt="Matrix Resurrections">
       <div class="movie-title">Matrix Resurrections</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Kalki 2898 AD" data-genre="sci-fi" data-language="hindi" data-format="2d">
+    <div class="movie-card" data-name="Kalki 2898 AD" data-page="watch" data-genre="sci-fi" data-language="hindi" data-format="2d">
       <img src="images/kalki.jpg" alt="Kalki 2898 AD">
       <div class="movie-title">Kalki 2898 AD</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Emergency" data-genre="drama" data-language="hindi" data-format="2d">
+    <div class="movie-card" data-name="Emergency" data-page="watch" data-genre="drama" data-language="hindi" data-format="2d">
       <img src="images/emergency.jpg" alt="Emergency">
       <div class="movie-title">Emergency</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Jurassic World" data-genre="sci-fi" data-language="english" data-format="3d">
+    <div class="movie-card" data-name="Jurassic World" data-page="trailer" data-genre="sci-fi" data-language="english" data-format="3d">
       <img src="images/jurassicworld.jpg" alt="Jurassic World">
-      <div class="movie-title">Jurassic World</div>
-      <button class="plus-btn">+ Watchlist</button>
+      <div class="movie-title">Jurassic World<br>Rebirth</div>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Joker 2" data-genre="drama" data-language="english" data-format="2d">
+    <div class="movie-card" data-name="Joker 2" data-page="watch" data-genre="drama" data-language="english" data-format="2d">
       <img src="images/joker2.jpg" alt="Joker 2">
-      <div class="movie-title">Joker 2</div>
-      <button class="plus-btn">+ Watchlist</button>
+      <div class="movie-title">Joker 2<br> Folie A Deux</div>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Flash" data-genre="action" data-language="english" data-format="3d">
-      <img src="images/flash.jpg" alt="Flash">
+    <div class="movie-card" data-name="Flash" data-page="watch" data-genre="action" data-language="english" data-format="3d">
+      <img src="images/flash.webp" alt="Flash">
       <div class="movie-title">Flash</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Deadpool and Wolverine" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" data-name="Deadpool and Wolverine" data-page="watch" data-genre="action" data-language="english" data-format="3d">
       <img src="images/deadpool.jpg" alt="Deadpool and Wolverine">
       <div class="movie-title">Deadpool and Wolverine</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Batman" data-genre="action" data-language="english" data-format="2d">
+    <div class="movie-card" data-name="Batman" data-page="watch" data-genre="action" data-language="english" data-format="2d">
       <img src="images/batman.jpg" alt="Batman">
       <div class="movie-title">Batman</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Ballerina" data-genre="action" data-language="english" data-format="2d">
+    <div class="movie-card" data-name="Ballerina"  data-page="watch" data-genre="action" data-language="english" data-format="2d">
       <img src="images/ballerina.jpg" alt="Ballerina">
       <div class="movie-title">Ballerina</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <div class="movie-card" data-name="Avatar" data-genre="sci-fi" data-language="english" data-format="3d">
+    <div class="movie-card" data-name="Avatar" data-page="watch" data-genre="sci-fi" data-language="english" data-format="3d">
       <img src="images/avatar.jpg" alt="Avatar">
       <div class="movie-title">Avatar</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
-    <!-- 25th: Squid Game -->
-    <div class="movie-card" data-name="Squid Game" data-genre="drama" data-language="korean" data-format="2d">
+    <div class="movie-card" data-name="Squid Game" data-page="watch" data-genre="drama" data-language="korean" data-format="2d">
       <img src="images/squidgame.jpg" alt="Squid Game">
       <div class="movie-title">Squid Game</div>
-      <button class="plus-btn">+ Watchlist</button>
+       <button class="play-btn">▶</button>
+      <button class="plus-btn">+</button>
     </div>
   </main>
     
@@ -351,76 +395,92 @@
     FilmReserve | Streaming entertainment anytime, anywhere.
   </footer>
 
-  <script>
-    // Sidebar
-    const menuBtn = document.querySelector('.menu-btn');
-    const sidebar = document.querySelector('.sidebar');
-    menuBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('active');
-    });
+<script>
+  // --- Sidebar Toggle ---
+  const menuBtn = document.querySelector('.menu-btn');
+  const sidebar = document.querySelector('.sidebar');
+  menuBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+  });
 
-    // Auth sidebar
-    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-    const sidebarMenu = document.getElementById('sidebar-menu');
-    sidebarMenu.innerHTML = isLoggedIn
-      ? `<li><a href="profile.html">My Profile</a></li>
-         <li><a href="#">My Watchlist</a></li>
-         <li><a href="#">Streaming History</a></li>
-         <li><a href="#">Account Settings</a></li>
-         <li><a href="#">Help & Support</a></li>
-         <li><a href="#" onclick="logout()">Logout</a></li>`
-      : `<li><a href="login.html">Login</a></li>
-         <li><a href="signup.html">Signup</a></li>`;
-
-    function logout() {
-      localStorage.setItem('loggedIn', 'false');
-      location.reload();
+  // Close sidebar if clicking outside
+  document.addEventListener('click', e => {
+    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+      sidebar.classList.remove('active');
     }
+  });
 
-    // Search
-    const searchInput = document.getElementById('searchInput');
-    searchInput?.addEventListener('input', () => {
-      const input = searchInput.value.toLowerCase();
-      document.querySelectorAll('.movie-card').forEach(card => {
-        const name = card.getAttribute('data-name').toLowerCase();
-        card.style.display = name.includes(input) ? 'flex' : 'none';
-      });
+  // --- Auth Sidebar ---
+  const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+  const sidebarMenu = document.getElementById('sidebar-menu');
+  sidebarMenu.innerHTML = isLoggedIn
+    ? `<li><a href="profile.html">My Profile</a></li>
+       <li><a href="#">My Watchlist</a></li>
+       <li><a href="#">Streaming History</a></li>
+       <li><a href="#">Account Settings</a></li>
+       <li><a href="#">Help & Support</a></li>
+       <li><a href="#" onclick="logout()">Logout</a></li>`
+    : `<li><a href="login.html">Login</a></li>
+       <li><a href="signup.html">Signup</a></li>`;
+
+  function logout() {
+    localStorage.setItem('loggedIn', 'false');
+    location.reload();
+  }
+
+  // --- Watchlist ---
+  const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+  const plusButtons = document.querySelectorAll('.plus-btn');
+  plusButtons.forEach(btn => {
+    const movie = btn.closest('.movie-card').querySelector('.movie-title').textContent;
+    if (watchlist.includes(movie)) btn.textContent = "✓ Added";
+
+    btn.addEventListener('click', () => {
+      if (!watchlist.includes(movie)) {
+        watchlist.push(movie);
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        btn.textContent = "✓ Added";
+      }
     });
+  });
 
-    // Filters
-    const genreFilter = document.getElementById('genreFilter');
-    const languageFilter = document.getElementById('languageFilter');
-    const formatFilter = document.getElementById('formatFilter');
+  // --- Search + Filters Combined ---
+  const searchInput = document.getElementById('searchInput');
+  const genreFilter = document.getElementById('genreFilter');
+  const languageFilter = document.getElementById('languageFilter');
+  const formatFilter = document.getElementById('formatFilter');
 
-    function applyFilters() {
-      const genre = genreFilter.value;
-      const language = languageFilter.value;
-      const format = formatFilter.value;
+  function updateMovieVisibility() {
+    const input = searchInput.value.toLowerCase();
+    const genre = genreFilter.value;
+    const language = languageFilter.value;
+    const format = formatFilter.value;
 
-      document.querySelectorAll('.movie-card').forEach(card => {
-        const matchesGenre = !genre || card.dataset.genre === genre;
-        const matchesLanguage = !language || card.dataset.language === language;
-        const matchesFormat = !format || card.dataset.format === format;
-        card.style.display = (matchesGenre && matchesLanguage && matchesFormat) ? 'flex' : 'none';
-      });
-    }
+    document.querySelectorAll('.movie-card').forEach(card => {
+      const name = card.dataset.name.toLowerCase();
+      const matchesSearch = name.includes(input);
+      const matchesGenre = !genre || card.dataset.genre === genre;
+      const matchesLanguage = !language || card.dataset.language === language;
+      const matchesFormat = !format || card.dataset.format === format;
 
-    genreFilter?.addEventListener('change', applyFilters);
-    languageFilter?.addEventListener('change', applyFilters);
-    formatFilter?.addEventListener('change', applyFilters);
-
-    // Watchlist
-    const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-    document.querySelectorAll('.plus-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const movie = btn.parentElement.querySelector('.movie-title').textContent;
-        if (!watchlist.includes(movie)) {
-          watchlist.push(movie);
-          localStorage.setItem('watchlist', JSON.stringify(watchlist));
-          btn.textContent = "✓ Added";
-        }
-      });
+      card.style.display = (matchesSearch && matchesGenre && matchesLanguage && matchesFormat) ? 'flex' : 'none';
     });
-  </script>
+  }
+
+  searchInput?.addEventListener('input', updateMovieVisibility);
+  genreFilter?.addEventListener('change', updateMovieVisibility);
+  languageFilter?.addEventListener('change', updateMovieVisibility);
+  formatFilter?.addEventListener('change', updateMovieVisibility);
+
+  // --- Play Button Navigation ---
+  document.querySelectorAll('.play-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.movie-card');
+      const movie = card.dataset.name;
+      const page = card.dataset.page || "watch";
+      window.location.href = `${page}.html?movie=${encodeURIComponent(movie)}`;
+    });
+  });
+</script>
 </body>
 </html>
