@@ -19,7 +19,7 @@
     }
 
     .navbar {
-      position: fixed;
+      position: relative;
       top: 0;
       left: 0;
       right: 0;
@@ -215,7 +215,7 @@
       background: #15883e;
     }
     .play-btn:hover {
-      background: #E50B42;
+      background: #3bd6c6;
       transform: scale(1.1);
     }
 
@@ -249,6 +249,8 @@
       <option value="action">Action</option>
       <option value="drama">Drama</option>
       <option value="sci-fi">Sci-Fi</option>
+      <option value="hero">Superhero</option>
+      <option value="thriller">Thriller</option>
     </select>
     <select id="languageFilter">
       <option value="">All Languages</option>
@@ -267,7 +269,7 @@
 </header>
 
   <main class="movie-container">
-    <div class="movie-card" tabindex="1" data-name="fantastic4" ref="trailer.html?movie=fantastic4" data-trailer="true" data-genre="action" data-language="english" data-format="4k">
+    <div class="movie-card" tabindex="1" data-name="fantastic4" ref="trailer.html?movie=fantastic4" data-trailer="true" data-genre="hero" data-language="english" data-format="4k">
       <img src="images/fantastic4.jpeg" alt="Fantastic 4: First Steps" loading="lazy" >
       <div class="movie-title">Fantastic 4<br>First Steps</div>
       <div class="card-buttons">
@@ -275,7 +277,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
       </div>
     </div>
-    <div class="movie-card" tabindex="2" data-name="avengers5" ref="trailer.html?movie=avengers5" data-trailer="true" data-genre="action" data-language="english" data-format="4k">
+    <div class="movie-card" tabindex="2" data-name="avengers5" ref="trailer.html?movie=avengers5" data-trailer="true" data-genre="hero" data-language="english" data-format="4k">
       <img src="images/avengers.jpg" alt="Avengers: Doomsday" loading="lazy" >
       <div class="movie-title">Avengers<br>Doomsday</div>
       <div class="card-buttons">
@@ -283,7 +285,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
       </div>
     </div>
-    <div class="movie-card" tabindex="3" data-name="Oppenheimer" data-page="watch" data-genre="drama" data-language="english" data-format="3d">
+    <div class="movie-card" tabindex="3" data-name="Oppenheimer" data-page="watch" data-genre="thriller" data-language="english" data-format="3d">
       <img src="images/oppenheimer.jpg" alt="Oppenheimer" loading="lazy" >
       <div class="movie-title">Oppenheimer</div>
        <div class="card-buttons">
@@ -291,7 +293,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="4" data-name="superman"  ref="trailer.html?movie=superman" data-trailer="true" data-genre="action" data-language="english" data-format="4k">
+    <div class="movie-card" tabindex="4" data-name="superman"  ref="trailer.html?movie=superman" data-trailer="true" data-genre="hero" data-language="english" data-format="4k">
       <img src="images/superman.jpeg" alt="Superman" loading="lazy" >
       <div class="movie-title">Superman</div>
        <div class="card-buttons">
@@ -339,7 +341,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="10" data-name="finaldestination" ref="trailer.html?movie=finaldestination" data-trailer="true" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" tabindex="10" data-name="finaldestination" ref="trailer.html?movie=finaldestination" data-trailer="true" data-genre="thriller" data-language="english" data-format="3d">
       <img src="images/finaldestination.jpeg" alt="Final Destination" loading="lazy" >
       <div class="movie-title">Final Destination</div>
        <div class="card-buttons">
@@ -371,7 +373,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="14" data-name="Spider-Man No Way Home" data-page="watch" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" tabindex="14" data-name="Spider-Man No Way Home" data-page="watch" data-genre="hero" data-language="english" data-format="3d">
       <img src="images/spiderman.jpg" alt="Spider-Man: No Way Home" loading="lazy" >
       <div class="movie-title">Spider-Man<br>No Way Home</div>
        <div class="card-buttons">
@@ -403,7 +405,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="18" data-name="jurassicworld" ref="trailer.html?movie=jurassicworld" data-trailer="true" data-genre="sci-fi" data-language="english" data-format="4k">
+    <div class="movie-card" tabindex="18" data-name="jurassicworld" ref="trailer.html?movie=jurassicworld" data-trailer="true" data-genre="thriller" data-language="english" data-format="4k">
       <img src="images/jurassicworld.jpg" alt="Jurassic World" loading="lazy" >
       <div class="movie-title">Jurassic World<br>Rebirth</div>
        <div class="card-buttons">
@@ -427,7 +429,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="21" data-name="Deadpool and Wolverine" data-page="watch" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" tabindex="21" data-name="Deadpool and Wolverine" data-page="watch" data-genre="hero" data-language="english" data-format="3d">
       <img src="images/deadpool.jpg" alt="Deadpool and Wolverine" loading="lazy" >
       <div class="movie-title">Deadpool and Wolverine</div>
        <div class="card-buttons">
@@ -467,7 +469,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="26" data-name="Death Note" data-page="watch" data-genre="drama" data-language="japanese" data-format="2d">
+    <div class="movie-card" tabindex="26" data-name="Death Note" data-page="watch" data-genre="thriller" data-language="japanese" data-format="2d">
       <img src="images/deathnote.jpg" alt="Death Note" loading="lazy" >
       <div class="movie-title">Death Note</div>
        <div class="card-buttons">
