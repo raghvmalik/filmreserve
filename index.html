@@ -12,6 +12,7 @@
     }
 
     body {
+      padding-top: 56px;
       font-family: Arial, sans-serif;
       background: #111 url("background.jpg") no-repeat center center/cover;
       color: #fff;
@@ -19,7 +20,7 @@
     }
 
     .navbar {
-      position: relative;
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
@@ -30,7 +31,13 @@
       flex-wrap: wrap;
       padding: 10px 20px;
       z-index: 1000;
-      gap: 20px;
+      gap: 20px; 
+      transition: opacity 0.3s;
+      opacity: 1;
+    }
+
+    .navbar.scrolled {
+      opacity: 0.7;
     }
     
     .logo {
@@ -215,7 +222,7 @@
       background: #15883e;
     }
     .play-btn:hover {
-      background: #3bd6c6;
+      background: #00FF00;
       transform: scale(1.1);
     }
 
@@ -522,6 +529,15 @@
       localStorage.setItem('loggedIn', 'false');
       location.reload();
     }
+// Navbar
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 30) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
 
     // Search functionality
     const searchInput = document.getElementById('searchInput');
