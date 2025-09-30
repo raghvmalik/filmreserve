@@ -23,17 +23,19 @@
       top: 0;
       left: 0;
       right: 0;
-      background: rgba(0,0,0,0.9);
+      background: rgba(0,0,0,0.7);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
       padding: 10px 20px;
       z-index: 1000;
+      gap: 20px;
     }
     
     .logo {
       font-family: 'Poppins', sans-serif;
-      font-weight: 700;
+      font-weight: bold;
       font-size: 1.8rem;
       cursor: pointer;
       display: flex;
@@ -56,16 +58,17 @@
       transform: scale(1.05);
     }
 
-    .search-area {
+    .search {
       flex: 1;
       display: flex;
-      justify-content: center;
-      margin: 0 20px;
+      justify-content: flex-end;
+      flex-shrink: 0;
+      margin-left: auto;
+      margin-right: 15px;
     }
 
-    .search-area input {
-      width: 80%;
-      max-width: 400px;
+    .search input {
+      width: 200px;
       padding: 8px 12px;
       border-radius: 5px;
       border: none;
@@ -117,16 +120,17 @@
     }
 
     .filters {
-      margin-top: 80px;
+      margin-top: 0;
       display: flex;
       justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 8px;
+      flex-wrap: nowrap;
     }
 
     .filters select {
-      padding: 6px 10px;
-      border-radius: 5px;
+      margin: 0 8px;
+      padding: 5px;
+      border-radius: 6px;
       border: none;
       outline: none;
     }
@@ -146,14 +150,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: transform 0.3s ease;
+      transition: transform 0.4s ease;
       position: relative;
     }
 
     .movie-card:hover {
       box-shadow: 0 8px 32px rgba(0,0,0,0.4);
       transform: scale(1.05);
-      color: #555;
+      color: #1F51FF;
     }
 
     .movie-card img {
@@ -203,7 +207,7 @@
       margin: 0;
     }
     .plus-btn:hover {
-      background: #330F75;
+      background: #E50B42;
       transform: scale(1.1);
     }
 
@@ -211,15 +215,15 @@
       background: #15883e;
     }
     .play-btn:hover {
-      background: #191970;
+      background: #E50B42;
       transform: scale(1.1);
     }
 
     footer {
       text-align: center;
-      padding: 20px;
+      padding: 10px;
       background: rgba(0,0,0,0.8);
-      margin-top: 40px;
+      margin-top: 20px;
     }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
@@ -235,11 +239,10 @@
     </div>
     
     <a href="index.html" class="logo"><span class="emoji">🎬</span> <span class="text">FilmReserve</span></a>
-    <div class="search-area">
-      <input type="search" id="searchInput" placeholder="Search movies..." />
+    <div class="search">
+      <input type="search" id="searchInput" placeholder="Search movies/series..." />
     </div>
-  </header>
-
+ 
   <div class="filters">
     <select id="genreFilter">
       <option value="">All Genres</option>
@@ -252,16 +255,19 @@
       <option value="english">English</option>
       <option value="hindi">Hindi</option>
       <option value="korean">Korean</option>
+      <option value="japanese">Japanese</option>
     </select>
     <select id="formatFilter">
       <option value="">All Formats</option>
       <option value="2d">720p</option>
       <option value="3d">1080p</option>
+      <option value="4k">4K</option>
     </select>
   </div>
+</header>
 
   <main class="movie-container">
-    <div class="movie-card" tabindex="1" data-name="Fantastic 4 First Steps" ref="trailer.html?movie=fantastic4" data-trailer="true" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" tabindex="1" data-name="fantastic4" ref="trailer.html?movie=fantastic4" data-trailer="true" data-genre="action" data-language="english" data-format="4k">
       <img src="images/fantastic4.jpeg" alt="Fantastic 4: First Steps" loading="lazy" >
       <div class="movie-title">Fantastic 4<br>First Steps</div>
       <div class="card-buttons">
@@ -269,7 +275,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
       </div>
     </div>
-    <div class="movie-card" tabindex="2" data-name="Avengers Doomsday" ref="trailer.html?movie=avengers5" data-trailer="true" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" tabindex="2" data-name="avengers5" ref="trailer.html?movie=avengers5" data-trailer="true" data-genre="action" data-language="english" data-format="4k">
       <img src="images/avengers.jpg" alt="Avengers: Doomsday" loading="lazy" >
       <div class="movie-title">Avengers<br>Doomsday</div>
       <div class="card-buttons">
@@ -277,7 +283,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
       </div>
     </div>
-    <div class="movie-card" tabindex="3" data-name="Oppenheimer" data-page="watch" data-genre="drama" data-language="english" data-format="2d">
+    <div class="movie-card" tabindex="3" data-name="Oppenheimer" data-page="watch" data-genre="drama" data-language="english" data-format="3d">
       <img src="images/oppenheimer.jpg" alt="Oppenheimer" loading="lazy" >
       <div class="movie-title">Oppenheimer</div>
        <div class="card-buttons">
@@ -285,7 +291,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="4" data-name="Superman"  ref="trailer.html?movie=superman" data-trailer="true" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" tabindex="4" data-name="superman"  ref="trailer.html?movie=superman" data-trailer="true" data-genre="action" data-language="english" data-format="4k">
       <img src="images/superman.jpeg" alt="Superman" loading="lazy" >
       <div class="movie-title">Superman</div>
        <div class="card-buttons">
@@ -293,7 +299,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="5" data-name="Interstellar" data-page="watch" data-genre="sci-fi" data-language="english" data-format="2d">
+    <div class="movie-card" tabindex="5" data-name="Interstellar" data-page="watch" data-genre="sci-fi" data-language="english" data-format="4k">
       <img src="images/interstellar.jpg" alt="Interstellar" loading="lazy" >
       <div class="movie-title">Interstellar</div>
        <div class="card-buttons">
@@ -301,7 +307,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="6" data-name="Inception" data-page="watch" data-genre="sci-fi" data-language="english" data-format="2d">
+    <div class="movie-card" tabindex="6" data-name="Inception" data-page="watch" data-genre="sci-fi" data-language="english" data-format="3d">
       <img src="images/inception.jpg" alt="Inception" loading="lazy" >
       <div class="movie-title">Inception</div>
        <div class="card-buttons">
@@ -309,7 +315,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="7" data-name="28 Years Later" ref="trailer.html?movie=28yearslater" data-trailer="true" data-genre="drama" data-language="english" data-format="2d">
+    <div class="movie-card" tabindex="7" data-name="28yearslater" ref="trailer.html?movie=28yearslater" data-trailer="true" data-genre="drama" data-language="english" data-format="3d">
       <img src="images/28yearslater.jpeg" alt="28 Years Later" loading="lazy" >
       <div class="movie-title">28 Years Later</div>
        <div class="card-buttons">
@@ -317,7 +323,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="8" data-name="Minecraft" data-page="watch" data-genre="drama" data-language="english" data-format="3d">
+    <div class="movie-card" tabindex="8" data-name="Minecraft" data-page="watch" data-genre="drama" data-language="english" data-format="2d">
       <img src="images/minecraft.jpeg" alt="Minecraft" loading="lazy" >
       <div class="movie-title">Minecraft</div>
        <div class="card-buttons">
@@ -325,7 +331,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="9" data-name="F1" ref="trailer.html?movie=F1" data-trailer="true" data-genre="action" data-language="english" data-format="2d">
+    <div class="movie-card" tabindex="9" data-name="F1" ref="trailer.html?movie=F1" data-trailer="true" data-genre="action" data-language="english" data-format="3d">
       <img src="images/F1.jpg" alt="F1" loading="lazy" >
       <div class="movie-title">F1</div>
        <div class="card-buttons">
@@ -333,7 +339,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="10" data-name="Final Destination" ref="trailer.html?movie=finaldestination" data-trailer="true" data-genre="action" data-language="english" data-format="2d">
+    <div class="movie-card" tabindex="10" data-name="finaldestination" ref="trailer.html?movie=finaldestination" data-trailer="true" data-genre="action" data-language="english" data-format="3d">
       <img src="images/finaldestination.jpeg" alt="Final Destination" loading="lazy" >
       <div class="movie-title">Final Destination</div>
        <div class="card-buttons">
@@ -357,7 +363,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="13" data-name="Thunderbolts" data-page="watch" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" tabindex="13" data-name="Thunderbolts" data-page="watch" data-genre="action" data-language="english" data-format="2d">
       <img src="images/thunderbolts.jpg" alt="Thunderbolts" loading="lazy" >
       <div class="movie-title">Thunderbolts</div>
        <div class="card-buttons">
@@ -373,7 +379,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="15" data-name="Matrix Resurrections" data-page="watch" data-genre="sci-fi" data-language="english" data-format="2d">
+    <div class="movie-card" tabindex="15" data-name="Matrix Resurrections" data-page="watch" data-genre="sci-fi" data-language="english" data-format="3d">
       <img src="images/matrix.jpg" alt="Matrix Resurrections" loading="lazy" >
       <div class="movie-title">Matrix Resurrections</div>
        <div class="card-buttons">
@@ -390,14 +396,14 @@
     </div>
     </div>
     <div class="movie-card" tabindex="17" data-name="Emergency" data-page="watch" data-genre="drama" data-language="hindi" data-format="2d">
-      <img src="images/emergency.jpg" alt="Emergency" loading="lazy" >
+      <img src="images/emergency.jpeg" alt="Emergency" loading="lazy" >
       <div class="movie-title">Emergency</div>
        <div class="card-buttons">
       <button class="play-btn" aria-label="Play trailer">▶</button>
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="18" data-name="Jurassic World" ref="trailer.html?movie=jurassicworld" data-trailer="true" data-genre="sci-fi" data-language="english" data-format="3d">
+    <div class="movie-card" tabindex="18" data-name="jurassicworld" ref="trailer.html?movie=jurassicworld" data-trailer="true" data-genre="sci-fi" data-language="english" data-format="4k">
       <img src="images/jurassicworld.jpg" alt="Jurassic World" loading="lazy" >
       <div class="movie-title">Jurassic World<br>Rebirth</div>
        <div class="card-buttons">
@@ -405,7 +411,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="19" data-name="Joker 2" data-page="watch" data-genre="drama" data-language="english" data-format="2d">
+    <div class="movie-card" tabindex="19" data-name="Joker 2" data-page="watch" data-genre="drama" data-language="english" data-format="3d">
       <img src="images/joker2.jpg" alt="Joker 2" loading="lazy" >
       <div class="movie-title">Joker 2<br> Folie A Deux</div>
        <div class="card-buttons">
@@ -413,7 +419,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="20" data-name="Flash" data-page="watch" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" tabindex="20" data-name="Flash" data-page="watch" data-genre="action" data-language="english" data-format="2d">
       <img src="images/flash.webp" alt="Flash" loading="lazy" >
       <div class="movie-title">Flash</div>
        <div class="card-buttons">
@@ -429,7 +435,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="22" data-name="Batman" data-page="watch" data-genre="action" data-language="english" data-format="2d">
+    <div class="movie-card" tabindex="22" data-name="Batman" data-page="watch" data-genre="action" data-language="english" data-format="3d">
       <img src="images/batman.jpg" alt="Batman" loading="lazy" >
       <div class="movie-title">Batman</div>
        <div class="card-buttons">
@@ -459,6 +465,31 @@
        <div class="card-buttons">
       <button class="play-btn" aria-label="Play trailer">▶</button>
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
+    </div>
+    </div>
+    <div class="movie-card" tabindex="26" data-name="Death Note" data-page="watch" data-genre="drama" data-language="japanese" data-format="2d">
+      <img src="images/deathnote.jpg" alt="Death Note" loading="lazy" >
+      <div class="movie-title">Death Note</div>
+       <div class="card-buttons">
+      <button class="play-btn" aria-label="Play trailer">▶</button>
+      <button class="plus-btn" aria-label="Add to watchlist">+</button>
+    </div>
+    </div>
+    <div class="movie-card" tabindex="27" data-name="DemonSlayer" data-page="trailer" data-genre="action" data-language="japanese" data-format="3d">
+      <img src="images/demonslayer.jpg" alt="Demon Slayer" loading="lazy" >
+      <div class="movie-title">Demon Slayer</div>
+       <div class="card-buttons">
+      <button class="play-btn" aria-label="Play trailer">▶</button>
+      <button class="plus-btn" aria-label="Add to watchlist">+</button>
+    </div>
+    </div>
+    <div class="movie-card" tabindex="28" data-name="One Piece" data-page="watch" data-genre="action" data-language="japanese" data-format="2d">
+      <img src="images/onepiece.jpg" alt="One Piece" loading="lazy" >
+      <div class="movie-title">One Piece</div>
+       <div class="card-buttons">
+      <button class="play-btn" aria-label="Play trailer">▶</button>
+      <button class="plus-btn" aria-label="Add to watchlist">+</button>
+    </div>
     </div>
   </main>
     
