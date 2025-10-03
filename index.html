@@ -145,16 +145,16 @@
     .movie-container {
       margin: 20px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 220px));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 20px;
       justify-content: start;
       align-items: start;
     }
-
+    
     .movie-card {
       background: rgba(255,255,255,0.05);
-      width: 220px;
-      max-width: 100%;
+      width: 100%;
+      max-width: 220px;
       min-width: 180px;
       border-radius: 10px;
       overflow: hidden;
@@ -230,7 +230,12 @@
       background: #00FF00;
       transform: scale(1.1);
     }
-
+    
+     @media (max-width: 480px) {
+    .movie-container {
+      grid-template-columns: 1fr;
+    }
+       
     footer {
       text-align: center;
       padding: 10px;
