@@ -345,7 +345,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="9" data-name="F1" ref="trailer.html?movie=F1" data-trailer="true" data-genre="action" data-language="english" data-format="3d">
+    <div class="movie-card" tabindex="9" data-name="F1" data-page="trailer" ref="trailer.html?movie=F1" data-trailer="true" data-genre="action" data-language="english" data-format="3d">
       <img src="images/F1.jpg" alt="F1" loading="lazy" >
       <div class="movie-title">F1</div>
        <div class="card-buttons">
@@ -377,7 +377,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="13" data-name="Thunderbolts" data-page="watch" data-genre="action" data-language="english" data-format="2d">
+    <div class="movie-card" tabindex="13" data-name="Thunderbolts" data-page="trailer" data-genre="action" data-language="english" data-format="2d">
       <img src="images/thunderbolts.jpg" alt="Thunderbolts" loading="lazy" >
       <div class="movie-title">Thunderbolts</div>
        <div class="card-buttons">
@@ -457,7 +457,7 @@
       <button class="plus-btn" aria-label="Add to watchlist">+</button>
     </div>
     </div>
-    <div class="movie-card" tabindex="23" data-name="Ballerina" data-page="watch" data-genre="action" data-language="english" data-format="2d">
+    <div class="movie-card" tabindex="23" data-name="ballerina" data-page="trailer" data-genre="action" data-language="english" data-format="2d">
       <img src="images/ballerina.jpg" alt="Ballerina" loading="lazy" >
       <div class="movie-title">Ballerina</div>
        <div class="card-buttons">
@@ -513,6 +513,11 @@
 
   <script>
     
+       // Sidebar toggle
+    const menuBtn = document.querySelector('.menu-btn');
+    const sidebar = document.querySelector('.sidebar');
+    menuBtn.addEventListener('click', () => { sidebar.classList.toggle('active'); });
+
     // Sidebar menu setup
     const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
     const sidebarMenu = document.getElementById('sidebar-menu');
@@ -575,6 +580,10 @@
       btn.addEventListener('click', () => {
         const card = btn.closest('.movie-card');
         const movie = card.getAttribute('data-name');
+         if(!isLoggedIn){
+          alert("Please log in to watch this movie or trailer!");
+          return;
+        }
         const openTrailer = card.getAttribute('data-trailer') === 'true';
         const page = openTrailer ? 'trailer' : (card.getAttribute('data-page') || 'watch');
         window.location.href = `${page}.html?movie=${encodeURIComponent(movie)}`;
