@@ -590,7 +590,11 @@
           return;
         }
         const openTrailer = card.getAttribute('data-trailer') === 'true';
-        const page = openTrailer ? 'trailer' : (card.getAttribute('data-page') || 'watch');
+        const allowedPages = ['watch', 'trailer']; // whitelist of permitted pages
+        let rawPage = card.getAttribute('data-page');
+        const page = openTrailer
+          ? 'trailer'
+          : (allowedPages.includes(rawPage) ? rawPage : 'watch');
         window.location.href = `${page}.html?movie=${encodeURIComponent(movie)}`;
       });
     });
