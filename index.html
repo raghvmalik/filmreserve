@@ -37,7 +37,7 @@
     }
 
     .navbar.scrolled {
-      opacity: 0.7;
+      opacity: 0.6;
     }
     
     .logo {
@@ -238,7 +238,7 @@
        
     footer {
       text-align: center;
-      padding: 10px;
+      padding: 15px;
       background: rgba(0,0,0,0.8);
       margin-top: 20px;
     }
@@ -527,7 +527,7 @@
     const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
     const sidebarMenu = document.getElementById('sidebar-menu');
     sidebarMenu.innerHTML = isLoggedIn
-      ? `<li><a href="profile.html">My Profile</a></li>
+      ? `<li><a href="settings.html">My Profile</a></li>
          <li><a href="watchlist.html">Watchlist</a></li>
          <li><a href="settings.html">Settings</a></li>
          <li><a href="#" onclick="logout()">Logout</a></li>`
