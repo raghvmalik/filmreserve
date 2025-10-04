@@ -1,1 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings | FilmReserve</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #111 url("background.jpg") no-repeat center center/cover;
+      color: #fff;
+      min-height: 100vh;
+      padding-top: 60px;
+    }
+    header.navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      z-index: 1000;
+    }
+    .logo { font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 1.8rem; color: violet; text-decoration: none; }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: rgba(0,0,0,0.8);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+    h1 { text-align: center; margin-bottom: 25px; color: #00ffcc; }
+    label { display: block; margin: 15px 0 5px; }
+    input[type="text"], input[type="email"], input[type="password"], select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #00c9a7;
+      color: #fff;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button:hover { background: #00a98f; }
+    .logout-btn { background: #b20710; }
+    .logout-btn:hover { background: #E50B42; }
+    body.light-mode {
+  background: #eee url("background.jpg") no-repeat center center/cover;
+  color: #111;
+}
 
+body.light-mode input,
+body.light-mode select,
+body.light-mode .container {
+  background: #fff;
+  color: #111;
+}
+
+body.light-mode button {
+  color: #fff;
+}
+
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <a href="index.html" class="logo">🎬 FilmReserve</a>
+  </header>
+
+  <div class="container">
+    <h1>Account Settings</h1>
+
+    <form id="settingsForm">
+      <label for="displayName">Display Name:</label>
+      <input type="text" id="displayName" placeholder="Your Name" />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Your Email" />
+
+      <label for="password">New Password:</label>
+      <input type="password" id="password" placeholder="New Password" />
+
+      <label for="theme">Theme:</label>
+      <select id="theme">
+        <option value="dark">Dark Mode</option>
+        <option value="light">Light Mode</option>
+      </select>
+
+      <label for="notifications">Notifications:</label>
+      <select id="notifications">
+        <option value="all">All Notifications</option>
+        <option value="important">Only Important</option>
+        <option value="none">None</option>
+      </select>
+
+      <button type="submit">Save Settings</button>
+    </form>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, updateProfile, updateEmail, updatePassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBMPr-C_p--9isHVBmH6QuOxCR93dgscYs",
+      authDomain: "film-reserve-255bc.firebaseapp.com",
+      projectId: "film-reserve-255bc",
+      storageBucket: "film-reserve-255bc.appspot.com",
+      messagingSenderId: "856235605413",
+      appId: "1:856235605413:web:your-app-id"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Redirect if not logged in
+    onAuthStateChanged(auth, user => {
+      if(!user){
+        alert("⚠️ You must be logged in to access settings!");
+        window.location.href = "login.html";
+      } else {
+        document.getElementById('displayName').value = user.displayName || "";
+        document.getElementById('email').value = user.email || "";
+      }
+    });
+
+    document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const user = auth.currentUser;
+      if(!user) return;
+
+      const newName = document.getElementById('displayName').value;
+      const newEmail = document.getElementById('email').value;
+      const newPass = document.getElementById('password').value;
+      const theme = document.getElementById('theme').value;
+      const notifications = document.getElementById('notifications').value;
+
+      try {
+        if(newName) await updateProfile(user, { displayName: newName });
+        if(newEmail) await updateEmail(user, newEmail);
+        if(newPass) await updatePassword(user, newPass);
+
+        localStorage.setItem('theme', theme);
+        localStorage.setItem('notifications', notifications);
+
+        alert(" Settings updated successfully!");
+      } catch(error){
+        alert("❌ Error updating settings: " + error.message);
+      }
+    });
+
+    function logout(){
+      signOut(auth).then(() => {
+        localStorage.removeItem('loggedIn');
+        window.location.href = "login.html";
+      });
+    
+    }
+  </script>
+</body>
+</html>
