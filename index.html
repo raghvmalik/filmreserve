@@ -5,252 +5,300 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FilmReserve</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    /* ========================
+    Reset & base styles
+    ======================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    body {
-      padding-top: 56px;
-      font-family: Arial, sans-serif;
-      background: #111 url("background.jpg") no-repeat center center/cover;
-      color: #fff;
-      overflow-x: hidden;
-    }
+body {
+  padding-top: 56px; /* for navbar */
+  font-family: Arial, sans-serif;
+  background: #111 url("background.jpg") no-repeat center center/cover;
+  color: #fff;
+  overflow-x: hidden;
+}
 
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: rgba(0,0,0,0.7);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      padding: 10px 20px;
-      z-index: 1000;
-      gap: 20px; 
-      transition: opacity 0.3s;
-      opacity: 1;
-    }
+/* ========================
+   Navbar
+======================== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px 20px;
+  z-index: 1000;
+  gap: 20px; 
+  transition: opacity 0.3s;
+}
 
-    .navbar.scrolled {
-      opacity: 0.6;
-    }
-    
-    .logo {
-      font-family: 'Poppins', sans-serif;
-      font-weight: bold;
-      font-size: 1.8rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: violet;
-      text-decoration: none;
-    }
+.navbar.scrolled { opacity: 0.6; }
 
-    .logo .text {
-      background: linear-gradient(90deg, #ff416c, #ff4b2b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      color: transparent;
-      transition: transform 0.3s ease;
-    }
+.logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  font-size: 1.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: violet;
+  text-decoration: none;
+}
 
-    .logo:hover .text {
-      transform: scale(1.05);
-    }
+.logo .text {
+  background: linear-gradient(90deg, #ff416c, #ff4b2b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: transform 0.3s ease;
+}
 
-    .search {
-      flex: 1;
-      display: flex;
-      justify-content: flex-end;
-      flex-shrink: 0;
-      margin-left: auto;
-      margin-right: 15px;
-    }
+.logo:hover .text { transform: scale(1.05); }
 
-    .search input {
-      width: 200px;
-      padding: 8px 12px;
-      border-radius: 5px;
-      border: none;
-      outline: none;
-    }
+/* ========================
+   Search & filters
+======================== */
+.search {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-right: 15px;
+}
 
-    .sidebar-wrapper {
-      position: relative;
-    }
+.search input {
+  width: 200px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+}
 
-    .menu-btn {
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
+.filters {
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
 
-    .sidebar {
-      position: absolute;
-      top: 50px;
-      left: 0;
-      background: rgba(20,20,20,0.95);
-      width: 200px;
-      height: auto;
-      border-radius: 8px;
-      display: none;
-      flex-direction: column;
-      padding: 10px;
-    }
+.filters select {
+  margin: 0 8px;
+  padding: 5px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
 
-    .sidebar.active {
-      display: flex;
-    }
+/* ========================
+   Movie cards
+======================== */
+.movie-container {
+  margin: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  justify-content: start;
+  align-items: start;
+}
 
-    .sidebar h2 {
-      margin-bottom: 10px;
-      font-size: 1.2rem;
-    }
+.movie-card {
+  background: rgba(255,255,255,0.05);
+  width: 100%;
+  max-width: 220px;
+  min-width: 180px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.4s ease;
+  position: relative;
+}
 
-    .sidebar-menu {
-      list-style: none;
-    }
+.movie-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transform: scale(1.05);
+  color: #1F51FF;
+}
 
-    .sidebar-menu li {
-      margin: 8px 0;
-    }
+.movie-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
 
-    .sidebar-menu li a {
-      color: #fff;
-      text-decoration: none;
-    }
+.movie-title {
+  padding: 10px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
 
-    .filters {
-      margin-top: 0;
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      flex-wrap: nowrap;
-    }
+.card-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
 
-    .filters select {
-      margin: 0 8px;
-      padding: 5px;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-    }
+.movie-card:hover .card-buttons,
+.movie-card:focus-visible .card-buttons {
+  opacity: 1;
+  pointer-events: auto;
+}
 
-    .movie-container {
-      margin: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      justify-content: start;
-      align-items: start;
-    }
-    
-    .movie-card {
-      background: rgba(255,255,255,0.05);
-      width: 100%;
-      max-width: 220px;
-      min-width: 180px;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: transform 0.4s ease;
-      position: relative;
-    }
+.plus-btn,
+.play-btn {
+  border: none;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  transform: scale(1.1);
+}
 
-    .movie-card:hover {
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      transform: scale(1.05);
-      color: #1F51FF;
-    }
+.plus-btn {
+  background: #b20710;
+}
 
-    .movie-card img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-    }
+.plus-btn:hover { background: #E50B42; }
 
-    .movie-title {
-      transition: color 0.2s;
-      padding: 10px;
-      text-align: center;
-      font-size: 1rem;
-      font-weight: bold;
-      transition: color 0.3s ease;
-    }
+.play-btn { background: #15883e; }
+.play-btn:hover { background: #00FF00; }
 
-    .card-buttons {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s;
-    }
+/* ========================
+   Footer
+======================== */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: rgba(0,0,0,0.8);
+  margin-top: 20px;
+}
 
-    .movie-card:hover .card-buttons,
-    .movie-card:focus-visible .card-buttons {
-      opacity: 1;
-      pointer-events: auto;
-    }
+/* ========================
+   Responsive
+======================== */
+@media (max-width: 480px) {
+  .movie-container { grid-template-columns: 1fr; }
+}
 
-    .plus-btn,
-    .play-btn {
-      border: none;
-      color: #fff;
-      padding: 6px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      transform: scale(1.1);
-    }
+/* ========================
+   Intro animation overlay
+======================== */
+.intro-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  z-index: 9999;
+}
 
-    .plus-btn {
-      background: #b20710;
-      margin: 0;
-    }
-    .plus-btn:hover {
-      background: #E50B42;
-      transform: scale(1.1);
-    }
+.clapper {
+  position: relative;
+  width: 260px;
+  height: 180px;
+  transform-origin: center;
+  transition: transform 1s ease;
+}
 
-    .play-btn {
-      background: #15883e;
-    }
-    .play-btn:hover {
-      background: #00FF00;
-      transform: scale(1.1);
-    }
-    
-     @media (max-width: 480px) {
-    .movie-container {
-      grid-template-columns: 1fr;
-    }
-       
-    footer {
-      text-align: center;
-      padding: 15px;
-      background: rgba(0,0,0,0.8);
-      margin-top: 20px;
-    }
+.clapper-top {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 40px;
+  background: repeating-linear-gradient(
+    135deg,
+    black 0 25px,
+    white 25px 50px
+  );
+  border: 2px solid white;
+  border-radius: 5px;
+  transform-origin: left bottom;
+  transition: transform 0.3s ease;
+}
+
+.clapper-mid {
+  position: absolute;
+  top: 40px;
+  width: 100%;
+  height: 40px;
+  background: repeating-linear-gradient(
+    135deg,
+    black 0 25px,
+    white 25px 50px
+  );
+  border: 2px solid white;
+  border-top: none;
+}
+
+.clapper-bottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  background: black;
+  border: 2px solid white;
+  border-top: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clapper-bottom h1 {
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  color: white;
+  margin: 0;
+}
+
+/* ========================
+   Animations
+======================== */
+.clap { transform: rotate(-25deg); }
+.zoom { transform: scale(5); opacity: 0; transition: transform 1s ease, opacity 1s ease; }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <!-- Intro Animation Overlay -->
+<div class="intro-container">
+  <div class="clapper">
+    <div class="clapper-top"></div>
+    <div class="clapper-mid"></div>
+    <div class="clapper-bottom">
+      <h1>Welcome to FilmReserve</h1>
+    </div>
+  </div>
+</div>
+
   <header class="navbar">
     <div class="sidebar-wrapper">
       <div class="menu-btn">☰</div>
       <div class="sidebar">
-        <h2>👤 Profile</h2>
+        <h2>👤 Your Stuff</h2>
         <ul class="sidebar-menu" id="sidebar-menu"></ul>
       </div>
     </div>
@@ -517,6 +565,26 @@
   </footer>
 
   <script>
+    // Select clapper elements
+  const topPart = document.querySelector('.clapper-top');
+  const clapper = document.querySelector('.clapper');
+  const introContainer = document.querySelector('.intro-container');
+
+  // Run animation sequence
+  setTimeout(() => {
+    topPart.classList.add('clap'); // top flap rotates
+    setTimeout(() => {
+      topPart.classList.remove('clap');
+      setTimeout(() => {
+        clapper.classList.add('zoom'); // clapper zooms out and fades
+        setTimeout(() => {
+          // Remove the intro overlay so the site is accessible
+          introContainer.style.display = 'none';
+        }, 1000);
+      }, 400);
+    }, 400);
+  }, 800);
+    
        // Sidebar toggle
     const menuBtn = document.querySelector('.menu-btn');
     const sidebar = document.querySelector('.sidebar');
