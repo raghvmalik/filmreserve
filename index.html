@@ -362,14 +362,19 @@ footer {
 
 .clapper-bottom h1 {
   font-family: "Courier New", monospace;
-  font-size: 1rem;
+  font-size: 2rem; /* bigger so it spans */
   color: transparent;
   background: linear-gradient(45deg, violet, #8a2be2);
   -webkit-background-clip: text;
   background-clip: text;
-  transform: rotate(-20deg); /* diagonal effect */
-  text-shadow: 0 0 5px violet, 0 0 10px violet, 0 0 15px #8a2be2; /* glowing effect */
-  margin: 0;
+  transform: rotate(-25deg); /* diagonal */
+  text-shadow: 0 0 5px violet, 0 0 10px violet, 0 0 15px #8a2be2;
+  position: absolute;  /* allow free placement */
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
+  transform: translate(-50%, -50%) rotate(-25deg);
+  white-space: nowrap;  /* prevent wrapping */
 }
 
 /* ========================
