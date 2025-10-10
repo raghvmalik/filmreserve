@@ -16,12 +16,14 @@ Reset & base styles
 }
 
 html, body {
+  position: relative;
   height: 100%;
   margin: 0;
   padding: 0;
   background: url('images/bgimg.jpg') no-repeat center center fixed;
   background-size: cover;
   background-color: #000; /* fallback if image doesn’t load */
+  background-blend-mode: darken;
   animation: fadeIn 1.5s ease-in;
 }
 
@@ -29,6 +31,27 @@ html, body {
   from { opacity: 0; }
   to { opacity: 1; }
   }
+
+ body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 0;
+}
+
+  /* Full page translucent overlay */
+.overlay {
+  position: relative; /* relative to page */
+  min-height: 100vh; /* full viewport height */
+  padding-top: 80px; /* height of navbar so cards don't go under it */
+  display: flex;
+  justify-content: center;
+  z-index: 1;
+}
     
 /* ========================
    Navbar
@@ -159,11 +182,12 @@ html, body {
 ======================== */
 .movie-container {
   background: rgba(0, 0, 0, 0.6);
+  width: 100%;
   padding: 20px;
   margin: 0px;
   margin-top: 10px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
   justify-content: start;
   align-items: start;
@@ -172,15 +196,15 @@ html, body {
 .movie-card {
   background: #24292e;
   color: #fff;
-  width: 100%;
-  max-width: 220px;
-  min-width: 180px;
-  border-radius: 10px;
+  width: 200px;
+  height: 360px;
+  border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   transition: transform 0.4s ease;
   position: relative;
 }
@@ -193,15 +217,17 @@ html, body {
 
 .movie-card img {
   width: 100%;
-  height: 250px;
+  height: 220px;
   object-fit: cover;
 }
 
 .movie-title {
+  height: 60px;
   padding: 10px;
   text-align: center;
   font-size: 1rem;
   font-weight: bold;
+  overflow: hidden;
   transition: color 0.3s ease;
 }
 
@@ -253,9 +279,9 @@ html, body {
 ======================== */
 footer {
   text-align: center;
-  padding: 5px 0;
+  padding: 10px 0;
   background: rgba(0,0,0,0.4);
-  font-color: #fff;
+  color: #fff;
   font-size: 0.85rem;
   border-top: 1px solid rgba(255,255,255,0.1);
 }
@@ -337,7 +363,12 @@ footer {
 .clapper-bottom h1 {
   font-family: "Courier New", monospace;
   font-size: 1rem;
-  color: white;
+  color: transparent;
+  background: linear-gradient(45deg, violet, #8a2be2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  transform: rotate(-20deg); /* diagonal effect */
+  text-shadow: 0 0 5px violet, 0 0 10px violet, 0 0 15px #8a2be2; /* glowing effect */
   margin: 0;
 }
 
@@ -349,9 +380,8 @@ footer {
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
 </head>
+  
 <body>
-
-
   <header class="navbar">
     <div class="sidebar-wrapper">
       <div class="menu-btn">☰</div>
@@ -390,7 +420,9 @@ footer {
     </select>
   </div>
 </header>
-
+  
+<!-- Wrap main content -->
+<div class="overlay">
   <main class="movie-container">
     <div class="movie-card" tabindex="1" data-name="fantastic4" ref="trailer.html?movie=fantastic4" data-trailer="true" data-genre="hero" data-language="english" data-format="4k">
       <img src="images/fantastic4.jpeg" alt="Fantastic 4: First Steps" loading="lazy" >
@@ -617,7 +649,8 @@ footer {
     </div>
     </div>
   </main>
-      
+</div>
+  
   <!-- Intro Animation Overlay -->
 <div class="intro-container">
   <div class="clapper">
