@@ -14,14 +14,21 @@
   box-sizing: border-box;
 }
 
-body {
-  padding-top: 56px; /* for navbar */
-  font-family: Arial, sans-serif;
-  background: url("bgimg.jpg") no-repeat center center/cover;
-  color: #fff;
-  overflow-x: hidden;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: url('images/bgimg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-color: #000; /* fallback if image doesn’t load */
+  animation: fadeIn 1.5s ease-in;
 }
 
+  @keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+  }
+    
 /* ========================
    Navbar
 ======================== */
@@ -150,7 +157,10 @@ body {
    Movie cards
 ======================== */
 .movie-container {
-  margin: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 40px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 20px;
@@ -159,7 +169,8 @@ body {
 }
 
 .movie-card {
-  background: rgba(255,255,255,0.05);
+  background: #000;
+  color: #fff;
   width: 100%;
   max-width: 220px;
   min-width: 180px;
@@ -174,7 +185,7 @@ body {
 }
 
 .movie-card:hover {
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
   transform: scale(1.05);
   color: #1F51FF;
 }
@@ -234,9 +245,11 @@ body {
 ======================== */
 footer {
   text-align: center;
-  padding: 10px;
+  padding: 5px 0;
   background: rgba(0,0,0,0.7);
+  font-size: 0.75rem;
   margin-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
 }
 
 /* ========================
