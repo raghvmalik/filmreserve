@@ -12,93 +12,6 @@
     }
 
     body {
-  margin: 0;
-  background: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.intro-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.clapper {
-  position: relative;
-  width: 260px;   /* slimmer width */
-  height: 180px;  /* overall smaller height */
-  transform-origin: center;
-  transition: transform 1s ease;
-}
-
-/* top hinged striped part */
-.clapper-top {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 40px;  /* slimmer */
-  background: repeating-linear-gradient(
-    135deg,
-    black 0 25px,
-    white 25px 50px
-  );
-  border: 2px solid white;
-  border-radius: 5px;
-  transform-origin: left bottom;
-  transition: transform 0.3s ease;
-}
-
-/* mid striped section */
-.clapper-mid {
-  position: absolute;
-  top: 40px;
-  width: 100%;
-  height: 40px;
-  background: repeating-linear-gradient(
-    135deg,
-    black 0 25px,
-    white 25px 50px
-  );
-  border: 2px solid white;
-  border-top: none;
-}
-
-/* text area */
-.clapper-bottom {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 100px;
-  background: black;
-  border: 2px solid white;
-  border-top: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.clapper-bottom h1 {
-  font-family: "Courier New", monospace;
-  font-size: 1rem;
-  color: white;
-  margin: 0;
-}
-
-/* animations */
-.clap {
-  transform: rotate(-25deg);
-}
-
-.zoom {
-  transform: scale(5);
-  opacity: 0;
-  transition: transform 1s ease, opacity 1s ease;
-}
-
       padding-top: 56px;
       font-family: Arial, sans-serif;
       background: #111 url("background.jpg") no-repeat center center/cover;
@@ -333,16 +246,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="intro-container">
-  <div class="clapper">
-    <div class="clapper-top"></div>
-    <div class="clapper-mid"></div>
-    <div class="clapper-bottom">
-      <h1>Welcome to FilmReserve</h1>
-    </div>
-  </div>
-</div>
-
   <header class="navbar">
     <div class="sidebar-wrapper">
       <div class="menu-btn">☰</div>
@@ -614,24 +517,6 @@
   </footer>
 
   <script>
-    //intro animation
-    const topPart = document.querySelector('.clapper-top');
-const clapper = document.querySelector('.clapper');
-
-setTimeout(() => {
-  topPart.classList.add('clap');
-  setTimeout(() => {
-    topPart.classList.remove('clap');
-    setTimeout(() => {
-      clapper.classList.add('zoom');
-      setTimeout(() => {
-        // window.location.href = "index.html";
-        console.log("Clapper animation done.");
-      }, 1000);
-    }, 400);
-  }, 400);
-}, 800);
-
        // Sidebar toggle
     const menuBtn = document.querySelector('.menu-btn');
     const sidebar = document.querySelector('.sidebar');
