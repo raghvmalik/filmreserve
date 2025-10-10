@@ -83,6 +83,52 @@ body {
   border: none;
   outline: none;
 }
+  
+ .sidebar-wrapper {
+  position: relative;
+}
+
+.menu-btn {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.sidebar {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  background: rgba(20, 20, 20, 0.95);
+  width: 200px;
+  height: auto;
+  border-radius: 8px;
+  display: none;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.sidebar.active {
+  display: flex;
+}
+
+.sidebar h2 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  margin: 8px 0;
+}
+
+.sidebar-menu li a {
+  color: #fff;
+  text-decoration: none;
+}
 
 .filters {
   margin-top: 0;
@@ -283,16 +329,7 @@ footer {
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <!-- Intro Animation Overlay -->
-<div class="intro-container">
-  <div class="clapper">
-    <div class="clapper-top"></div>
-    <div class="clapper-mid"></div>
-    <div class="clapper-bottom">
-      <h1>Welcome to FilmReserve</h1>
-    </div>
-  </div>
-</div>
+
 
   <header class="navbar">
     <div class="sidebar-wrapper">
@@ -559,7 +596,18 @@ footer {
     </div>
     </div>
   </main>
-    
+      
+  <!-- Intro Animation Overlay -->
+<div class="intro-container">
+  <div class="clapper">
+    <div class="clapper-top"></div>
+    <div class="clapper-mid"></div>
+    <div class="clapper-bottom">
+      <h1>Welcome to FilmReserve</h1>
+    </div>
+  </div>
+</div>
+  
   <footer>
     FilmReserve | Streaming entertainment anytime, anywhere.
   </footer>
