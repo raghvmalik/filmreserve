@@ -1,112 +1,182 @@
-<!-- Profile Page - FilmReserve -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile | FilmReserve</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
   <style>
-    
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #000000; /* ✅ valid */
+      font-family: 'Arial', sans-serif;
+      background: #111 url("background.jpg") no-repeat center center/cover;
+      color: #fff;
+      min-height: 100vh;
+      padding-top: 60px;
+    }
+    header.navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(20,20,20,0.95);
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
+      padding: 10px 20px;
+      left: 0;
+      right: ;
+      z-index: 1000;
     }
+    .logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  font-size: 1.8rem;
+  color: red;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
 
-    .profile-box {
-      background: rgba(0, 0, 0, 0.85);
-      padding: 40px;
+.logo:hover {
+  transform: scale(1.1);
+  color: #DE0000;
+}
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: rgba(0,0,0,0.8);
+      padding: 30px;
       border-radius: 12px;
-      color: white;
-      text-align: center;
-      max-width: 400px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+    h1 { text-align: center; margin-bottom: 25px; color: #5a5cff; }
+    label { display: block; margin: 15px 0 5px; }
+    input[type="text"], input[type="email"], input[type="tel"] {
       width: 100%;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-    }
-
-    .profile-box h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-      color: #5bb0ff;
-    }
-
-    .profile-box p {
-      font-size: 18px;
-      margin-bottom: 30px;
-    }
-
-    .profile-box a, .profile-box button {
-      background-color: #5bb0ff;
-      text-decoration: none;
-      padding: 12px 24px;
-      font-size: 16px;
-      color: white;
+      padding: 10px;
       border-radius: 6px;
       border: none;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
-      margin: 6px;
+      background: #2E2FFE;
+      color: #fff;
+      font-size: 16px;
+      margin-top: 10px;
     }
+    button:hover { background: #5A5CFF; }
+     .menu-btn {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+    user-select: none;
+  }
 
-    .profile-box a:hover,
-    .profile-box button:hover {
-      background-color: #3f9de1;
-    }
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    right: 1150px;
+    background: rgba(30, 30, 30, 0.95);
+    border-radius: 10px;
+    display: none;
+    flex-direction: column;
+    width: 160px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    overflow: hidden;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .sidebar.active {
+    display: flex;
+  }
+
+  .sidebar-item {
+    color: #ddd;
+    text-decoration: none;
+    padding: 12px 15px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .sidebar-item:hover {
+    background: rgba(255, 0, 255, 0.1);
+    color: violet;
+  }
+
+  .logout {
+    color: #ff4d4d;
+  }
+
+  .logout:hover {
+    background: rgba(255, 77, 77, 0.2);
+    color: #ff6666;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
   </style>
-
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBMPr-C_p--9isHVBmH6QuOxCR93dgscYs",
-      authDomain: "film-reserve-255bc.firebaseapp.com",
-      projectId: "film-reserve-255bc",
-      storageBucket: "film-reserve-255bc.appspot.com",
-      messagingSenderId: "856235605413",
-      appId: "1:856235605413:web:c9a232f9b47c510d0144c3"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    const userEmail = document.getElementById("user-email");
-    const homeButton = document.getElementById("home-button");
-    const logoutButton = document.getElementById("logout-button");
-
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        userEmail.innerText = user.email;
-        homeButton.style.display = "inline-block";
-        logoutButton.style.display = "inline-block";
-        localStorage.setItem("loggedIn", "true");
-      } else {
-        localStorage.removeItem("loggedIn");
-        window.location.href = "login.html";
-      }
-    });
-
-    window.logout = () => {
-      signOut(auth).then(() => {
-        localStorage.removeItem("loggedIn");
-        window.location.href = "login.html";
-      }).catch((error) => {
-        alert("Logout failed: " + error.message);
-      });
-    };
-  </script>
 </head>
 <body>
-  <div class="profile-box">
-    <h1>Welcome</h1>
-    <p id="user-email">Loading...</p>
-    <a href="index.html" id="home-button" style="display:none;">Home</a>
-    <button id="logout-button" style="display:none;" onclick="logout()">Logout</button>
+  <header class="navbar">
+       <nav class="menu-btn" onclick="toggleSidebar()">☰</div>
+    <a href="index.html" class="logo">🎬 FilmReserve</a>
+    
+  <!-- Sidebar Menu -->
+  <div class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-item">🏠 Home</a>
+    <a href="settings.html" class="sidebar-item">⚙️ Settings</a>
+    <a href="#" class="sidebar-item logout">🚪 Logout</a>
+  </nav>
+  </header>
+
+  <div class="container">
+    <h1>My Profile</h1>
+
+    <form id="profileForm">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" placeholder="Your Full Name" />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Your Email" />
+
+      <label for="phone">Phone:</label>
+      <input type="tel" id="phone" placeholder="Your Phone Number" />
+
+      <button type="submit">Save Profile</button>
+    </form>
   </div>
+
+  <script>
+      
+      function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+  }
+    // Load saved profile on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      const profileData = JSON.parse(localStorage.getItem('profile')) || {};
+      document.getElementById('name').value = profileData.name || '';
+      document.getElementById('email').value = profileData.email || '';
+      document.getElementById('phone').value = profileData.phone || '';
+    });
+
+    // Save profile data
+    document.getElementById('profileForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const profile = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+      };
+      localStorage.setItem('profile', JSON.stringify(profile));
+      alert('✅ Profile saved successfully!');
+    });
+  </script>
 </body>
 </html>
