@@ -1,175 +1,558 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Settings | FilmReserve</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      background: #111 url("background.jpg") no-repeat center center/cover;
-      color: #fff;
-      min-height: 100vh;
-      padding-top: 60px;
-    }
-    header.navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: rgba(0,0,0,0.7);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      z-index: 1000;
-    }
-    .logo { font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 1.8rem; color: violet; text-decoration: none; }
-    .container {
-      max-width: 600px;
-      margin: 40px auto;
-      background: rgba(0,0,0,0.8);
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-    }
-    h1 { text-align: center; margin-bottom: 25px; color: #00ffcc; }
-    label { display: block; margin: 15px 0 5px; }
-    input[type="text"], input[type="email"], input[type="password"], select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      margin-bottom: 10px;
-    }
-    button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      background: #00c9a7;
-      color: #fff;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-    button:hover { background: #00a98f; }
-    .logout-btn { background: #b20710; }
-    .logout-btn:hover { background: #E50B42; }
-    body.light-mode {
-  background: #eee url("background.jpg") no-repeat center center/cover;
-  color: #111;
-}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Settings | FilmReserve</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Arial', sans-serif;
+    background: #111 url("background.jpg") no-repeat center center/cover;
+    color: #fff;
+    overflow: hidden; /* No scroll */
+  }
+  body.light-mode {
+    background: #f0f0f0;
+    color: #111;
+  }
 
-body.light-mode input,
-body.light-mode select,
-body.light-mode .container {
-  background: #fff;
-  color: #111;
-}
+  /* Navbar */
+  header.navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: rgba(20,20,20,0.95);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+    color: #fff;
+  }
+  body.light-mode header.navbar {
+    background: rgba(240,240,240,0.95);
+    color: #111;
+  }
 
-body.light-mode button {
+  .menu-btn {
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: inherit;
+    margin-right: 15px;
+    user-select: none;
+  }
+  .logo {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: red;
+    text-decoration: none;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  .logo:hover {
+    transform: scale(1.1);
+    color: #de0000;
+  }
+  body.light-mode .logo {
+    color: #b00000;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    left: 10px;
+    background: rgba(30,30,30,0.95);
+    border-radius: 10px;
+    display: none;
+    flex-direction: column;
+    width: 170px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    z-index: 2000;
+    overflow: hidden;
+    animation: fadeIn 0.3s ease;
+    color: #ddd;
+  }
+  .sidebar.active {
+    display: flex;
+  }
+  .sidebar-item {
+    color: #ddd;
+    text-decoration: none;
+    padding: 15px 18px;
+    font-size: 1rem;
+    transition: background 0.3s, color 0.3s;
+  }
+  .sidebar-item.logout:hover {
+    background: rgba(255,0,0,0.2);
+    color: #ff0000;
+  }
+  .sidebar-item.profile:hover {
+    background: rgba(90,92,255,0.2);
+    color: #5a5cff;
+  }
+  .sidebar-item:hover:not(.logout):not(.profile) {
+    background: rgba(255,0,255,0.1);
+    color: violet;
+  }
+  body.light-mode .sidebar {
+    background: rgba(30,30,30,0.95);
+    color: #ddd;
+  }
+
+  /* Main Container */
+  .container {
+  position: absolute;
+  top: 70px;
+  left: 200px;
+  right: 200px; /* increased from 20px */
+  bottom: 20px;
+  background: rgba(0,0,0,0.7);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  padding: 30px;
+  overflow-y: auto;
   color: #fff;
 }
 
-  </style>
+  body.light-mode .container {
+    background: rgba(255,255,255,0.95);
+    color: #111;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #5a5cff;
+  }
+  body.light-mode h1 {
+    color: #3a44d8;
+  }
+
+  /* Settings Rows */
+  .setting {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 18px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  body.light-mode .setting {
+    border-color: rgba(0,0,0,0.15);
+  }
+  .setting label {
+    font-size: 1.1rem;
+  }
+
+  /* Toggle Switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0; height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #555;
+    transition: 0.4s;
+    border-radius: 34px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+  input:checked + .slider {
+    background-color: #6a00ff;
+  }
+  input:checked + .slider:before {
+    transform: translateX(24px);
+  }
+
+  /* Select and button */
+  select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+  }
+  option {
+    background: #111;
+  }
+  body.light-mode select {
+    background: #eee;
+    color: #111;
+  }
+  button {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #2e2ffe;
+    color: white;
+    transition: 0.3s;
+  }
+  button:hover {
+    background: #5a5cff;
+  }
+
+  /* Hide scrollbar for container, but scrollable */
+  .container::-webkit-scrollbar {
+    width: 6px;
+  }
+  .container::-webkit-scrollbar-thumb {
+    background: #6a00ff;
+    border-radius: 3px;
+  }
+  .container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+</style>
 </head>
 <body>
-  <header class="navbar">
-    <a href="index.html" class="logo">🎬 FilmReserve</a>
-  </header>
+<header class="navbar">
+  <div class="menu-btn" onclick="toggleSidebar()">☰</div>
+  <a href="index.html" class="logo">🎬 FilmReserve</a>
+  <div class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-item">🎞 Home</a>
+    <a href="profile.html" class="sidebar-item profile">👤 Profile</a>
+    <a href="#" class="sidebar-item logout">🚪 Logout</a>
+  </div>
+</header>
 
-  <div class="container">
-    <h1>Account Settings</h1>
+<div class="container" tabindex="0">
+  <h1 id="settingsLabel">⚙️ Settings</h1>
 
-    <form id="settingsForm">
-      <label for="displayName">Display Name:</label>
-      <input type="text" id="displayName" placeholder="Your Name" />
-
-      <label for="email">Email:</label>
-      <input type="email" id="email" placeholder="Your Email" />
-
-      <label for="password">New Password:</label>
-      <input type="password" id="password" placeholder="New Password" />
-
-      <label for="theme">Theme:</label>
-      <select id="theme">
-        <option value="dark">Dark Mode</option>
-        <option value="light">Light Mode</option>
-      </select>
-
-      <label for="notifications">Notifications:</label>
-      <select id="notifications">
-        <option value="all">All Notifications</option>
-        <option value="important">Only Important</option>
-        <option value="none">None</option>
-      </select>
-
-      <button type="submit">Save Settings</button>
-    </form>
-
-    <button class="logout-btn" onclick="logout()">Logout</button>
+  <div class="setting">
+    <label id="musicLabel" for="musicToggle">🎵 Background Music</label>
+    <label class="switch">
+      <input type="checkbox" id="musicToggle" />
+      <span class="slider"></span>
+    </label>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged, updateProfile, updateEmail, updatePassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  <div class="setting">
+    <label id="notifLabel" for="notifToggle">🔔 Notifications</label>
+    <label class="switch">
+      <input type="checkbox" id="notifToggle" />
+      <span class="slider"></span>
+    </label>
+  </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBMPr-C_p--9isHVBmH6QuOxCR93dgscYs",
-      authDomain: "film-reserve-255bc.firebaseapp.com",
-      projectId: "film-reserve-255bc",
-      storageBucket: "film-reserve-255bc.appspot.com",
-      messagingSenderId: "856235605413",
-      appId: "1:856235605413:web:your-app-id"
-    };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  <div class="setting">
+    <label id="autoplayLabel" for="autoplayToggle">🎬 Autoplay Trailers</label>
+    <label class="switch">
+      <input type="checkbox" id="autoplayToggle" />
+      <span class="slider"></span>
+    </label>
+  </div>
 
-    // Redirect if not logged in
-    onAuthStateChanged(auth, user => {
-      if(!user){
-        alert("⚠️ You must be logged in to access settings!");
-        window.location.href = "login.html";
-      } else {
-        document.getElementById('displayName').value = user.displayName || "";
-        document.getElementById('email').value = user.email || "";
-      }
-    });
+  <div class="setting">
+    <label id="subtitlesLabel" for="subtitleToggle">💬 Subtitles</label>
+    <label class="switch">
+      <input type="checkbox" id="subtitleToggle" />
+      <span class="slider"></span>
+    </label>
+  </div>
 
-    document.getElementById('settingsForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const user = auth.currentUser;
-      if(!user) return;
+  <div class="setting">
+    <label id="themeLabel" for="themeSelect">🎨 Theme</label>
+    <select id="themeSelect">
+      <option value="system">System Default</option>
+      <option value="dark">Dark Mode</option>
+      <option value="light">Light Mode</option>
+    </select>
+  </div>
 
-      const newName = document.getElementById('displayName').value;
-      const newEmail = document.getElementById('email').value;
-      const newPass = document.getElementById('password').value;
-      const theme = document.getElementById('theme').value;
-      const notifications = document.getElementById('notifications').value;
+  <div class="setting">
+    <label id="languageLabel" for="languageSelect">🌐 Language</label>
+    <select id="languageSelect">
+      <option value="en">English</option>
+      <option value="hi">Hindi</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+      <option value="de">German</option>
+      <option value="ko">Korean</option>
+      <option value="ja">Japanese</option>
+    </select>
+  </div>
 
-      try {
-        if(newName) await updateProfile(user, { displayName: newName });
-        if(newEmail) await updateEmail(user, newEmail);
-        if(newPass) await updatePassword(user, newPass);
+  <button id="saveBtn">Save Settings</button>
+</div>
 
-        localStorage.setItem('theme', theme);
-        localStorage.setItem('notifications', notifications);
+<audio id="bgMusic" loop>
+  <source src="theme-music.mp3" type="audio/mpeg"/>
+</audio>
 
-        alert(" Settings updated successfully!");
-      } catch(error){
-        alert("❌ Error updating settings: " + error.message);
-      }
-    });
+<script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('active');
+  }
 
-    function logout(){
-      signOut(auth).then(() => {
-        localStorage.removeItem('loggedIn');
-        window.location.href = "login.html";
-      });
-    
+  const translations = {
+    en: {
+      settings: 'Settings',
+      music: '🎵 Background Music',
+      notifications: '🔔 Notifications',
+      autoplay: '🎬 Autoplay Trailers',
+      subtitles: '💬 Subtitles',
+      theme: '🎨 Theme',
+      language: '🌐 Language',
+      save: 'Save Settings',
+      home: '🎞 Home',
+      profile: '👤 Profile',
+      logout: '🚪 Logout',
+      notifEnabled: '🔔 Notifications enabled!',
+      autoplayEnabled: '🎬 Autoplay trailers enabled!',
+      subtitlesEnabled: '💬 Subtitles enabled!',
+      saved: '✅ Settings saved!',
+    },
+    hi: {
+      settings: '[translate:सेटिंग्स]',
+      music: '[translate:🎵 पृष्ठभूमि संगीत]',
+      notifications: '[translate:🔔 सूचनाएं]',
+      autoplay: '[translate:🎬 ऑटोप्ले ट्रेलर]',
+      subtitles: '[translate:💬 उपशीर्षक]',
+      theme: '[translate:🎨 थीम]',
+      language: '[translate:🌐 भाषा]',
+      save: '[translate:सेटिंग्स सहेजें]',
+      home: '[translate:🎞 होम]',
+      profile: '[translate:👤 प्रोफ़ाइल]',
+      logout: '[translate:🚪 लॉगआउट]',
+      notifEnabled: '[translate:🔔 सूचनाएं सक्षम!]',
+      autoplayEnabled: '[translate:🎬 ट्रेलर स्वतः चलना सक्षम!]',
+      subtitlesEnabled: '[translate:💬 उपशीर्षक सक्षम!]',
+      saved: '[translate:✅ सेटिंग्स सहेजी गई!]',
+    },
+    es: {
+      settings: 'Configuración',
+      music: '🎵 Música de fondo',
+      notifications: '🔔 Notificaciones',
+      autoplay: '🎬 Reproducción automática de tráilers',
+      subtitles: '💬 Subtítulos',
+      theme: '🎨 Tema',
+      language: '🌐 Idioma',
+      save: 'Guardar configuración',
+      home: '🎞 Inicio',
+      profile: '👤 Perfil',
+      logout: '🚪 Cerrar sesión',
+      notifEnabled: '🔔 Notificaciones habilitadas!',
+      autoplayEnabled: '🎬 Reproducción automática de tráilers habilitada!',
+      subtitlesEnabled: '💬 Subtítulos habilitados!',
+      saved: '✅ Configuración guardada!',
+    },
+    fr: {
+      settings: 'Paramètres',
+      music: '🎵 Musique de fond',
+      notifications: '🔔 Notifications',
+      autoplay: '🎬 Lecture automatique des bandes-annonces',
+      subtitles: '💬 Sous-titres',
+      theme: '🎨 Thème',
+      language: '🌐 Langue',
+      save: 'Enregistrer les paramètres',
+      home: '🎞 Accueil',
+      profile: '👤 Profil',
+      logout: '🚪 Déconnexion',
+      notifEnabled: '🔔 Notifications activées!',
+      autoplayEnabled: '🎬 Lecture automatique activée!',
+      subtitlesEnabled: '💬 Sous-titres activés!',
+      saved: '✅ Paramètres enregistrés!',
+    },
+    de: {
+      settings: 'Einstellungen',
+      music: '🎵 Hintergrundmusik',
+      notifications: '🔔 Benachrichtigungen',
+      autoplay: '🎬 Trailer automatisch abspielen',
+      subtitles: '💬 Untertitel',
+      theme: '🎨 Thema',
+      language: '🌐 Sprache',
+      save: 'Einstellungen speichern',
+      home: '🎞 Startseite',
+      profile: '👤 Profil',
+      logout: '🚪 Abmelden',
+      notifEnabled: '🔔 Benachrichtigungen aktiviert!',
+      autoplayEnabled: '🎬 Trailer-Autoplay aktiviert!',
+      subtitlesEnabled: '💬 Untertitel aktiviert!',
+      saved: '✅ Einstellungen gespeichert!',
+    },
+    ko: {
+      settings: '[translate:설정]',
+      music: '[translate:🎵 배경 음악]',
+      notifications: '[translate:🔔 알림]',
+      autoplay: '[translate:🎬 자동 재생 예고편]',
+      subtitles: '[translate:💬 자막]',
+      theme: '[translate:🎨 테마]',
+      language: '[translate:🌐 언어]',
+      save: '[translate:설정 저장]',
+      home: '[translate:🎞 홈]',
+      profile: '[translate:👤 프로필]',
+      logout: '[translate:🚪 로그아웃]',
+      notifEnabled: '[translate:🔔 알림이 활성화되었습니다!]',
+      autoplayEnabled: '[translate:🎬 자동 재생 예고편이 활성화되었습니다!]',
+      subtitlesEnabled: '[translate:💬 자막이 활성화되었습니다!]',
+      saved: '[translate:✅ 설정이 저장되었습니다!]',
+    },
+    ja: {
+      settings: '[translate:設定]',
+      music: '[translate:🎵 背景音楽]',
+      notifications: '[translate:🔔 通知]',
+      autoplay: '[translate:🎬 トレーラーの自動再生]',
+      subtitles: '[translate:💬 字幕]',
+      theme: '[translate:🎨 テーマ]',
+      language: '[translate:🌐 言語]',
+      save: '[translate:設定を保存]',
+      home: '[translate:🎞 ホーム]',
+      profile: '[translate:👤 プロフィール]',
+      logout: '[translate:🚪 ログアウト]',
+      notifEnabled: '[translate:🔔 通知が有効になりました！]',
+      autoplayEnabled: '[translate:🎬 トレーラーの自動再生が有効になりました！]',
+      subtitlesEnabled: '[translate:💬 字幕が有効になりました！]',
+      saved: '[translate:✅ 設定が保存されました！]',
     }
-  </script>
+  };
+
+  // Elements
+  const musicToggle = document.getElementById('musicToggle');
+  const notifToggle = document.getElementById('notifToggle');
+  const autoplayToggle = document.getElementById('autoplayToggle');
+  const subtitleToggle = document.getElementById('subtitleToggle');
+  const themeSelect = document.getElementById('themeSelect');
+  const languageSelect = document.getElementById('languageSelect');
+  const bgMusic = document.getElementById('bgMusic');
+
+  const settingsLabel = document.getElementById('settingsLabel');
+  const musicLabel = document.getElementById('musicLabel');
+  const notifLabel = document.getElementById('notifLabel');
+  const autoplayLabel = document.getElementById('autoplayLabel');
+  const subtitlesLabel = document.getElementById('subtitlesLabel');
+  const themeLabel = document.getElementById('themeLabel');
+  const languageLabel = document.getElementById('languageLabel');
+  const saveBtn = document.getElementById('saveBtn');
+  const sidebarHome = document.querySelector('.sidebar-item[href="index.html"]');
+  const sidebarProfile = document.querySelector('.sidebar-item.profile');
+  const sidebarLogout = document.querySelector('.sidebar-item.logout');
+
+  // Update UI texts based on language
+  function updateUIText(lang) {
+    const t = translations[lang] || translations.en;
+    settingsLabel.textContent = t.settings;
+    musicLabel.textContent = t.music;
+    notifLabel.textContent = t.notifications;
+    autoplayLabel.textContent = t.autoplay;
+    subtitlesLabel.textContent = t.subtitles;
+    themeLabel.textContent = t.theme;
+    languageLabel.textContent = t.language;
+    saveBtn.textContent = t.save;
+    sidebarHome.textContent = t.home;
+    sidebarProfile.textContent = t.profile;
+    sidebarLogout.textContent = t.logout;
+  }
+
+  // Apply theme based on mode selection
+  function applyTheme(mode) {
+    document.body.classList.remove('light-mode');
+    document.body.style.background = '';
+    document.body.style.color = '';
+
+    if (mode === 'dark') {
+      document.body.style.background = "#111 url('background.jpg') no-repeat center center/cover";
+      document.body.style.color = '#fff';
+    } else if (mode === 'light') {
+      document.body.classList.add('light-mode');
+    } else {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        applyTheme('dark');
+      } else {
+        applyTheme('light');
+      }
+    }
+  }
+
+  // Load saved settings or set defaults
+  function loadSettings() {
+    const saved = JSON.parse(localStorage.getItem('filmreserveSettings')) || {};
+    musicToggle.checked = saved.music || false;
+    notifToggle.checked = saved.notifications || false;
+    autoplayToggle.checked = saved.autoplay || false;
+    subtitleToggle.checked = saved.subtitles || false;
+    themeSelect.value = saved.theme || 'system';
+    languageSelect.value = saved.language || 'en';
+    applyTheme(themeSelect.value);
+    updateUIText(languageSelect.value);
+    if (musicToggle.checked) {
+      bgMusic.play();
+    } else {
+      bgMusic.pause();
+    }
+  }
+
+  // Save settings including subtitles setting
+  function saveSettings() {
+    const settings = {
+      music: musicToggle.checked,
+      notifications: notifToggle.checked,
+      autoplay: autoplayToggle.checked,
+      subtitles: subtitleToggle.checked,
+      theme: themeSelect.value,
+      language: languageSelect.value,
+    };
+    localStorage.setItem('filmreserveSettings', JSON.stringify(settings));
+    alert(translations[languageSelect.value].saved);
+  }
+
+  // Event listeners
+  musicToggle.addEventListener('change', () => {
+    if(musicToggle.checked) bgMusic.play();
+    else bgMusic.pause();
+  });
+
+  notifToggle.addEventListener('change', () => {
+    alert(translations[languageSelect.value].notifEnabled);
+  });
+
+  autoplayToggle.addEventListener('change', () => {
+    alert(translations[languageSelect.value].autoplayEnabled);
+  });
+
+  subtitleToggle.addEventListener('change', () => {
+    alert(translations[languageSelect.value].subtitlesEnabled);
+  });
+
+  themeSelect.addEventListener('change', e => {
+    applyTheme(e.target.value);
+  });
+
+  languageSelect.addEventListener('change', e => {
+    updateUIText(e.target.value);
+  });
+
+  saveBtn.addEventListener('click', saveSettings);
+
+  window.addEventListener('load', () => {
+    loadSettings();
+  });
+</script>
 </body>
 </html>
