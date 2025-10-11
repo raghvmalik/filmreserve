@@ -17,15 +17,13 @@
     }
 
     .auth-container {
-      input {
-        background-color: #111;
-      } 
       padding: 40px 30px;
       border-radius: 12px;
       width: 100%;
       max-width: 400px;
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
       text-align: center;
+      background-color: #111;
     }
 
     h1 {
@@ -45,6 +43,8 @@
       border: none;
       border-radius: 6px;
       font-size: 16px;
+      background-color: #222;
+      color: #fff;
     }
 
     button {
@@ -88,7 +88,6 @@
     </form>
   </div>
 
-  <!-- Firebase SDK and Login Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -114,6 +113,7 @@
         await signInWithEmailAndPassword(auth, email, password);
         alert("Login successful!");
         localStorage.setItem("loggedIn", "true");
+        // Explicitly redirect to index.html after successful login
         window.location.href = "index.html";
       } catch (error) {
         alert("Login failed: " + error.message);
