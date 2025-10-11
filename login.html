@@ -114,7 +114,7 @@
         await signInWithEmailAndPassword(auth, email, password);
         alert("Login successful!");
         localStorage.setItem("loggedIn", "true");
-        window.location.href = "profile.html";
+        window.location.href = "index.html";
       } catch (error) {
         alert("Login failed: " + error.message);
       }
