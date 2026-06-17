@@ -22,7 +22,7 @@ html, body {
   padding: 0;
   background: url('images/bgimg.jpg') no-repeat center center fixed;
   background-size: cover;
-  background-color: #000; /* fallback if image doesn’t load */
+  background-color: #fff;
   background-blend-mode: darken;
   animation: fadeIn 1.5s ease-in;
 }
@@ -39,18 +39,18 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.3);
   z-index: 0;
 }
 
   /* Full page translucent overlay */
 .overlay {
   position: relative; 
-  min-height: 100vh; /* full viewport height */
-  padding-top: 75px;
+  min-height: 1vh; /* full viewport height */
+  padding-top: 50px;
   display: flex;
   justify-content: center;
-  z-index: 1;
+  z-index: 0;
 }
     
 /* ========================
@@ -93,7 +93,7 @@ html, body {
   transition: transform 0.3s ease;
 }
 
-.logo:hover .text { transform: scale(1.05); }
+.logo:hover .text { transform: scale(1.10); }
 
 /* ========================
    Search & filters
@@ -104,12 +104,12 @@ html, body {
   justify-content: flex-end;
   flex-shrink: 0;
   margin-left: auto;
-  margin-right: 15px;
+  margin-right: px;
 }
 
 .search input {
-  width: 200px;
-  padding: 8px 12px;
+  width: 255px;
+  padding: 10px 10px;
   border-radius: 5px;
   border: none;
   outline: none;
@@ -121,7 +121,7 @@ html, body {
 
 .menu-btn {
   color: #fff
-  font-size: 1.5rem;
+  font-size: 2.0 rem;
   cursor: pointer;
 }
 
@@ -129,7 +129,7 @@ html, body {
   position: absolute;
   top: 50px;
   left: 0;
-  background: rgba(20, 20, 20, 0.95);
+  background: rgba(20, 20, 20, 0.9);
   width: 200px;
   height: auto;
   border-radius: 8px;
@@ -171,8 +171,8 @@ html, body {
 }
 
 .filters select {
-  margin: 0 8px;
-  padding: 5px;
+  margin: 0 px;
+  padding: 7px;
   border-radius: 6px;
   border: none;
   outline: none;
@@ -195,7 +195,7 @@ html, body {
 }
 
 .movie-card {
-  background: #24292e;
+  background: #30203e;
   color: #fff;
   width: 200px;
   height: 330px;
@@ -281,10 +281,10 @@ html, body {
 footer {
   text-align: center;
   padding: 10px 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.6);
   color: #fff;
-  font-size: 0.85rem;
-  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 1rem;
+  border-top: 1px solid rgba(255,255,255,0);
 }
 
 /* ========================
