@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FilmReserve - Watch</title>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       background-color: #000;
       font-family: Arial, sans-serif;
@@ -14,9 +16,10 @@
       flex-direction: column;
       min-height: 100vh;
     }
+
     .navbar {
       background-color: #111;
-      opacity: 0.9;
+      opacity: 0.95;
       padding: 15px;
       text-align: center;
       font-size: 24px;
@@ -27,94 +30,71 @@
       width: 100%;
       z-index: 999;
     }
+
     .navbar a {
       text-decoration: none;
       color: #ccc;
     }
+
     .watch-container {
       flex: 1;
       margin-top: 80px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       padding: 20px;
+      gap: 20px;
     }
-    .player-wrapper {
-      background: #000;
-      border: 2px solid rgba(0, 174, 255, 0.3);
-      box-shadow: 0 0 12px rgba(0, 174, 255, 0.5);
+
+    .card {
+      background: #111;
+      padding: 25px;
       border-radius: 12px;
-      width: 95%;
-      max-width: 1280px;
-      position: relative;
-      overflow: hidden;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 174, 255, 0.2);
     }
-    video {
-      width: 100%;
-      height: auto;
-      display: block;
-      background: #000;
+
+    #movieTitle {
+      font-size: 28px;
+      margin-bottom: 15px;
     }
-    .controls {
-      display: flex;
-      align-items: center;
-      padding: 6px 10px;
-      background-color: #111;
-    }
-    .controls button, .controls select {
-      background: none;
+
+    .btn {
+      margin-top: 15px;
+      padding: 12px 20px;
       border: none;
-      color: #ccc;
+      border-radius: 8px;
       cursor: pointer;
-      margin: 0 5px;
       font-size: 16px;
+      background: #601EF9;
+      color: white;
+      transition: 0.3s;
     }
-    .controls button:hover, .controls select:hover {
-      color: #00baff;
+
+    .btn:hover {
+      background: #0047AB;
     }
-    .timer {
-      font-size: 14px;
-      margin: 0 10px;
+
+    .hint {
+      margin-top: 10px;
+      font-size: 13px;
       color: #aaa;
     }
-    .seekbar {
-      flex: 1;
-      margin: 0 10px;
-      height: 6px;
-      appearance: none;
-      background: #444;
-      border-radius: 5px;
-      outline: none;
-    }
-    .seekbar::-webkit-slider-thumb {
-      appearance: none;
-      height: 14px;
-      width: 14px;
-      background: #00baff;
-      border-radius: 50%;
-      cursor: pointer;
-    }
+
     .footer {
-      background-color: #000;
-      color: #ccc;
       text-align: center;
-      font-size: 14px;
       padding: 12px;
+      font-size: 13px;
+      color: #aaa;
+      background: #000;
       margin-top: auto;
-    }
-    video::cue {
-      background: transparent;
-      color: #fff;
-    }
-    :-webkit-full-screen .player-wrapper,
-    :-moz-full-screen .player-wrapper,
-    :-ms-fullscreen .player-wrapper,
-    :fullscreen .player-wrapper {
-      width: 100% !important;
-      height: 100% !important;
     }
   </style>
 </head>
+
 <body>
 
 <div class="navbar">
@@ -122,94 +102,77 @@
 </div>
 
 <div class="watch-container">
-  <div class="player-wrapper">
-    <video id="moviePlayer" poster="">
-      <source id="videoSource" src="" type="video/mp4" />
-    </video>
+  <div class="card">
+    <h1 id="movieTitle">Loading...</h1>
 
-    <div class="controls">
-      <button id="mute">🔊</button>
-      <span class="timer" id="time">0:00 / 0:00</span>
-      <input type="range" id="seekbar" class="seekbar" value="0" />
-      <button id="zoom" class="zoom-btn">⛶</button>
+    <button class="btn" id="playBtn">▶ Play</button>
+
+    <div class="hint" id="hintText">
+      Redirecting to streaming platform...
     </div>
   </div>
+</div>
 
-  <h1 id="movieTitle" style="margin-top: 15px;">Movie Title</h1>
-
-  <footer class="footer">
-    FilmReserve | Enjoy the full movie experience
-  </footer>
+<div class="footer">
+  FilmReserve | Smart streaming navigator
 </div>
 
 <script>
-  const video = document.getElementById('moviePlayer');
-  const source = document.getElementById('videoSource');
-  const muteBtn = document.getElementById('mute');
-  const seekbar = document.getElementById('seekbar');
-  const timeDisplay = document.getElementById('time');
-  const zoomBtn = document.getElementById('zoom');
-  const movieTitle = document.getElementById('movieTitle');
+  // 🎬 YOUR MOVIE DATABASE (Hotstar + YouTube)
+  const watchData = {
+    oppenheimer: {
+      title: "Oppenheimer",
+      src: "https://www.hotstar.com/in/movies/oppenheimer/1971011128/watch"
+    },
+    interstellar: {
+      title: "Interstellar",
+      src: "https://www.hotstar.com/in/movies/interstellar/1971000531/watch"
+    },
+    inception: {
+      title: "Inception",
+      src: "https://www.hotstar.com/in/movies/inception/1971000530/watch"
+    },
+    minecraft: {
+      title: "Minecraft",
+      src: "https://www.hotstar.com/in/movies/a-minecraft-movie/1271443009/watch"
+    },
+    wicked: {
+      title: "Wicked",
+      src: "https://www.hotstar.com/in/movies/wicked-for-good/1271547081/watch"
+    },
+    "spiderman-nwh": {
+      title: "Spider-Man: No Way Home",
+      src: "https://www.hotstar.com/in/movies/the-amazing-spider-man-2/1271644422/watch"
+    },
+    dune: {
+      title: "Dune (Trailer)",
+      src: "https://youtu.be/3_9vCamtuPY"
+    }
+  };
+
   const params = new URLSearchParams(window.location.search);
-  const movieKey = params.get('movie');
+  const movieKey = params.get("movie");
+
+  const titleEl = document.getElementById("movieTitle");
+  const playBtn = document.getElementById("playBtn");
+
+  let currentMovie = null;
 
   if (movieKey && watchData[movieKey.toLowerCase()]) {
-    const movie = watchData[movieKey.toLowerCase()];
-    source.src = movie.src;
-    video.poster = movie.poster;
-    movieTitle.textContent = movie.title;
-    video.load();
+    currentMovie = watchData[movieKey.toLowerCase()];
+    titleEl.textContent = currentMovie.title;
+  } else {
+    titleEl.textContent = "Movie not found";
+    playBtn.disabled = true;
+    playBtn.style.opacity = "0.5";
   }
 
-  video.addEventListener('loadedmetadata', () => {
-    if (isFinite(video.duration)) {
-      timeDisplay.textContent = formatTime(0) + ' / ' + formatTime(video.duration);
-      seekbar.value = 0;
-    }
-  });
+  playBtn.addEventListener("click", () => {
+    if (!currentMovie) return;
 
-  video.addEventListener('timeupdate', () => {
-    timeDisplay.textContent = formatTime(video.currentTime) + ' / ' + formatTime(video.duration);
-    seekbar.value = (video.currentTime / video.duration) * 100;
+    // 🚀 redirect to Hotstar / YouTube
+    window.open(currentMovie.src, "_blank");
   });
-
-  seekbar.addEventListener('input', () => {
-    video.currentTime = (seekbar.value / 100) * video.duration;
-  });
-
-  muteBtn.addEventListener('click', () => {
-    video.muted = !video.muted;
-    muteBtn.textContent = video.muted ? '🔇' : '🔊';
-  });
-
-  zoomBtn.addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-      video.parentElement.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  });
-
-  video.addEventListener('click', () => {
-    video.paused ? video.play() : video.pause();
-  });
-
-  document.addEventListener('keydown', e => {
-    if (e.key === ' ') {
-      e.preventDefault();
-      video.paused ? video.play() : video.pause();
-    }
-    if (e.key.toLowerCase() === 'm') muteBtn.click();
-    if (e.key.toLowerCase() === 'f') zoomBtn.click();
-    if (e.key === 'ArrowRight') video.currentTime += 5;
-    if (e.key === 'ArrowLeft') video.currentTime -= 5;
-  });
-
-  function formatTime(sec) {
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60).toString().padStart(2, '0');
-    return `${m}:${s}`;
-  }
 </script>
 
 </body>
